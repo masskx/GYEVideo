@@ -1,27 +1,29 @@
 import React from 'react';
 import {Composition} from 'remotion';
 import {CoverThumbnail} from './CoverThumbnail';
-import {DossierCover} from './DossierCover';
-import {GaokaoDossierVideo} from './GaokaoDossierVideo';
-import {DOSSIER_DURATION_FRAMES, DOSSIER_FPS, DOSSIER_HEIGHT, DOSSIER_WIDTH} from './dossier/schedule';
-import {ReadAloudCover} from './ReadAloudCover';
-import {ReadAloudVocabVideo} from './ReadAloudVocabVideo';
 import {RootWordVideo} from './RootWordVideo';
 import {SentenceCover} from './SentenceCover';
 import {SentenceVideo} from './SentenceVideo';
+import {FPS as CORE_FPS, HEIGHT, WIDTH} from './core/timeline';
 import {episodeConfig} from './data/episodeConfig';
-import {
-  readAloudDurationFrames,
-  READ_ALOUD_FPS,
-  READ_ALOUD_HEIGHT,
-  READ_ALOUD_WIDTH,
-} from './readAloudTimeline';
+import {COMPOSITIONS} from './templates/compositions';
+import {TEMPLATES, TemplateId} from './templates/registry';
 import {FPS, TIMELINE, durationFrames} from './timeline';
 import {SENTENCE_FPS, SENTENCE_HEIGHT, sentenceDurationFrames, SENTENCE_WIDTH} from './sentenceTimeline';
 
 export const Root: React.FC = () => {
   return (
     <>
+      {(Object.keys(COMPOSITIONS) as TemplateId[]).map((id) => {
+        const parts = COMPOSITIONS[id]!;
+        return (
+          <React.Fragment key={id}>
+            <Composition id={TEMPLATES[id].video} component={parts.Video} durationInFrames={parts.durationFrames} fps={CORE_FPS} width={WIDTH} height={HEIGHT} />
+            <Composition id={TEMPLATES[id].cover} component={parts.Cover} durationInFrames={1} fps={CORE_FPS} width={WIDTH} height={HEIGHT} />
+          </React.Fragment>
+        );
+      })}
+      {/* Legacy lines: black/yellow root words (frozen) and sentence videos. */}
       <Composition
         id="RootWordTemplate"
         component={RootWordVideo}
@@ -39,54 +41,8 @@ export const Root: React.FC = () => {
         height={SENTENCE_HEIGHT}
         defaultProps={{episodeType: episodeConfig.type}}
       />
-      <Composition
-        id="ReadAloudVocabTemplate"
-        component={ReadAloudVocabVideo}
-        durationInFrames={readAloudDurationFrames}
-        fps={READ_ALOUD_FPS}
-        width={READ_ALOUD_WIDTH}
-        height={READ_ALOUD_HEIGHT}
-      />
-      <Composition
-        id="GaokaoDossierVideo"
-        component={GaokaoDossierVideo}
-        durationInFrames={DOSSIER_DURATION_FRAMES}
-        fps={DOSSIER_FPS}
-        width={DOSSIER_WIDTH}
-        height={DOSSIER_HEIGHT}
-      />
-      <Composition
-        id="DossierCover"
-        component={DossierCover}
-        durationInFrames={1}
-        fps={DOSSIER_FPS}
-        width={DOSSIER_WIDTH}
-        height={DOSSIER_HEIGHT}
-      />
-      <Composition
-        id="DouyinCover"
-        component={CoverThumbnail}
-        durationInFrames={1}
-        fps={FPS}
-        width={1080}
-        height={1920}
-      />
-      <Composition
-        id="ReadAloudCover"
-        component={ReadAloudCover}
-        durationInFrames={1}
-        fps={READ_ALOUD_FPS}
-        width={1080}
-        height={1920}
-      />
-      <Composition
-        id="SentenceCover"
-        component={SentenceCover}
-        durationInFrames={1}
-        fps={SENTENCE_FPS}
-        width={SENTENCE_WIDTH}
-        height={SENTENCE_HEIGHT}
-      />
+      <Composition id="DouyinCover" component={CoverThumbnail} durationInFrames={1} fps={FPS} width={1080} height={1920} />
+      <Composition id="SentenceCover" component={SentenceCover} durationInFrames={1} fps={SENTENCE_FPS} width={SENTENCE_WIDTH} height={SENTENCE_HEIGHT} />
     </>
   );
 };

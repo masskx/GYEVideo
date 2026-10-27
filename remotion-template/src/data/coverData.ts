@@ -4,6 +4,7 @@ import {rootInfo, words} from './words';
 
 const DEFAULT_CREATOR_NAME = '小猪盖被';
 const DEFAULT_BADGE_TEXT = '3秒记词根';
+// 'cute_pig' is no longer an icon: any pig id renders as the brand pig (src/brand/BrandAvatar.tsx).
 const DEFAULT_ACCENT_ANIMAL = 'cute_pig';
 
 type CompatibleEpisodeConfig = {

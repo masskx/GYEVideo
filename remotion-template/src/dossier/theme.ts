@@ -1,3 +1,5 @@
+import {FontKey, stack} from '../core/fonts';
+
 // Halftone Dossier house palette for Gaokao vocabulary: paper + one dark ink + four spot inks.
 // The brand yellow is the highlight ink, so the series still reads as 小猪盖被.
 export const INK = {
@@ -9,30 +11,17 @@ export const INK = {
   stamp: '#E2412F', // stamps and alarms only
 } as const;
 
-// Local colours owned by the mascot; they appear nowhere else.
-export const PIG = {
-  body: '#F6A7BA',
-  belly: '#FBD3DC',
-  snout: '#EE8AA3',
-} as const;
-
 export type InkName = 'ink' | 'overprint' | 'highlight' | 'stamp';
 
 export const FONT = {
-  headline: '"DossierSerif", "Noto Serif CJK SC", serif',
-  display: '"DossierDisplay", "Arial Black", sans-serif',
-  hand: '"DossierHand", "DossierSans", sans-serif',
-  mono: '"DossierMono", "DejaVu Sans Mono", monospace',
-  sans: '"DossierSans", "Noto Sans CJK SC", sans-serif',
+  headline: stack('serifBlack'),
+  display: stack('bagel', 'sansBlack'),
+  hand: stack('kuaile', 'sansBlack'),
+  mono: stack('mono', 'sansBlack'),
+  sans: stack('sansBlack'),
 } as const;
 
-export const FONT_FILES = [
-  {family: 'DossierSerif', file: 'NotoSerifSC-Black-gb2312.woff2', weight: '900'},
-  {family: 'DossierSans', file: 'NotoSansSC-Black-gb2312.woff2', weight: '900'},
-  {family: 'DossierDisplay', file: 'BagelFatOne-Latin.woff2', weight: '400'},
-  {family: 'DossierHand', file: 'ZCOOLKuaiLe-gb2312.woff2', weight: '400'},
-  {family: 'DossierMono', file: 'JetBrainsMono-ExtraBold.woff2', weight: '800'},
-] as const;
+export const DOSSIER_FONTS: FontKey[] = ['serifBlack', 'sansBlack', 'bagel', 'kuaile', 'mono'];
 
 // Safe area for Douyin: keep essentials clear of the top bar, right-side buttons and bottom copy.
 export const SAFE = {

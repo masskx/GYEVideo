@@ -1,7 +1,8 @@
 import React from 'react';
 import {AbsoluteFill} from 'remotion';
 import {dossier, DossierCloze} from '../data/dossier';
-import {PigDetective} from './PigDetective';
+import {BrandPig} from '../brand/BrandPig';
+import {cueTime} from '../core/timeline';
 import {
   backOut,
   Chip,
@@ -19,7 +20,10 @@ import {
   squash,
   Stamp,
 } from './print';
-import {cueTime, SCORE_BEAT, SceneTiming, wordById} from './schedule';
+import {DOSSIER, DossierTiming, wordById} from './schedule';
+
+type SceneTiming = DossierTiming;
+const SCORE_BEAT = DOSSIER.beat;
 import {FONT, INK} from './theme';
 
 export type SceneProps = {timing: SceneTiming; t: number};
@@ -206,19 +210,22 @@ export const ClozeCaseScene: React.FC<SceneProps> = ({timing, t}) => {
         </div>
       </Absolute>
       <Stamp id="loss" text="易错四选一" t={t} at={cueTime(timing, 'loss')} size={84} rotate={-9} style={{left: 250, top: 1100}} />
-      <PigDetective id="pig-case" t={t} face="squint" pose="inspect" size={200} style={{left: 850, top: 400}} landAt={cueTime(timing, 'paper')} />
+      <BrandPig id="pig-case" t={t} face="squint" pose="inspect" size={200} landAt={cueTime(timing, 'paper')} x={850} y={400} />
     </Camera>
   );
 };
 
 // ---------- 2. fingerprint: the four words aligned on their shared root (dark "secret" scene) ----------
 
-const FINGER_ROWS = [
-  {pre: 'pro', root: 'duc', post: 'e'},
-  {pre: 're', root: 'duc', post: 'e'},
-  {pre: 'intro', root: 'duc', post: 'e'},
-  {pre: 'con', root: 'duc', post: 't'},
-];
+// The case's options, aligned on the root (each option must contain dossier.root.text).
+const fingerRows = () =>
+  dossier.hookCase.options.map((option) => {
+    const index = option.toLowerCase().indexOf(dossier.root.text.toLowerCase());
+    if (index < 0) {
+      return {pre: option, root: '', post: ''};
+    }
+    return {pre: option.slice(0, index), root: option.slice(index, index + dossier.root.text.length), post: option.slice(index + dossier.root.text.length)};
+  });
 
 export const FingerprintScene: React.FC<SceneProps> = ({timing, t}) => {
   const rows = cueTime(timing, 'rows');
@@ -254,7 +261,7 @@ export const FingerprintScene: React.FC<SceneProps> = ({timing, t}) => {
             opacity: 0.22,
           }}
         />
-        {FINGER_ROWS.map((row, i) => {
+        {fingerRows().map((row, i) => {
           const at = rows + 0.15 + i * 0.14;
           const p = backOut(progress(t, at, 0.32));
           if (t < at) {
@@ -518,8 +525,10 @@ export const EvidenceBoardScene: React.FC<SceneProps> = ({timing, t}) => {
       </svg>
       <div style={{position: 'absolute', left: center.x - 200, top: center.y - 130}}>
         <PrintCard fill={INK.ink} shadow={INK.highlight} style={{width: 400, height: 260, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box'}}>
-          <div style={{fontFamily: FONT.display, fontSize: 140, color: INK.highlight, lineHeight: 1}}>duc</div>
-          <div style={{fontFamily: FONT.sans, fontSize: 40, color: INK.paperLight}}>= lead 带领</div>
+          <div style={{fontFamily: FONT.display, fontSize: 140, color: INK.highlight, lineHeight: 1}}>{dossier.root.text}</div>
+          <div style={{fontFamily: FONT.sans, fontSize: 40, color: INK.paperLight}}>
+            = {dossier.root.en} {dossier.root.meaning.split('，')[0]}
+          </div>
         </PrintCard>
       </div>
       {dossier.words.map((word, i) => {
@@ -536,7 +545,7 @@ export const EvidenceBoardScene: React.FC<SceneProps> = ({timing, t}) => {
           </Pop>
         );
       })}
-      <PigDetective id="pig-board" t={t} face="happy" pose="cheer" size={200} style={{left: 760, top: 1180}} landAt={shake} />
+      <BrandPig id="pig-board" t={t} face="happy" pose="cheer" size={200} landAt={shake} x={760} y={1180} />
     </Camera>
   );
 };
@@ -561,7 +570,7 @@ export const SolveScene: React.FC<SceneProps> = ({timing, t}) => {
         </PrintCard>
       </Absolute>
       <Pop t={t} at={arrow} rotate={-3} style={{position: 'absolute', left: 520, top: 690}}>
-        <div style={{fontFamily: FONT.hand, fontSize: 70, color: INK.stamp}}>↑ 往回带 = re</div>
+        <div style={{fontFamily: FONT.hand, fontSize: 70, color: INK.stamp}}>↑ {dossier.solveHint}</div>
       </Pop>
       <Absolute x={60} y={830} w={960}>
         <div style={{display: 'flex', flexDirection: 'column', gap: 22}}>
@@ -581,14 +590,13 @@ export const SolveScene: React.FC<SceneProps> = ({timing, t}) => {
         </div>
       </Absolute>
       <Stamp id="verdict" text={dossier.verdictStamp} t={t} at={verdict} size={180} rotate={-12} style={{left: 400, top: 1010}} />
-      <PigDetective
+      <BrandPig
         id="pig-solve"
         t={t}
         face={t >= verdict ? 'happy' : 'neutral'}
         pose={t >= verdict ? 'cheer' : 'idle'}
         size={210}
-        style={{left: 790, top: 820}}
-        landAt={verdict}
+        landAt={verdict} x={790} y={820}
       />
     </Camera>
   );
@@ -636,7 +644,7 @@ export const HomeworkScene: React.FC<SceneProps> = ({timing, t}) => {
         </div>
       </Pop>
       <Stamp id="pending" text="待破案" t={t} at={cueTime(timing, 'end')} size={96} rotate={-10} style={{left: 430, top: 1010}} />
-      <PigDetective id="pig-hw" t={t} face="happy" pose="point" size={210} style={{left: 830, top: 1200}} flip />
+      <BrandPig id="pig-hw" t={t} face="happy" pose="point" size={210} flip x={830} y={1200} />
     </Camera>
   );
 };

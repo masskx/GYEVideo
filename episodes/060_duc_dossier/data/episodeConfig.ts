@@ -1,12 +1,12 @@
 export const episodeConfig: EpisodeConfig = {
-  type: 'gaokao-dossier',
+  type: 'vocab-dossier',
   episodeId: '060_duc_dossier',
   exportBaseName: '060_duc_dossier',
   durationTargetSeconds: 60,
   width: 1080,
   height: 1920,
   fps: 30,
-  // The dossier score is synthesized per episode (npm run dossier:audio); bgmId is the fallback.
+  // The score is synthesized per episode (npm run audio); bgmId is only the fallback.
   bgmId: 'suspense_003',
   bgmVolume: 0.5,
   bgmDuckingFactor: 0.6,

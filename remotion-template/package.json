@@ -13,7 +13,9 @@
     "upgrade:sentence:voice": "tsx scripts/upgrade-sentence-voice-scripts.ts",
     "copy": "node scripts/copy-package.mjs",
     "voice": "tsx scripts/generate-voice.ts",
-    "dossier:audio": "tsx scripts/dossier-audio.ts"
+    "audio": "tsx scripts/episode-audio.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.scripts.json",
+    "voice:check": "tsx scripts/dump-voice-lines.ts && python -I scripts/voice-check.py"
   },
   "dependencies": {
     "@jridgewell/trace-mapping": "^0.3.31",

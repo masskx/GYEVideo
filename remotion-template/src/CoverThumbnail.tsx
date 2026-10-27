@@ -1,5 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, Img, staticFile} from 'remotion';
+import {BrandAvatar, isBrandPigId} from './brand/BrandAvatar';
 import {coverData} from './data/coverData';
 import {getAnimalIconById, getFallbackAnimalIcon} from './data/animalIconRegistry';
 import {FONT_STACK, THEME} from './theme';
@@ -129,17 +130,7 @@ export const CoverThumbnail: React.FC = () => {
           boxShadow: '0 18px 42px rgba(0, 0, 0, 0.28)',
         }}
       >
-        {creatorAnimal ? (
-          <Img
-            src={staticFile(creatorAnimal.path)}
-            style={{
-              width: 74,
-              height: 74,
-              objectFit: 'contain',
-              filter: 'drop-shadow(0 10px 18px rgba(0, 0, 0, 0.36))',
-            }}
-          />
-        ) : null}
+        <BrandAvatar id="cover-creator" size={74} />
         <div style={{display: 'flex', flexDirection: 'column'}}>
           <div
             style={{
@@ -284,7 +275,7 @@ export const CoverThumbnail: React.FC = () => {
           </div>
         );
       })}
-      {accentAnimal ? (
+      {accentAnimal || isBrandPigId(coverData.accentAnimalId) ? (
         <div
           style={{
             position: 'absolute',
@@ -299,15 +290,19 @@ export const CoverThumbnail: React.FC = () => {
             background: 'radial-gradient(circle, rgba(255, 212, 59, 0.18), transparent 68%)',
           }}
         >
-          <Img
-            src={staticFile(accentAnimal.path)}
-            style={{
-              width: 250,
-              height: 250,
-              objectFit: 'contain',
-              filter: 'drop-shadow(0 20px 26px rgba(0, 0, 0, 0.34))',
-            }}
-          />
+          {isBrandPigId(coverData.accentAnimalId) ? (
+            <BrandAvatar id="cover-accent" size={250} />
+          ) : (
+            <Img
+              src={staticFile(accentAnimal!.path)}
+              style={{
+                width: 250,
+                height: 250,
+                objectFit: 'contain',
+                filter: 'drop-shadow(0 20px 26px rgba(0, 0, 0, 0.34))',
+              }}
+            />
+          )}
         </div>
       ) : null}
       <div

@@ -1,7 +1,11 @@
-// Gaokao Dossier episode data. Types live here (like readingPassage.ts) so the file is self-contained.
-// Every visible string must use characters covered by the GB2312 font subset in public/fonts/dossier/.
+// vocab-dossier episode data (skill: remotion-template/skills/vocab-dossier).
+// Types live here so the file is self-contained. Every visible string must use characters covered by
+// the GB2312 font subset (public/fonts/charset-gb2312.txt); `npm run check` verifies it.
 
 export type WordLevel = '课标' | '拓展';
+
+// Same shape as LineMeta in src/core/timeline.ts.
+export type LineMeta = {keywords?: string[]; pauseBefore?: number; holdAfter?: number};
 
 export type DossierWordPart = {
   text: string;
@@ -50,12 +54,8 @@ export type DossierScene = {
   chapter: string;
   transitionIn?: 'dot-wipe' | 'hard-cut';
   wipeInk?: 'ink' | 'overprint' | 'highlight' | 'stamp';
-};
-
-export type DossierLineMeta = {
-  keywords?: string[]; // highlighted in the caption bar
-  pauseBefore?: number; // seconds of near-silence before the line (music drops out)
-  holdAfter?: number; // extra seconds after the line
+  // Spoken words that time a cue inside this scene's lines (fallback: a fixed fraction of the line).
+  cueAt?: Partial<Record<'loss' | 'loupe' | 'arrow' | 'verdict' | 'redact' | 'end', string>>;
 };
 
 export type DossierStructure = 'case-investigation' | 'line-up' | 'declassified' | 'cold-case';
@@ -68,9 +68,11 @@ export type Dossier = {
   hookCase: DossierCloze;
   homework: DossierCloze;
   words: DossierWord[];
+  // Hand note written over the blank when solving, e.g. '往回带 = re'.
+  solveHint: string;
   verdictStamp: string;
   scenes: DossierScene[];
-  lineMeta: Record<string, DossierLineMeta>;
+  lineMeta: Record<string, LineMeta>;
   score: {bpm: number; key: 'D' | 'E' | 'F' | 'G' | 'A'};
 };
 
@@ -172,10 +174,11 @@ export const dossier: Dossier = {
       level: '课标',
     },
   ],
+  solveHint: '往回带 = re',
   verdictStamp: '结案',
   scenes: [
-    {id: 'case', kind: 'cloze-case', lines: ['hook', 'hook-options'], chapter: '案发现场'},
-    {id: 'print', kind: 'fingerprint', lines: ['clue'], chapter: '指纹比对', transitionIn: 'hard-cut'},
+    {id: 'case', kind: 'cloze-case', lines: ['hook', 'hook-options'], chapter: '案发现场', cueAt: {loss: '选哪个'}},
+    {id: 'print', kind: 'fingerprint', lines: ['clue'], chapter: '指纹比对', transitionIn: 'hard-cut', cueAt: {loupe: '指纹'}},
     {id: 'root', kind: 'root-reveal', lines: ['root'], chapter: '嫌疑词根', transitionIn: 'dot-wipe', wipeInk: 'ink'},
     {id: 'ex-produce', kind: 'exhibit', wordId: 'produce', lines: ['ex-produce'], chapter: '证物 01', transitionIn: 'dot-wipe', wipeInk: 'overprint'},
     {id: 'ex-reduce', kind: 'exhibit', wordId: 'reduce', lines: ['ex-reduce'], chapter: '证物 02', transitionIn: 'dot-wipe', wipeInk: 'highlight'},
@@ -183,8 +186,8 @@ export const dossier: Dossier = {
     {id: 'ex-conduct', kind: 'exhibit', wordId: 'conduct', lines: ['ex-conduct'], chapter: '证物 04', transitionIn: 'dot-wipe', wipeInk: 'highlight'},
     {id: 'ex-education', kind: 'exhibit', wordId: 'education', lines: ['ex-education'], chapter: '证物 05', transitionIn: 'dot-wipe', wipeInk: 'overprint'},
     {id: 'board', kind: 'evidence-board', lines: ['board'], chapter: '证据墙', transitionIn: 'hard-cut'},
-    {id: 'solve', kind: 'solve', lines: ['solve', 'verdict'], chapter: '当庭作答', transitionIn: 'dot-wipe', wipeInk: 'ink'},
-    {id: 'homework', kind: 'homework', lines: ['homework', 'signoff'], chapter: '下一份案卷', transitionIn: 'dot-wipe', wipeInk: 'stamp'},
+    {id: 'solve', kind: 'solve', lines: ['solve', 'verdict'], chapter: '当庭作答', transitionIn: 'dot-wipe', wipeInk: 'ink', cueAt: {arrow: '往回带', verdict: '结'}},
+    {id: 'homework', kind: 'homework', lines: ['homework', 'signoff'], chapter: '下一份案卷', transitionIn: 'dot-wipe', wipeInk: 'stamp', cueAt: {redact: '空里', end: '下一个'}},
   ],
   lineMeta: {
     hook: {keywords: ['四胞胎']},

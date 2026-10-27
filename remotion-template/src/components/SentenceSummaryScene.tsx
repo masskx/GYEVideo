@@ -1,5 +1,6 @@
 import React from 'react';
 import {Img, interpolate, staticFile, useCurrentFrame} from 'remotion';
+import {BrandAvatar} from '../brand/BrandAvatar';
 import {episodeConfig} from '../data/episodeConfig';
 import {sentenceInfo} from '../data/sentencePattern';
 import {getAnimalIconById, getFallbackAnimalIcon} from '../data/animalIconRegistry';
@@ -125,12 +126,7 @@ export const SentenceSummaryScene: React.FC = () => {
             opacity: interpolate(frame, [hold, hold + 8], [0, 1], clamp),
           }}
         >
-          {creatorAnimal ? (
-            <Img
-              src={staticFile(creatorAnimal.path)}
-              style={{width: 62, height: 62, objectFit: 'contain'}}
-            />
-          ) : null}
+          <BrandAvatar id="sentence-summary-creator" size={62} t={frame / 30} />
           <div style={{color: THEME.white, fontSize: 28, fontWeight: 1000}}>小猪盖被</div>
         </div>
       </div>

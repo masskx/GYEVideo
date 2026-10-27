@@ -1,76 +1,19 @@
-import React, {useEffect, useState} from 'react';
-import {AbsoluteFill, continueRender, delayRender, Img, staticFile} from 'remotion';
+import React from 'react';
+import {AbsoluteFill, Img, staticFile} from 'remotion';
 import {dossier} from '../data/dossier';
-import {captionAt, Cue, DOSSIER_CUES, DOSSIER_FPS, DOSSIER_HEIGHT, DOSSIER_WIDTH} from './schedule';
-import {FONT, FONT_FILES, INK, InkName, SAFE} from './theme';
+import {useFonts} from '../core/fonts';
+import {backOut, clamp01, easeInOut, mulberry, pop, squash} from '../core/motion';
+import {FPS, HEIGHT, WIDTH} from '../core/timeline';
+import {DOSSIER} from './schedule';
+import {DOSSIER_FONTS, FONT, INK, InkName, SAFE} from './theme';
 
-// ---------- fonts ----------
+export {backOut, clamp01, easeIn, easeInOut, easeOut, mulberry, pop, progress, squash} from '../core/motion';
 
-let fontPromise: Promise<void> | null = null;
-const loadFonts = () => {
-  fontPromise ??= Promise.all(
-    FONT_FILES.map(async ({family, file, weight}) => {
-      const face = new FontFace(family, `url(${staticFile(`fonts/dossier/${file}`)})`, {weight, display: 'block'});
-      document.fonts.add(await face.load());
-    }),
-  ).then(() => undefined);
-  return fontPromise;
-};
+const DOSSIER_FPS = FPS;
+const DOSSIER_WIDTH = WIDTH;
+const DOSSIER_HEIGHT = HEIGHT;
 
-// Text is laid out per character, so nothing may render before the real fonts are in.
-export const useDossierFonts = () => {
-  const [handle] = useState(() => delayRender('dossier fonts'));
-  useEffect(() => {
-    loadFonts()
-      .then(() => continueRender(handle))
-      .catch((error) => {
-        console.error(error);
-        continueRender(handle);
-      });
-  }, [handle]);
-};
-
-// ---------- easing ----------
-
-export const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
-export const backOut = (x: number, s = 1.9) => {
-  const p = clamp01(x) - 1;
-  return 1 + (s + 1) * p * p * p + s * p * p;
-};
-export const easeOut = (x: number) => 1 - (1 - clamp01(x)) ** 3;
-export const easeInOut = (x: number) => {
-  const p = clamp01(x);
-  return p < 0.5 ? 4 * p * p * p : 1 - (-2 * p + 2) ** 3 / 2;
-};
-export const progress = (t: number, from: number, length: number) => clamp01((t - from) / length);
-
-// Enter with overshoot (never a fade): rise from below and scale up from small.
-export const pop = (t: number, at: number, length = 0.38) => {
-  const p = (t - at) / length;
-  if (p <= 0) {
-    return {visible: false, scale: 0, y: 0};
-  }
-  const e = backOut(p);
-  return {visible: true, scale: 0.35 + 0.65 * e, y: (1 - e) * 70};
-};
-
-// Volume-preserving landing squash: scale(1/sq, sq) with a damped cosine.
-export const squash = (t: number, at: number, amount = 0.16) => {
-  const dt = t - at;
-  if (dt < 0) {
-    return {sx: 1, sy: 1};
-  }
-  const sq = 1 - amount * Math.exp(-dt * 9) * Math.cos(dt * 30);
-  return {sx: 1 / sq, sy: sq};
-};
-
-export const mulberry = (seed: number) => () => {
-  seed |= 0;
-  seed = (seed + 0x6d2b79f5) | 0;
-  let r = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-  r = (r + Math.imul(r ^ (r >>> 7), 61 | r)) ^ r;
-  return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
-};
+export const useDossierFonts = () => useFonts(DOSSIER_FONTS);
 
 // ---------- paper ----------
 
@@ -454,7 +397,7 @@ const splitKeywords = (text: string, keywords: string[]) => {
 
 // Dark-ink pill with an overprint offset shadow; paper text, keyword in the highlight ink. Carries the spoken line.
 export const CaptionBar: React.FC<{t: number}> = ({t}) => {
-  const line = captionAt(t);
+  const line = DOSSIER.captionAt(t);
   if (!line) {
     return null;
   }
@@ -566,9 +509,9 @@ export const DotWipe: React.FC<{t: number; at: number; ink?: InkName}> = ({t, at
 
 // ---------- camera ----------
 
-const cuesOf = (...names: string[]) => DOSSIER_CUES.filter((cue) => names.some((name) => cue.sfx === name));
-const STAMP_CUES: Cue[] = cuesOf('stamp', 'stamp-small');
-const FLASH_CUES: Cue[] = cuesOf('shutter');
+const cuesOf = (...names: string[]) => DOSSIER.cues.filter((cue) => names.some((name) => cue.sfx === name));
+const STAMP_CUES = cuesOf('stamp', 'stamp-small');
+const FLASH_CUES = cuesOf('shutter');
 
 // Quadratic-decay shake on every stamp; capped white flash on every shutter.
 export const cameraShake = (t: number) => {
@@ -596,13 +539,3 @@ export const FlashOverlay: React.FC<{t: number}> = ({t}) => {
   }
   return opacity > 0 ? <AbsoluteFill style={{background: '#FFFFFF', opacity}} /> : null;
 };
-
-// Line boil for characters and hand-drawn props only (never text, dots or HUD): reseeded ~10×/s.
-export const BoilFilter: React.FC<{id: string; t: number; scale?: number}> = ({id, t, scale = 5}) => (
-  <svg width={0} height={0} style={{position: 'absolute'}}>
-    <filter id={id} x="-5%" y="-5%" width="110%" height="110%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves={2} seed={Math.floor(t * 10) % 97} result="n" />
-      <feDisplacementMap in="SourceGraphic" in2="n" scale={scale} xChannelSelector="R" yChannelSelector="G" />
-    </filter>
-  </svg>
-);
