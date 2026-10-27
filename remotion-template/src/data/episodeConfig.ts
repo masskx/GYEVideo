@@ -42,7 +42,7 @@ export type LottieConfig = {
 };
 
 export type EpisodeConfig = {
-  type: 'root-word' | 'sentence-pattern' | 'read-aloud-vocab';
+  type: 'root-word' | 'sentence-pattern' | 'read-aloud-vocab' | 'gaokao-dossier';
   episodeId: string;
   exportBaseName: string;
   durationTargetSeconds?: number;

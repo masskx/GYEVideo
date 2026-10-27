@@ -12,7 +12,8 @@
     "render:batch:sentences": "tsx scripts/render-batch-sentences.ts --all-pre-019",
     "upgrade:sentence:voice": "tsx scripts/upgrade-sentence-voice-scripts.ts",
     "copy": "node scripts/copy-package.mjs",
-    "voice": "tsx scripts/generate-voice.ts"
+    "voice": "tsx scripts/generate-voice.ts",
+    "dossier:audio": "tsx scripts/dossier-audio.ts"
   },
   "dependencies": {
     "@jridgewell/trace-mapping": "^0.3.31",

@@ -5,6 +5,7 @@ import {fileURLToPath} from 'node:url';
 import {episodeConfig} from '../src/data/episodeConfig';
 import {READ_ALOUD_TIMELINE, readAloudSecondsToFrames} from '../src/readAloudTimeline';
 import {SENTENCE_TIMELINE, secondsToFrames} from '../src/sentenceTimeline';
+import {DOSSIER_SCENES, toFrame as dossierFrame} from '../src/dossier/schedule';
 
 export type RenderMode = 'both' | 'video' | 'cover';
 
@@ -40,13 +41,17 @@ export const runRender = (renderMode: RenderMode) => {
       ? 'SentencePatternVideo'
       : episodeConfig.type === 'read-aloud-vocab'
         ? 'ReadAloudVocabTemplate'
-        : 'RootWordTemplate';
+        : episodeConfig.type === 'gaokao-dossier'
+          ? 'GaokaoDossierVideo'
+          : 'RootWordTemplate';
   const coverComposition =
     episodeConfig.type === 'sentence-pattern'
       ? 'SentenceCover'
       : episodeConfig.type === 'read-aloud-vocab'
         ? 'ReadAloudCover'
-        : 'DouyinCover';
+        : episodeConfig.type === 'gaokao-dossier'
+          ? 'DossierCover'
+          : 'DouyinCover';
   const videoOutputPath = join(outDir, `${exportBaseName}.mp4`);
   const coverOutputPath = join(outDir, `${exportBaseName}_cover.png`);
   const finalVideoPath = join(exportsDir, `${exportBaseName}.mp4`);
@@ -149,6 +154,54 @@ export const runRender = (renderMode: RenderMode) => {
     console.log('- The total duration stays close to the 25-35 second short-video target.');
   };
 
+  // One still per scene, taken once its last line has started: the contact sheet for the review loop.
+  const renderDossierPreflight = () => {
+    const qaDir = join(outDir, 'qa', exportBaseName);
+    mkdirSync(qaDir, {recursive: true});
+
+    for (const timing of DOSSIER_SCENES) {
+      const lastLine = timing.lines[timing.lines.length - 1];
+      const frame = dossierFrame(Math.min(timing.end - 0.1, lastLine.end));
+      runRemotion([
+        'still',
+        'src/index.ts',
+        videoComposition,
+        join(qaDir, `${String(timing.index + 1).padStart(2, '0')}-${timing.scene.id}.png`),
+        `--frame=${frame}`,
+        '--scale=0.4',
+        '--image-format=png',
+      ]);
+    }
+
+    console.log(`Dossier QA stills exported to: ${qaDir}`);
+    console.log('Pre-export dossier QA checklist (see skills/douyin-gaokao-dossier-vocab/references/qa_checklist.md):');
+    console.log('- Paper, dots or a stamp are visible in every still; no gradients, no soft shadows.');
+    console.log('- Nothing essential sits under the caption bar or outside the Douyin safe area.');
+    console.log('- Every exhibit shows parts, literal meaning, word, meaning and a collocation.');
+    console.log('- The structure, opening and ending differ from the previous dossier episode.');
+  };
+
+  // Two-pass loudnorm to -14 LUFS, resample, then a -1.5 dB limiter (headroom for AAC overshoot); the picture is copied untouched.
+  const normalizeLoudness = (input: string, output: string) => {
+    const measure = spawnSync('ffmpeg', ['-hide_banner', '-i', input, '-af', 'loudnorm=I=-14:TP=-1:LRA=11:print_format=json', '-f', 'null', '-'], {
+      encoding: 'utf8',
+    });
+    const json = measure.stderr.slice(measure.stderr.lastIndexOf('{'));
+    const stats = JSON.parse(json) as Record<string, string>;
+    const filter = `loudnorm=I=-14:TP=-1:LRA=11:measured_I=${stats.input_i}:measured_TP=${stats.input_tp}:measured_LRA=${stats.input_lra}:measured_thresh=${stats.input_thresh}:offset=${stats.target_offset}:linear=true,aresample=48000,alimiter=limit=0.84:level=false`;
+    const result = spawnSync('ffmpeg', ['-y', '-v', 'error', '-i', input, '-c:v', 'copy', '-af', filter, '-ar', '48000', '-c:a', 'aac', '-b:a', '192k', output], {
+      stdio: 'inherit',
+    });
+    if (result.status !== 0) {
+      process.exit(result.status ?? 1);
+    }
+    console.log(`Loudness: measured ${stats.input_i} LUFS, normalized to -14 LUFS`);
+  };
+
+  if (episodeConfig.type === 'gaokao-dossier' && (renderMode === 'both' || renderMode === 'video')) {
+    renderDossierPreflight();
+  }
+
   if (episodeConfig.type === 'sentence-pattern' && (renderMode === 'both' || renderMode === 'video')) {
     renderSentencePreflight();
   }
@@ -160,6 +213,12 @@ export const runRender = (renderMode: RenderMode) => {
   if (renderMode === 'both' || renderMode === 'video') {
     rmSync(videoOutputPath, {force: true});
     runRemotion(['render', 'src/index.ts', videoComposition, videoOutputPath, '--codec=h264', '--concurrency=2']);
+    if (episodeConfig.type === 'gaokao-dossier') {
+      const rawPath = videoOutputPath.replace(/\.mp4$/, '.raw.mp4');
+      copyFileSync(videoOutputPath, rawPath);
+      normalizeLoudness(rawPath, videoOutputPath);
+      rmSync(rawPath, {force: true});
+    }
     copyFileSync(videoOutputPath, finalVideoPath);
     console.log(`Video exported to: ${finalVideoPath}`);
   }

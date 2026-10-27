@@ -288,9 +288,62 @@ episodes/<episodeId>/notes.md
 - DashScope key 只从环境变量读取。
 - BGM 和图标使用本地素材，不在 Remotion 渲染时从网络加载。
 
-## 仓库讲解视频
+## 高考词汇案卷（新的单词视频线）
 
-`repo-explainer/` 是一条介绍本仓库的竖屏讲解视频（独立的 Remotion 小工程，不改动 `remotion-template/`），复现方法见 [repo-explainer/README.md](repo-explainer/README.md)。
+面向高考生的约 60 秒竖屏（1080×1920）词汇视频，使用项目内 skill：
+
+```text
+remotion-template/skills/douyin-gaokao-dossier-vocab
+```
+
+风格改编自 [lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar) 的 Halftone Dossier（复古半调案卷），并带上它的导演方法：先写 TREATMENT.md、每个动作都有音效、字幕按阅读时间停留、每期都要和上一期不一样。
+
+每一期都是一份“案卷”：
+
+- 一道高考风格完形题是案发现场，四个长得像的选项是嫌疑人。
+- 词根是指纹，每个单词是一件编号证物：词块拆分 → 字面意思 → 单词 → 考试义 → 高考搭配。
+- 证据墙把所有证物连回词根，回到原题作答，盖章“结案”。
+- 结尾留一道新题，答案打码，让观众去评论区作答。
+
+和旧单词线相比：
+
+- 只选课标词汇（每个词标注 课标 / 拓展，拓展词最多一个），不再出现 altimeter、altiplano 这类高考用不上的词。
+- 画面统一（纸张、半调网点、五种油墨、印章、小猪侦探），但每期必须在结构、开场、招牌镜头、运镜、配乐、结尾六项里至少换三项，避免 59 期像一期。
+- 配乐和音效全部由代码按时间轴合成（`npm run dossier:audio`），没有版权问题；成片响度统一到 -14 LUFS。
+
+示例：`episodes/060_duc_dossier`（duc = lead：produce / reduce / introduce / conduct / education）。
+
+常用命令：
+
+```powershell
+cd F:\抖音英语卡片视频\remotion-template
+npm.cmd run episode:use -- ../episodes/060_duc_dossier
+npm.cmd run voice
+npm.cmd run dossier:audio
+npm.cmd run preview
+npm.cmd run render
+```
+
+`dossier:audio` 必须在 `voice` 之后运行，因为配乐跟随真实口播时长。
+
+### 推荐提示词：生成新的高考词汇案卷
+
+```text
+请使用 remotion-template/skills/douyin-gaokao-dossier-vocab 生成一期新的高考词汇案卷。
+
+episodeId: 061_xxx_dossier
+词根：-xxx = 英文 / 中文
+候选单词：……（只要课标词汇，最多一个拓展词）
+上一期：060_duc_dossier
+
+要求：
+1. 先写 brief.md 和 TREATMENT.md（三个候选结构、选定结构、和上一期的六项对比，至少三项不同）。
+2. 开场就是一道高考风格原创题，标注“高考风格原创练习题”。
+3. 每个证物都要有：词块、字面意思、单词、考试义、高考搭配。
+4. 生成配音后逐句做语音转写检查，读错的英文词改写后重新生成。
+5. 运行 dossier:audio 和 render，检查 out/qa 里的每场静帧、响度 -14 LUFS、无黑帧。
+6. 把 QA 结果写进 notes.md。
+```
 
 ## GitHub 源码与复现
 

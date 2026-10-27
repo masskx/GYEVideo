@@ -1,6 +1,7 @@
 import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {dossier} from '../src/data/dossier';
 import {episodeConfig} from '../src/data/episodeConfig';
 import {readingPassage} from '../src/data/readingPassage';
 import {rootInfo, words} from '../src/data/words';
@@ -145,6 +146,53 @@ const buildReadAloudPublishNotes = (activeEpisode: ActiveEpisodeMeta) => {
 `;
 };
 
+const DOSSIER_TAGS = '#高考英语 #高考词汇 #词根词缀 #英语学习 #小猪盖被';
+
+const buildDossierCaptionText = () => {
+  const words = dossier.words.map((word) => `${word.word} ${word.meaning.split('；')[0]}`).join('、');
+  return [
+    ensureSentence(episodeConfig.cover?.headline || dossier.title),
+    ensureSentence(`一个指纹 ${dossier.root.text}，${dossier.root.en}，${dossier.root.meaning}`),
+    ensureSentence(`这一份案卷破了 ${dossier.words.length} 个高考词：${words}`),
+    ensureSentence(`最后一题留给你：${dossier.homework.stem}，答案写在评论区`),
+    DOSSIER_TAGS,
+  ].join('');
+};
+
+const buildDossierPublishNotes = (activeEpisode: ActiveEpisodeMeta) => {
+  const titles = [
+    episodeConfig.cover?.headline || dossier.title,
+    `${dossier.root.text} = ${dossier.root.en} | ${dossier.words.slice(0, 3).map((word) => word.word).join(' / ')}`,
+    `高考词汇案卷 No.${dossier.caseNo}：${dossier.title}`,
+  ];
+  const extension = dossier.words.filter((word) => word.level === '拓展').map((word) => word.word);
+
+  return `# Publish Notes
+
+## 标题备选
+- ${titles[0]}
+- ${titles[1]}
+- ${titles[2]}
+
+## 标签
+
+${DOSSIER_TAGS}
+
+## 评论区置顶
+上期作业：${dossier.homework.stem}
+答案：${dossier.homework.options[dossier.homework.answerIndex]}（下一期发布后再置顶）
+
+## 发布前检查
+- 确认最终视频文件：\`${activeEpisode.exportBaseName}.mp4\`
+- 确认封面文件：\`${activeEpisode.exportBaseName}_cover.png\`
+- 确认文案文件：\`${activeEpisode.exportBaseName}_caption.txt\`
+- 结构：${dossier.structure}，和上一期案卷不同
+- 拓展词：${extension.length ? extension.join(' / ') : '无（全部为课标词汇）'}
+- 题目标注为“${dossier.hookCase.sourceNote}”，没有冒充真题
+- 响度约 -14 LUFS，字幕不遮挡证物
+`;
+};
+
 const buildCaptionText = () => {
   const opening = hookMain || `${primaryWord?.word ?? rootToken} 不只会让你想到“${primaryWordMeaningShort}”`;
   const cluster = highlightWords.join('、');
@@ -217,13 +265,17 @@ export const generateReleaseCopy = () => {
       ? buildSentenceCaptionText()
       : episodeConfig.type === 'read-aloud-vocab'
         ? buildReadAloudCaptionText()
-        : buildCaptionText();
+        : episodeConfig.type === 'gaokao-dossier'
+          ? buildDossierCaptionText()
+          : buildCaptionText();
   const publishNotesText =
     episodeConfig.type === 'sentence-pattern'
       ? buildSentencePublishNotes(exportBaseName)
       : episodeConfig.type === 'read-aloud-vocab'
         ? buildReadAloudPublishNotes(activeEpisode!)
-      : buildPublishNotes(activeEpisode!);
+        : episodeConfig.type === 'gaokao-dossier'
+          ? buildDossierPublishNotes(activeEpisode!)
+          : buildPublishNotes(activeEpisode!);
 
   writeFileSync(captionPath, `${captionText}\n`, 'utf8');
   writeFileSync(publishNotesPath, publishNotesText, 'utf8');

@@ -55,6 +55,10 @@ const inferEpisodeType = (sourceContent: string) => {
     return 'read-aloud-vocab';
   }
 
+  if (sourceContent.includes("type: 'gaokao-dossier'")) {
+    return 'gaokao-dossier';
+  }
+
   return 'root-word';
 };
 
@@ -102,7 +106,7 @@ export type LottieConfig = {
 };
 
 export type EpisodeConfig = {
-  type: 'root-word' | 'sentence-pattern' | 'read-aloud-vocab';
+  type: 'root-word' | 'sentence-pattern' | 'read-aloud-vocab' | 'gaokao-dossier';
   episodeId: string;
   exportBaseName: string;
   durationTargetSeconds?: number;
@@ -159,6 +163,7 @@ for (const file of [
   'sentencePattern.ts',
   'subtitles.ts',
   'readingPassage.ts',
+  'dossier.ts',
   'generatedVoiceTimeline.ts',
   'episodeConfig.ts',
 ]) {

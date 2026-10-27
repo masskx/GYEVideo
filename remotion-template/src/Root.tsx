@@ -1,6 +1,9 @@
 import React from 'react';
 import {Composition} from 'remotion';
 import {CoverThumbnail} from './CoverThumbnail';
+import {DossierCover} from './DossierCover';
+import {GaokaoDossierVideo} from './GaokaoDossierVideo';
+import {DOSSIER_DURATION_FRAMES, DOSSIER_FPS, DOSSIER_HEIGHT, DOSSIER_WIDTH} from './dossier/schedule';
 import {ReadAloudCover} from './ReadAloudCover';
 import {ReadAloudVocabVideo} from './ReadAloudVocabVideo';
 import {RootWordVideo} from './RootWordVideo';
@@ -43,6 +46,22 @@ export const Root: React.FC = () => {
         fps={READ_ALOUD_FPS}
         width={READ_ALOUD_WIDTH}
         height={READ_ALOUD_HEIGHT}
+      />
+      <Composition
+        id="GaokaoDossierVideo"
+        component={GaokaoDossierVideo}
+        durationInFrames={DOSSIER_DURATION_FRAMES}
+        fps={DOSSIER_FPS}
+        width={DOSSIER_WIDTH}
+        height={DOSSIER_HEIGHT}
+      />
+      <Composition
+        id="DossierCover"
+        component={DossierCover}
+        durationInFrames={1}
+        fps={DOSSIER_FPS}
+        width={DOSSIER_WIDTH}
+        height={DOSSIER_HEIGHT}
       />
       <Composition
         id="DouyinCover"
