@@ -30,4 +30,4 @@ Board `#F7F6F2` with faint ghost marks of old writing and a soft sheen. No other
 ## Sound
 
 - Marker squeaks on every write, an eraser rub, magnet clicks, the cap click at the overview.
-- Score palette `whiteboard`: quiet → think → build → reveal; light and sparse so the marker sounds lead.
+- Score: style `lofi-study` (swung boom-bap, Rhodes) at relaxed / standard pace, `chill-pop` (plucks, marimba) at fast pace; title = intro, root = build, branches = verses, twist = break, overview = drop, homework = outro. The melody ducks under the voice so the marker sounds lead (`../../_shared/PACE_AND_MUSIC.md`).

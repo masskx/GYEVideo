@@ -69,9 +69,9 @@ export const voiceScript: VoiceScriptLine[] = [
   },
   {
     id: 'ex-conduct',
-    text: 'con，一起。带着大家一起做，conduct，开展。',
+    text: '前缀 con，一起。带着大家一起做，就是 conduct，开展。',
     emotionInstruction: '有组织感，像带队出发。',
-    speedHint: 'fast-clear',
+    speedHint: 'medium-clear',
     subtitle: 'con 一起 → 带着大家一起做 → conduct 开展',
     instruction: defaultInstruction,
   },

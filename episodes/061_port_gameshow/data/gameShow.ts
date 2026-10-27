@@ -1,8 +1,9 @@
 // vocab-game-show episode data (skill: remotion-template/skills/vocab-game-show).
 // Self-contained: types live here. Visible text must use GB2312 characters (`npm run check`).
 
-// 课标 = Gaokao curriculum list; 四级 / 六级 = CET-4 / CET-6 syllabus; 拓展 = outside the exam's list (at most one).
-export type WordLevel = '课标' | '四级' | '六级' | '拓展';
+// The exam's word list (skills/_shared/EXAMS.md): 课标 高考 · 四级 / 六级 CET · 考研 · 雅思 IELTS · 托福 TOEFL · GRE;
+// 拓展 = outside the exam's list (at most one per episode).
+export type WordLevel = '课标' | '四级' | '六级' | '考研' | '雅思' | '托福' | 'GRE' | '拓展';
 export type LineMeta = {keywords?: string[]; pauseBefore?: number; holdAfter?: number};
 
 export type GameShowWord = {
@@ -34,7 +35,7 @@ export type GameShowQuestion = {
   stemZh: string;
   options: string[];
   answerIndex: number;
-  sourceNote: string; // the exam's original-question label (高考风格原创练习题 / 四级风格原创练习题 / 六级风格原创练习题) unless it is a real paper with year and source
+  sourceNote: string; // the exam's original-question label (e.g. 高考风格原创练习题, 雅思风格原创练习题) unless it is a real paper with year and source
 };
 
 export type GameShow = {
@@ -46,7 +47,9 @@ export type GameShow = {
   bonus: GameShowQuestion;
   scenes: GameShowScene[];
   lineMeta: Record<string, LineMeta>;
-  score: {bpm: number; key: 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'Bb'};
+  // Tempo (inside the style's range for the pace: npm run music -- --list), key, and optionally a style
+  // and a local sample kit (skills/_shared/PACE_AND_MUSIC.md).
+  score: {bpm: number; key: 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'Bb'; style?: string; kit?: string};
 };
 
 export const gameShow: GameShow = {
@@ -138,5 +141,5 @@ export const gameShow: GameShow = {
     bonus: {keywords: ['加分题']},
     signoff: {keywords: ['评论区'], holdAfter: 1.0},
   },
-  score: {bpm: 120, key: 'C'},
+  score: {bpm: 128, key: 'C'},
 };

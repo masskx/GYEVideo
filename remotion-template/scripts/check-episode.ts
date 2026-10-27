@@ -11,6 +11,7 @@ import {pictureBook} from '../src/data/pictureBook';
 import {voiceScript} from '../src/data/voiceScript';
 import {whiteboard} from '../src/data/whiteboard';
 import {EXAM, EXAMS, isExam} from '../src/core/exam';
+import {baseRate, isPace, lengthRange, PACE, PACES, ttsRate} from '../src/core/pace';
 import {isTemplate, TEMPLATES} from '../src/templates/registry';
 import {RUNTIMES} from '../src/templates/timelines';
 
@@ -74,9 +75,14 @@ if (runtime) {
 const timed = new Set(generatedVoiceTimeline.map((item) => item.id));
 const unvoiced = voiceScript.filter((line) => !timed.has(line.id)).map((line) => line.id);
 if (unvoiced.length) warn(`No generated voice yet for: ${unvoiced.join(', ')} (run npm run voice).`);
-const made = new Map(generatedVoiceTimeline.map((item) => [item.id, item as {text: string; spoken?: string}]));
-const stale = voiceScript.filter((line) => made.has(line.id) && (made.get(line.id)!.text !== line.subtitle || (made.get(line.id)!.spoken ?? line.text) !== line.text)).map((line) => line.id);
-if (stale.length) warn(`Voice is older than the script for: ${stale.join(', ')} (run npm run voice, or npm run produce).`);
+const made = new Map(generatedVoiceTimeline.map((item) => [item.id, item as {text: string; spoken?: string; rate?: number}]));
+const stale = voiceScript
+  .filter((line) => {
+    const item = made.get(line.id);
+    return item && (item.text !== line.subtitle || (item.spoken ?? line.text) !== line.text || Math.abs((item.rate ?? baseRate(line.speedHint)) - ttsRate(line.speedHint)) > 0.005);
+  })
+  .map((line) => line.id);
+if (stale.length) warn(`Voice is older than the script or the pace for: ${stale.join(', ')} (run npm run voice, or npm run produce).`);
 
 // ---------- 4. the data of this template ----------
 const DATA: Record<string, unknown> = {
@@ -101,6 +107,9 @@ if (missing.size) error(`Characters outside the font subset (they would render i
 
 // ---------- 6. exam content rules (skills/_shared/EXAMS.md) ----------
 const examField = (episodeConfig as {exam?: string}).exam;
+const paceField = (episodeConfig as {pace?: string}).pace;
+if (template && paceField !== undefined && !isPace(paceField)) error(`episodeConfig.pace "${paceField}" is not one of: ${Object.keys(PACES).join(', ')}.`);
+if (template && paceField === undefined) warn('episodeConfig has no pace: it is cut as "relaxed". New episodes use pace: \'fast\' (skills/_shared/PACE_AND_MUSIC.md).');
 if (template && examField !== undefined && !isExam(examField)) error(`episodeConfig.exam "${examField}" is not one of: ${Object.keys(EXAMS).join(', ')}.`);
 const levels = [...EXAM.coreLevels, EXAM.extension];
 const levelled = (value: unknown): {level?: string; word?: string; lemma?: string}[] =>
@@ -148,12 +157,33 @@ if (template) {
   const others = Object.values(EXAMS).filter((exam) => exam.id !== EXAM.id).map((exam) => exam.name);
   const texts = [...visible, ...voiceScript.map((line) => line.text)];
   for (const name of others) {
-    const hit = texts.find((text) => text.includes(name));
+    // Latin names (GRE) match whole words only, so GREAT! is not GRE.
+    const pattern = /^[A-Za-z]+$/.test(name) ? new RegExp(`\\b${name}\\b`) : null;
+    const hit = texts.find((text) => (pattern ? pattern.test(text) : text.includes(name)));
     if (hit) warn(`"${name}" appears in a ${EXAM.name} episode: "${hit.slice(0, 40)}". Rewrite it unless it is meant.`);
   }
   const instructions = voiceScript.map((line) => `${(line as {instruction?: string}).instruction ?? ''}`).join(' ');
   const audiences = [...new Set(Object.values(EXAMS).map((exam) => exam.audience))].filter((audience) => audience !== EXAM.audience);
   for (const audience of audiences) if (instructions.includes(audience)) warn(`The voice instruction talks to ${audience}; a ${EXAM.name} episode talks to ${EXAM.audience}.`);
+}
+
+// Spelling convention: 雅思 episodes use British spelling, 托福 and GRE American (skills/_shared/EXAMS.md).
+const SPELLING: [RegExp, RegExp, string][] = [
+  [/\b(colour|favour|behaviour|honour|labour|neighbour|humour|flavour)(s|ed|ing|ful)?\b/i, /\b(color|favor|behavior|honor|labor|neighbor|humor|flavor)(s|ed|ing|ful)?\b/i, 'colour / color'],
+  [/\b(organis|realis|recognis|apologis|emphasis|criticis|summaris|minimis|maximis|prioritis|utilis)(e|es|ed|ing|ation)\b/i, /\b(organiz|realiz|recogniz|apologiz|emphasiz|criticiz|summariz|minimiz|maximiz|prioritiz|utiliz)(e|es|ed|ing|ation)\b/i, 'organise / organize'],
+  [/\banalys(e|es|ed|ing)\b/i, /\banalyz(e|es|ed|ing)\b/i, 'analyse / analyze'],
+  [/\b(centre|theatre|litre|fibre)s?\b/i, /\b(center|theater|liter|fiber)s?\b/i, 'centre / center'],
+  [/\b(travelled|travelling|travellers?|cancelled|cancelling|labelled|modelling)\b/i, /\b(traveled|traveling|travelers?|canceled|canceling|labeled|modeling)\b/i, 'travelled / traveled'],
+  [/\b(defence|offence|catalogue|grey|ageing)\b/i, /\b(defense|offense|catalog|gray|aging)\b/i, 'defence / defense'],
+];
+if (template && (EXAM.id === 'ielts' || EXAM.id === 'toefl' || EXAM.id === 'gre')) {
+  const british = EXAM.id === 'ielts';
+  const english = [...visible, ...voiceScript.map((line) => line.text)];
+  for (const [uk, us, label] of SPELLING) {
+    const wrong = british ? us : uk;
+    const hit = english.find((text) => wrong.test(text));
+    if (hit) warn(`${EXAM.name} uses ${british ? 'British' : 'American'} spelling (${label}): "${hit.match(wrong)?.[0]}" in "${hit.slice(0, 40)}".`);
+  }
 }
 
 // ---------- 7. facts: every number in a news line has a source ----------
@@ -170,10 +200,12 @@ if (type === 'reading-caption-news') {
 }
 
 // ---------- 8. length ----------
-if (template && runtime && !unvoiced.length) {
-  const [min, max] = template.targetSeconds;
+if (template && runtime && stale.length) {
+  warn('Length not checked yet: the voice is older than the script or the pace (npm run produce re-voices, then checks again).');
+} else if (template && runtime && !unvoiced.length) {
+  const [min, max] = lengthRange(template.targetSeconds);
   const d = runtime.timeline.duration;
-  if (d < min || d > max) error(`Length ${d.toFixed(1)} s is outside ${min}–${max} s. Cut words (not content) or add a beat.`);
+  if (d < min || d > max) error(`Length ${d.toFixed(1)} s is outside ${min}–${max} s (${template.id} at pace ${PACE.id}). Cut words (not content) or add a beat.`);
 }
 
 // ---------- 9. rotation: don't post the same template twice in a row ----------

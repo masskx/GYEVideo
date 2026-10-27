@@ -2,6 +2,7 @@ import {cpSync, existsSync, mkdirSync, readFileSync, writeFileSync} from 'node:f
 import {join, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {EXAMS, isExam} from '../src/core/exam';
+import {isPace, PACES} from '../src/core/pace';
 import {isTemplate, TEMPLATES} from '../src/templates/registry';
 
 // npm run new -- <template> <episodeId>
@@ -10,16 +11,29 @@ import {isTemplate, TEMPLATES} from '../src/templates/registry';
 
 // --exam gaokao | cet4 | cet6 (default gaokao): the exam the episode is for (skills/_shared/EXAMS.md).
 const args = process.argv.slice(2);
-const examFlag = args.findIndex((arg) => arg === '--exam' || arg.startsWith('--exam='));
-const exam = examFlag < 0 ? 'gaokao' : args[examFlag].includes('=') ? args[examFlag].split('=')[1] : args[examFlag + 1];
-const [templateId, episodeId] = args.filter((arg, i) => !arg.startsWith('--') && !(examFlag >= 0 && !args[examFlag].includes('=') && i === examFlag + 1));
+// --pace relaxed | standard | fast (default fast): how fast the episode moves (src/core/pace.ts).
+const valueIndexes = new Set<number>();
+const flagValue = (name: string, fallback: string) => {
+  const i = args.findIndex((arg) => arg === `--${name}` || arg.startsWith(`--${name}=`));
+  if (i < 0) return fallback;
+  if (args[i].includes('=')) return args[i].split('=')[1];
+  valueIndexes.add(i + 1);
+  return args[i + 1];
+};
+const exam = flagValue('exam', 'gaokao');
+const pace = flagValue('pace', 'fast');
+const [templateId, episodeId] = args.filter((arg, i) => !arg.startsWith('--') && !valueIndexes.has(i));
 const templateDir = fileURLToPath(new URL('..', import.meta.url));
 const repoDir = resolve(templateDir, '..');
 
 if (!templateId || !episodeId || !isTemplate(templateId)) {
-  console.error('Usage: npm run new -- <template> <episodeId> [--exam gaokao|cet4|cet6]');
+  console.error(`Usage: npm run new -- <template> <episodeId> [--exam ${Object.keys(EXAMS).join('|')}] [--pace relaxed|standard|fast]`);
   console.error(`Templates: ${Object.keys(TEMPLATES).join(', ')}`);
   console.error('Pick one with: npm run plan');
+  process.exit(1);
+}
+if (!pace || !isPace(pace)) {
+  console.error(`--pace must be one of: ${Object.keys(PACES).join(', ')}. Got: ${pace}`);
   process.exit(1);
 }
 if (!exam || !isExam(exam)) {
@@ -50,7 +64,8 @@ writeFileSync(
   readFileSync(configPath, 'utf8')
     .split(exampleId)
     .join(episodeId)
-    .replace(/^  exam: '[a-z0-9]+',$/m, `  exam: '${exam}',`),
+    .replace(/^  exam: '[a-z0-9]+',$/m, `  exam: '${exam}',`)
+    .replace(/^  pace: '[a-z]+',$/m, `  pace: '${pace}',`),
   'utf8',
 );
 
@@ -76,7 +91,7 @@ writeFileSync(
   [
     `# Notes: ${episodeId}`,
     '',
-    `Template: ${templateId} (${template.title}). Exam: ${exam} (${EXAMS[exam].name}). Copied from ${template.example}. Skill: remotion-template/${template.skill}/SKILL.md`,
+    `Template: ${templateId} (${template.title}). Exam: ${exam} (${EXAMS[exam].name}). Pace: ${pace}. Copied from ${template.example}. Skill: remotion-template/${template.skill}/SKILL.md`,
     '',
     '## QA (from exports/<id>_qa.md)',
     '- Result / length / loudness / peak / black frames:',
@@ -99,7 +114,7 @@ writeFileSync(
   'utf8',
 );
 
-console.log(`Created ${target} from ${template.example} for ${EXAMS[exam].name} (${exam}).`);
+console.log(`Created ${target} from ${template.example} for ${EXAMS[exam].name} (${exam}), pace ${pace}.`);
 if (exam !== 'gaokao') {
   console.log(`The copied data is a 高考 episode: rewrite every word level (${[...EXAMS[exam].coreLevels, EXAMS[exam].extension].join(' / ')}), question label (${EXAMS[exam].practiceNote}) and the voice instructions for ${EXAMS[exam].audience} (skills/_shared/EXAMS.md).`);
 }

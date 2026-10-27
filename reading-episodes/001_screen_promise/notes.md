@@ -13,3 +13,8 @@ All lines pass. The first draft called the hero "Xiaozhu" in English; the Englis
 - The evidence box covered option D: moved and narrowed.
 - Crayon grain looked like TV static: the boil slowed to 12 fps and the grain was softened.
 - First cut ran 73.7 s: holds and pauses were trimmed to 70.2 s without cutting story lines.
+
+## Fast-pace re-cut (pace `fast`, new music engine)
+- Length 70.2 s → 52.7 s (range 35–58 s at fast); narration 81 % of the runtime (was 70 %).
+- Score: `ukulele-pop`, 120 BPM, G major, SoundFont backend. QA PASS. Voice check 13/13.
+- Contact sheet: page turns, word cards and the question still read cleanly with the shorter lead-ins.

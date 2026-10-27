@@ -23,8 +23,8 @@ import type {TemplateId} from './registry';
 export type ScorePlan = {
   bpm: number;
   key: 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'Bb';
-  // scene kind -> score section of the template's palette (see scripts/audio/score.ts)
-  sections: Record<string, string>;
+  style?: string; // a style id from scripts/music/styles.ts; default: the template's style for the pace
+  kit?: string; // a sample kit in shared-assets/music-kits/
 };
 
 export type TemplateRuntime = {
@@ -36,55 +36,27 @@ export type TemplateRuntime = {
 export const RUNTIMES: Partial<Record<TemplateId, TemplateRuntime>> = {
   'vocab-dossier': {
     timeline: DOSSIER as unknown as Timeline<SceneBase>,
-    score: {
-      bpm: dossier.score.bpm,
-      key: dossier.score.key,
-      sections: {
-        'cloze-case': 'sneak',
-        fingerprint: 'secret',
-        'root-reveal': 'groove',
-        exhibit: 'groove',
-        'evidence-board': 'groove',
-        solve: 'strip',
-        homework: 'light',
-      },
-    },
+    score: dossier.score as ScorePlan,
     copy: dossierCopy,
   },
   'vocab-game-show': {
     timeline: GAME_SHOW as unknown as Timeline<SceneBase>,
-    score: {
-      bpm: gameShow.score.bpm,
-      key: gameShow.score.key,
-      sections: {title: 'jingle', 'root-card': 'round', round: 'round', lightning: 'lightning', report: 'report', bonus: 'bonus'},
-    },
+    score: gameShow.score as ScorePlan,
     copy: gameShowCopy,
   },
   'vocab-whiteboard': {
     timeline: WHITEBOARD as unknown as Timeline<SceneBase>,
-    score: {
-      bpm: whiteboard.score.bpm,
-      key: whiteboard.score.key,
-      sections: {title: 'quiet', root: 'think', branch: 'build', twist: 'think', overview: 'reveal', homework: 'think'},
-    },
+    score: whiteboard.score as ScorePlan,
     copy: whiteboardCopy,
   },
   'reading-picture-book': {
     timeline: PICTURE_BOOK as unknown as Timeline<SceneBase>,
-    score: {
-      bpm: pictureBook.score.bpm,
-      key: pictureBook.score.key,
-      sections: {cover: 'story', page: 'story', words: 'turn', question: 'quiz', end: 'end'},
-    },
+    score: pictureBook.score as ScorePlan,
     copy: pictureBookCopy,
   },
   'reading-caption-news': {
     timeline: CAPTION_NEWS as unknown as Timeline<SceneBase>,
-    score: {
-      bpm: captionNews.score.bpm,
-      key: captionNews.score.key,
-      sections: {headline: 'pulse', chunk: 'pulse', question: 'question', recap: 'end'},
-    },
+    score: captionNews.score as ScorePlan,
     copy: captionNewsCopy,
   },
 };

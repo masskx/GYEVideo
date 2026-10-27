@@ -5,6 +5,7 @@ import {join} from 'node:path';
 import {fileURLToPath, pathToFileURL} from 'node:url';
 import ts from 'typescript';
 import {BRAND} from '../src/brand/brand';
+import {ttsRate} from '../src/core/pace';
 import {loadProjectEnv} from './load-env';
 
 type VoiceScriptLine = {
@@ -70,29 +71,8 @@ const fetchWithRetry = async (url: string, init: RequestInit, label: string, att
   throw lastError;
 };
 
-const rateBySpeedHint = (speedHint: string) => {
-  if (speedHint.includes('ultra-fast')) {
-    return 1.65;
-  }
-
-  if (speedHint.includes('slow')) {
-    return 0.98;
-  }
-
-  if (speedHint.includes('medium')) {
-    return 1.0;
-  }
-
-  if (speedHint.includes('very-fast')) {
-    return 1.28;
-  }
-
-  if (speedHint.includes('fast')) {
-    return 1.18;
-  }
-
-  return 1.08;
-};
+// Base rate per speedHint × the episode's pace (src/core/pace.ts).
+const rateBySpeedHint = (speedHint: string) => ttsRate(speedHint);
 
 const normalizeInstruction = (line: VoiceScriptLine) => {
   const combined = `${line.instruction} ${line.emotionInstruction}`;
@@ -254,6 +234,7 @@ const writeTimeline = (
       end,
       text: line.subtitle,
       spoken: line.text,
+      rate: rateBySpeedHint(line.speedHint),
       audio: `/audio/segments/${segmentPaths[index].split(/[\\/]/).pop()}`,
     };
   });
@@ -264,6 +245,7 @@ const writeTimeline = (
   end: number;
   text: string;
   spoken?: string; // the TTS text this audio was made from (npm run produce re-voices when it changes)
+  rate?: number; // the TTS rate it was made at (changes with the pace)
   audio: string;
 };
 
@@ -276,6 +258,7 @@ ${items
     end: ${item.end},
     text: \`${escapeText(item.text)}\`,
     spoken: \`${escapeText(item.spoken)}\`,
+    rate: ${item.rate},
     audio: \`${escapeText(item.audio)}\`,
   },`,
   )

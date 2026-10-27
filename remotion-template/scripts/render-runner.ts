@@ -103,14 +103,15 @@ export const runRender = (renderMode: RenderMode) => {
     console.log(`Review them against ${template!.skill}/references/qa_checklist.md and skills/_shared/HOUSE_RULES.md.`);
   };
 
-  // Two-pass loudnorm to -14 LUFS, resample, then a -1.5 dB limiter (headroom for AAC overshoot); the picture is copied untouched.
+  // Two-pass loudnorm to -14 LUFS, then a limiter at 4× oversampling (it catches inter-sample peaks, so the
+  // true peak stays under −1 dBFS after AAC even with bright, dense scores); the picture is copied untouched.
   const normalizeLoudness = (input: string, output: string) => {
     const measure = spawnSync('ffmpeg', ['-hide_banner', '-i', input, '-af', 'loudnorm=I=-14:TP=-1:LRA=11:print_format=json', '-f', 'null', '-'], {
       encoding: 'utf8',
     });
     const json = measure.stderr.slice(measure.stderr.lastIndexOf('{'));
     const stats = JSON.parse(json) as Record<string, string>;
-    const filter = `loudnorm=I=-14:TP=-1:LRA=11:measured_I=${stats.input_i}:measured_TP=${stats.input_tp}:measured_LRA=${stats.input_lra}:measured_thresh=${stats.input_thresh}:offset=${stats.target_offset}:linear=true,aresample=48000,alimiter=limit=0.84:level=false`;
+    const filter = `loudnorm=I=-14:TP=-1:LRA=11:measured_I=${stats.input_i}:measured_TP=${stats.input_tp}:measured_LRA=${stats.input_lra}:measured_thresh=${stats.input_thresh}:offset=${stats.target_offset}:linear=true,aresample=192000,alimiter=limit=0.79:attack=0.5:release=40:level=false,aresample=48000`;
     const result = spawnSync('ffmpeg', ['-y', '-v', 'error', '-i', input, '-c:v', 'copy', '-af', filter, '-ar', '48000', '-c:a', 'aac', '-b:a', '192k', output], {
       stdio: 'inherit',
     });

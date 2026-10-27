@@ -7,7 +7,7 @@ Flat candy-coloured game show: one round per word, prefix + root call-and-respon
 选考试，复制对应的整段，把 `<…>` 换成本期内容，发给 agent。也可以直接生成填好主题的版本：
 
 ```powershell
-npm.cmd run prompt -- vocab-game-show --exam cet4 --topic "<主题>"
+npm.cmd run prompt -- vocab-game-show --exam ielts --pace fast --topic "<主题>"
 ```
 
 ## 高考（gaokao）
@@ -20,7 +20,7 @@ npm.cmd run prompt -- vocab-game-show --exam cet4 --topic "<主题>"
 【开始前按顺序读完】
 1. AGENTS.md
 2. docs/agent_playbook.md（严格按它的步骤执行）
-3. remotion-template/skills/_shared/HOUSE_RULES.md、DIRECTING.md、EXAMS.md（本期考试：高考 `gaokao`）
+3. remotion-template/skills/_shared/HOUSE_RULES.md、DIRECTING.md、EXAMS.md（本期考试：高考 `gaokao`）、PACE_AND_MUSIC.md
 4. remotion-template/skills/vocab-game-show/SKILL.md、references/style.md、references/qa_checklist.md
 5. 参考 episode：episodes/061_port_gameshow（只学结构和写法，内容全部重写）
 
@@ -30,23 +30,27 @@ npm.cmd run prompt -- vocab-game-show --exam cet4 --topic "<主题>"
 - 词汇等级只能用：课标 / 拓展（拓展最多 1 个）
 - 原创题标注：`高考风格原创练习题`（只有引用真题才写“真题”，并注明年份和出处）
 - 文件夹：episodes/，命名：<编号>_<主题>_gameshow
-- 时长：50–66 秒
+- 节奏：`pace: 'fast'`（快节奏（抖音 / TikTok）），时长 35–53 秒
 
 【这个模板的要点】
 - 一期 = 一场综艺闯关：标题 → 通关密码（词根）→ 每个单词一关 → 极速挑战 → 成绩单评级 → 加分题评论区抢答。
 - 选一个有 5 个干净“前缀 + 词根”单词的词根；`words[].root` 写词根在这个单词里的真实拼写（support 里是 sup）。
 - 每一关的口播严格按：“第N关！<前缀>，<释义>。<字面意思>，<单词>，<意思>。”，和 data 里的写法完全一致（画面按这些词出现）。
 - 相邻场景的 `set.hue` 不能相同；每关的 `judgement`（PERFECT! / GREAT! / NICE! / BINGO!）要有变化；结尾一句必须包含“下一个”。
-- 时长 50–66 秒；语气是综艺主持人：兴奋、短句、有节奏。
+- 语气是综艺主持人：兴奋、短句、有节奏。
 
 【高考的要点】
 - 观众是高中生；单词全部来自高考课标词汇，标 `课标`，最多一个 `拓展`。
 - 英文难度 CEFR B1–B2，句子不超过 20 个词；题型对应高考完形 / 语法填空 / 阅读理解。
 
+【节奏要点】
+- 快节奏是给抖音 / TikTok 的：第一秒就是内容，配音语速自动加快，句与句之间几乎没有空白；每句口播控制在一口气说完（中文约 18 字、英文约 14 词以内），一句一个信息点。
+- 不要为了时长把停顿加回去；需要强调时只在答案揭晓前用一次 pauseBefore。配乐风格和速度由模板和节奏自动决定（npm run music -- --list），data 里的 score.bpm 必须落在该风格的快节奏速度范围内。
+
 【执行步骤】
 1. cd remotion-template；新电脑先运行 `npm run doctor`，必须显示 Ready。
 2. 运行 `npm run plan`，确认上一期单词不是 vocab-game-show（如果是，先停下来问我是否继续），记下下一个编号。
-3. 运行 `npm run new -- vocab-game-show <编号>_<主题>_gameshow --exam gaokao`。
+3. 运行 `npm run new -- vocab-game-show <编号>_<主题>_gameshow --exam gaokao --pace fast`。
 4. 写 brief.md：内容、每个词的等级、题目和答案。
 5. 写 TREATMENT.md：三个结构候选和选择理由、开场钩子、招牌镜头、配乐 BPM 和调性、第 9 节与同模板上一期的 6 项对比（至少 3 项不同，参考 SKILL.md 的 variation knobs）。
 6. 改写 data/gameShow.ts、data/voiceScript.ts、data/episodeConfig.ts 的每一个字段（参考 episode 的内容一个都不能留，exam 保持 'gaokao'）。
@@ -87,7 +91,7 @@ Episode <id> (vocab-game-show, gaokao) is ready.
 【开始前按顺序读完】
 1. AGENTS.md
 2. docs/agent_playbook.md（严格按它的步骤执行）
-3. remotion-template/skills/_shared/HOUSE_RULES.md、DIRECTING.md、EXAMS.md（本期考试：四级 `cet4`）
+3. remotion-template/skills/_shared/HOUSE_RULES.md、DIRECTING.md、EXAMS.md（本期考试：四级 `cet4`）、PACE_AND_MUSIC.md
 4. remotion-template/skills/vocab-game-show/SKILL.md、references/style.md、references/qa_checklist.md
 5. 参考 episode：episodes/061_port_gameshow（只学结构和写法，内容全部重写）
 
@@ -97,24 +101,28 @@ Episode <id> (vocab-game-show, gaokao) is ready.
 - 词汇等级只能用：四级 / 拓展（拓展最多 1 个）
 - 原创题标注：`四级风格原创练习题`（只有引用真题才写“真题”，并注明年份和出处）
 - 文件夹：episodes/，命名：<编号>_cet4_<主题>_gameshow
-- 时长：50–66 秒
+- 节奏：`pace: 'fast'`（快节奏（抖音 / TikTok）），时长 35–53 秒
 
 【这个模板的要点】
 - 一期 = 一场综艺闯关：标题 → 通关密码（词根）→ 每个单词一关 → 极速挑战 → 成绩单评级 → 加分题评论区抢答。
 - 选一个有 5 个干净“前缀 + 词根”单词的词根；`words[].root` 写词根在这个单词里的真实拼写（support 里是 sup）。
 - 每一关的口播严格按：“第N关！<前缀>，<释义>。<字面意思>，<单词>，<意思>。”，和 data 里的写法完全一致（画面按这些词出现）。
 - 相邻场景的 `set.hue` 不能相同；每关的 `judgement`（PERFECT! / GREAT! / NICE! / BINGO!）要有变化；结尾一句必须包含“下一个”。
-- 时长 50–66 秒；语气是综艺主持人：兴奋、短句、有节奏。
+- 语气是综艺主持人：兴奋、短句、有节奏。
 
 【四级的要点】
 - 观众是备考四级的大学生；单词来自四级大纲词汇，标 `四级`，最多一个 `拓展`；不要选高中生都会的基础词。
 - 英文难度 B1–B2，句子不超过 22 个词；词汇题是“选词填空”风格的单空四选一，阅读题是“仔细阅读”风格（细节 / 推理 / 主旨 / 态度），选项要同义改写原文。
 - 参考 episode 是高考的：所有 `level`、`sourceNote`、每句配音的 `instruction`（高中生 → 大学生）、封面文字、绘本的 `level` 字段（大学英语四级）都要改写。
 
+【节奏要点】
+- 快节奏是给抖音 / TikTok 的：第一秒就是内容，配音语速自动加快，句与句之间几乎没有空白；每句口播控制在一口气说完（中文约 18 字、英文约 14 词以内），一句一个信息点。
+- 不要为了时长把停顿加回去；需要强调时只在答案揭晓前用一次 pauseBefore。配乐风格和速度由模板和节奏自动决定（npm run music -- --list），data 里的 score.bpm 必须落在该风格的快节奏速度范围内。
+
 【执行步骤】
 1. cd remotion-template；新电脑先运行 `npm run doctor`，必须显示 Ready。
 2. 运行 `npm run plan`，确认上一期单词不是 vocab-game-show（如果是，先停下来问我是否继续），记下下一个编号。
-3. 运行 `npm run new -- vocab-game-show <编号>_cet4_<主题>_gameshow --exam cet4`。
+3. 运行 `npm run new -- vocab-game-show <编号>_cet4_<主题>_gameshow --exam cet4 --pace fast`。
 4. 写 brief.md：内容、每个词的等级、题目和答案。
 5. 写 TREATMENT.md：三个结构候选和选择理由、开场钩子、招牌镜头、配乐 BPM 和调性、第 9 节与同模板上一期的 6 项对比（至少 3 项不同，参考 SKILL.md 的 variation knobs）。
 6. 改写 data/gameShow.ts、data/voiceScript.ts、data/episodeConfig.ts 的每一个字段（参考 episode 的内容一个都不能留，exam 保持 'cet4'）。
@@ -155,7 +163,7 @@ Episode <id> (vocab-game-show, cet4) is ready.
 【开始前按顺序读完】
 1. AGENTS.md
 2. docs/agent_playbook.md（严格按它的步骤执行）
-3. remotion-template/skills/_shared/HOUSE_RULES.md、DIRECTING.md、EXAMS.md（本期考试：六级 `cet6`）
+3. remotion-template/skills/_shared/HOUSE_RULES.md、DIRECTING.md、EXAMS.md（本期考试：六级 `cet6`）、PACE_AND_MUSIC.md
 4. remotion-template/skills/vocab-game-show/SKILL.md、references/style.md、references/qa_checklist.md
 5. 参考 episode：episodes/061_port_gameshow（只学结构和写法，内容全部重写）
 
@@ -165,24 +173,28 @@ Episode <id> (vocab-game-show, cet4) is ready.
 - 词汇等级只能用：四级 / 六级 / 拓展（拓展最多 1 个，至少一半是 六级）
 - 原创题标注：`六级风格原创练习题`（只有引用真题才写“真题”，并注明年份和出处）
 - 文件夹：episodes/，命名：<编号>_cet6_<主题>_gameshow
-- 时长：50–66 秒
+- 节奏：`pace: 'fast'`（快节奏（抖音 / TikTok）），时长 35–53 秒
 
 【这个模板的要点】
 - 一期 = 一场综艺闯关：标题 → 通关密码（词根）→ 每个单词一关 → 极速挑战 → 成绩单评级 → 加分题评论区抢答。
 - 选一个有 5 个干净“前缀 + 词根”单词的词根；`words[].root` 写词根在这个单词里的真实拼写（support 里是 sup）。
 - 每一关的口播严格按：“第N关！<前缀>，<释义>。<字面意思>，<单词>，<意思>。”，和 data 里的写法完全一致（画面按这些词出现）。
 - 相邻场景的 `set.hue` 不能相同；每关的 `judgement`（PERFECT! / GREAT! / NICE! / BINGO!）要有变化；结尾一句必须包含“下一个”。
-- 时长 50–66 秒；语气是综艺主持人：兴奋、短句、有节奏。
+- 语气是综艺主持人：兴奋、短句、有节奏。
 
 【六级的要点】
 - 观众是备考六级的大学生；单词标 `四级` 或 `六级`，至少一半是 `六级`，最多一个 `拓展`。
 - 英文难度 B2–C1，句子可到约 28 个词；题目要有一步推理，选项同义改写、干扰项半对半错。
 - 参考 episode 是高考的：所有 `level`、`sourceNote`、每句配音的 `instruction`（高中生 → 大学生）、封面文字、绘本的 `level` 字段（大学英语六级）都要改写。
 
+【节奏要点】
+- 快节奏是给抖音 / TikTok 的：第一秒就是内容，配音语速自动加快，句与句之间几乎没有空白；每句口播控制在一口气说完（中文约 18 字、英文约 14 词以内），一句一个信息点。
+- 不要为了时长把停顿加回去；需要强调时只在答案揭晓前用一次 pauseBefore。配乐风格和速度由模板和节奏自动决定（npm run music -- --list），data 里的 score.bpm 必须落在该风格的快节奏速度范围内。
+
 【执行步骤】
 1. cd remotion-template；新电脑先运行 `npm run doctor`，必须显示 Ready。
 2. 运行 `npm run plan`，确认上一期单词不是 vocab-game-show（如果是，先停下来问我是否继续），记下下一个编号。
-3. 运行 `npm run new -- vocab-game-show <编号>_cet6_<主题>_gameshow --exam cet6`。
+3. 运行 `npm run new -- vocab-game-show <编号>_cet6_<主题>_gameshow --exam cet6 --pace fast`。
 4. 写 brief.md：内容、每个词的等级、题目和答案。
 5. 写 TREATMENT.md：三个结构候选和选择理由、开场钩子、招牌镜头、配乐 BPM 和调性、第 9 节与同模板上一期的 6 项对比（至少 3 项不同，参考 SKILL.md 的 variation knobs）。
 6. 改写 data/gameShow.ts、data/voiceScript.ts、data/episodeConfig.ts 的每一个字段（参考 episode 的内容一个都不能留，exam 保持 'cet6'）。
@@ -205,6 +217,294 @@ Episode <id> (vocab-game-show, cet4) is ready.
 【完成后按这个格式汇报】
 ```
 Episode <id> (vocab-game-show, cet6) is ready.
+- Video: exports/<id>.mp4, <时长> s, QA PASS
+- Cover / caption / publish notes: exports/
+- Pinned-comment answer: <评论区置顶答案>
+- Please listen to: <用了 asrAccept 的句子，或 none>
+- Warnings accepted / problems I could not fix in data: <none / 说明>
+```
+````
+
+## 考研（kaoyan）
+
+````text
+你是为抖音账号「小猪盖被」制作英语短视频的 agent。本次任务：用模板 `vocab-game-show`（词根闯关）做一期考研单词视频。
+
+【主题】<词根，例如 spect = look / 看；不填就自己选一个能覆盖 4–6 个考研词汇、最近 10 期没做过的词根>
+
+【开始前按顺序读完】
+1. AGENTS.md
+2. docs/agent_playbook.md（严格按它的步骤执行）
+3. remotion-template/skills/_shared/HOUSE_RULES.md、DIRECTING.md、EXAMS.md（本期考试：考研 `kaoyan`）、PACE_AND_MUSIC.md
+4. remotion-template/skills/vocab-game-show/SKILL.md、references/style.md、references/qa_checklist.md
+5. 参考 episode：episodes/061_port_gameshow（只学结构和写法，内容全部重写）
+
+【本期参数】
+- 模板：`vocab-game-show`（Flat candy-coloured game show: one round per word, prefix + root call-and-response on the beat, judgement words, a lightning round.）
+- 考试：考研（`exam: 'kaoyan'`），观众：考研生
+- 词汇等级只能用：考研 / 拓展（拓展最多 1 个）
+- 原创题标注：`考研风格原创练习题`（只有引用真题才写“真题”，并注明年份和出处）
+- 文件夹：episodes/，命名：<编号>_kaoyan_<主题>_gameshow
+- 节奏：`pace: 'fast'`（快节奏（抖音 / TikTok）），时长 35–53 秒
+
+【这个模板的要点】
+- 一期 = 一场综艺闯关：标题 → 通关密码（词根）→ 每个单词一关 → 极速挑战 → 成绩单评级 → 加分题评论区抢答。
+- 选一个有 5 个干净“前缀 + 词根”单词的词根；`words[].root` 写词根在这个单词里的真实拼写（support 里是 sup）。
+- 每一关的口播严格按：“第N关！<前缀>，<释义>。<字面意思>，<单词>，<意思>。”，和 data 里的写法完全一致（画面按这些词出现）。
+- 相邻场景的 `set.hue` 不能相同；每关的 `judgement`（PERFECT! / GREAT! / NICE! / BINGO!）要有变化；结尾一句必须包含“下一个”。
+- 语气是综艺主持人：兴奋、短句、有节奏。
+
+【考研的要点】
+- 观众是考研生；单词来自考研英语大纲词汇（约 5,500 词），标 `考研`，最多一个 `拓展`；优先“熟词僻义”（address 处理、novel 新颖的、figure 认为）和阅读里的高频抽象词，这是考研最容易失分的地方。
+- 英文难度 B2–C1，句子可到约 30 个词，可以用长难句（定语从句、插入语、倒装）并在中文里拆解；词汇题按完形填空风格（四选一、靠上下文逻辑），阅读题按阅读 Part A 风格（主旨、推理、作者态度、例证目的），选项同义改写。
+- 参考 episode 是高考的：所有 `level`、`sourceNote`、每句配音的 `instruction`（高中生 → 考研生）、封面文字、绘本的 `level` 字段（考研英语一 / 英语二）都要改写。
+
+【节奏要点】
+- 快节奏是给抖音 / TikTok 的：第一秒就是内容，配音语速自动加快，句与句之间几乎没有空白；每句口播控制在一口气说完（中文约 18 字、英文约 14 词以内），一句一个信息点。
+- 不要为了时长把停顿加回去；需要强调时只在答案揭晓前用一次 pauseBefore。配乐风格和速度由模板和节奏自动决定（npm run music -- --list），data 里的 score.bpm 必须落在该风格的快节奏速度范围内。
+
+【执行步骤】
+1. cd remotion-template；新电脑先运行 `npm run doctor`，必须显示 Ready。
+2. 运行 `npm run plan`，确认上一期单词不是 vocab-game-show（如果是，先停下来问我是否继续），记下下一个编号。
+3. 运行 `npm run new -- vocab-game-show <编号>_kaoyan_<主题>_gameshow --exam kaoyan --pace fast`。
+4. 写 brief.md：内容、每个词的等级、题目和答案。
+5. 写 TREATMENT.md：三个结构候选和选择理由、开场钩子、招牌镜头、配乐 BPM 和调性、第 9 节与同模板上一期的 6 项对比（至少 3 项不同，参考 SKILL.md 的 variation knobs）。
+6. 改写 data/gameShow.ts、data/voiceScript.ts、data/episodeConfig.ts 的每一个字段（参考 episode 的内容一个都不能留，exam 保持 'kaoyan'）。
+7. 运行 `npm run episode:use -- ../episodes/<你的 episodeId>`，再运行 `npm run check`，修好所有 ERROR；每个 warn 要么修好，要么在 notes.md 里说明。
+8. 运行 `npm run produce`，直到显示 PRODUCE DONE。voice:check 不通过：按 playbook 6.3 改写那一句的 text 后重跑；只有确认发音正确时才加 asrAccept，并写进 notes.md。时长超出：先删口头词和停顿，不缩短字幕停留时间。
+9. 人工看片：打开 exports/<id>_contact_sheet.jpg 和 remotion-template/out/qa/<id>/ 里的每一张静帧，按 skills/vocab-game-show/references/qa_checklist.md 逐项检查（文字不重叠不出界、小猪原样且不挡内容、中文清楚、封面缩略图能看清）。有问题改 data 后重跑 produce。
+10. 填写 notes.md（QA 数字、人工检查结果、改写过的句子、asrAccept、接受的 warn），只提交这个 episode 文件夹（不要提交 exports/、audio/、.env）。
+
+【绝对不要】
+- 修改、重画、换色或替换小猪（src/brand/BrandPig.tsx 已锁定），或加入任何其它小猪图片。
+- 更换配音（cosyvoice-v3-flash / longanhuan），或在 .env 里覆盖模型和音色。
+- 修改模板代码、src/core/、src/brand/；只有改代码才能解决的问题，停下来告诉我。
+- 打印、提交或写下 DASHSCOPE_API_KEY。
+- 从网上下载音乐、图片、视频放进视频；照抄新闻、试卷或教材原文。
+- 把原创题写成“真题”；发布没有来源的数字。
+
+【遇到这些情况先停下来问我】
+- 没有主题且无法按上面的规则自己选；plan 显示要连续两期用同一个模板；新闻数字找不到一手来源；DashScope 报错（密钥、额度）；只有改代码才能修好的画面问题。
+
+【完成后按这个格式汇报】
+```
+Episode <id> (vocab-game-show, kaoyan) is ready.
+- Video: exports/<id>.mp4, <时长> s, QA PASS
+- Cover / caption / publish notes: exports/
+- Pinned-comment answer: <评论区置顶答案>
+- Please listen to: <用了 asrAccept 的句子，或 none>
+- Warnings accepted / problems I could not fix in data: <none / 说明>
+```
+````
+
+## 雅思（ielts）
+
+````text
+你是为抖音账号「小猪盖被」制作英语短视频的 agent。本次任务：用模板 `vocab-game-show`（词根闯关）做一期雅思单词视频。
+
+【主题】<词根，例如 spect = look / 看；不填就自己选一个能覆盖 4–6 个雅思词汇、最近 10 期没做过的词根>
+
+【开始前按顺序读完】
+1. AGENTS.md
+2. docs/agent_playbook.md（严格按它的步骤执行）
+3. remotion-template/skills/_shared/HOUSE_RULES.md、DIRECTING.md、EXAMS.md（本期考试：雅思 `ielts`）、PACE_AND_MUSIC.md
+4. remotion-template/skills/vocab-game-show/SKILL.md、references/style.md、references/qa_checklist.md
+5. 参考 episode：episodes/061_port_gameshow（只学结构和写法，内容全部重写）
+
+【本期参数】
+- 模板：`vocab-game-show`（Flat candy-coloured game show: one round per word, prefix + root call-and-response on the beat, judgement words, a lightning round.）
+- 考试：雅思（`exam: 'ielts'`），观众：留学备考生
+- 词汇等级只能用：雅思 / 拓展（拓展最多 1 个）
+- 原创题标注：`雅思风格原创练习题`（只有引用真题才写“真题”，并注明年份和出处）
+- 文件夹：episodes/，命名：<编号>_ielts_<主题>_gameshow
+- 节奏：`pace: 'fast'`（快节奏（抖音 / TikTok）），时长 35–53 秒
+
+【这个模板的要点】
+- 一期 = 一场综艺闯关：标题 → 通关密码（词根）→ 每个单词一关 → 极速挑战 → 成绩单评级 → 加分题评论区抢答。
+- 选一个有 5 个干净“前缀 + 词根”单词的词根；`words[].root` 写词根在这个单词里的真实拼写（support 里是 sup）。
+- 每一关的口播严格按：“第N关！<前缀>，<释义>。<字面意思>，<单词>，<意思>。”，和 data 里的写法完全一致（画面按这些词出现）。
+- 相邻场景的 `set.hue` 不能相同；每关的 `judgement`（PERFECT! / GREAT! / NICE! / BINGO!）要有变化；结尾一句必须包含“下一个”。
+- 语气是综艺主持人：兴奋、短句、有节奏。
+
+【雅思的要点】
+- 观众是准备出国的雅思考生；单词标 `雅思`，优先学术词汇表（AWL）和雅思高频话题词（教育、环境、科技、城市化、健康、全球化），要能直接用在写作 Task 2 和口语 Part 3；最多一个 `拓展`。
+- 一律用英式拼写（colour、organise、centre、programme）；英文难度 B2–C1（目标 6.5–7 分）；词汇题按句子 / 摘要填空风格，阅读题可以把 True / False / Not Given 判断或段落主旨改写成四选一；口播可以加一句“写作或口语里怎么用”。
+- 参考 episode 是高考的：所有 `level`、`sourceNote`、每句配音的 `instruction`（高中生 → 留学备考生）、封面文字、绘本的 `level` 字段（雅思 6.5+）都要改写。
+
+【节奏要点】
+- 快节奏是给抖音 / TikTok 的：第一秒就是内容，配音语速自动加快，句与句之间几乎没有空白；每句口播控制在一口气说完（中文约 18 字、英文约 14 词以内），一句一个信息点。
+- 不要为了时长把停顿加回去；需要强调时只在答案揭晓前用一次 pauseBefore。配乐风格和速度由模板和节奏自动决定（npm run music -- --list），data 里的 score.bpm 必须落在该风格的快节奏速度范围内。
+
+【执行步骤】
+1. cd remotion-template；新电脑先运行 `npm run doctor`，必须显示 Ready。
+2. 运行 `npm run plan`，确认上一期单词不是 vocab-game-show（如果是，先停下来问我是否继续），记下下一个编号。
+3. 运行 `npm run new -- vocab-game-show <编号>_ielts_<主题>_gameshow --exam ielts --pace fast`。
+4. 写 brief.md：内容、每个词的等级、题目和答案。
+5. 写 TREATMENT.md：三个结构候选和选择理由、开场钩子、招牌镜头、配乐 BPM 和调性、第 9 节与同模板上一期的 6 项对比（至少 3 项不同，参考 SKILL.md 的 variation knobs）。
+6. 改写 data/gameShow.ts、data/voiceScript.ts、data/episodeConfig.ts 的每一个字段（参考 episode 的内容一个都不能留，exam 保持 'ielts'）。
+7. 运行 `npm run episode:use -- ../episodes/<你的 episodeId>`，再运行 `npm run check`，修好所有 ERROR；每个 warn 要么修好，要么在 notes.md 里说明。
+8. 运行 `npm run produce`，直到显示 PRODUCE DONE。voice:check 不通过：按 playbook 6.3 改写那一句的 text 后重跑；只有确认发音正确时才加 asrAccept，并写进 notes.md。时长超出：先删口头词和停顿，不缩短字幕停留时间。
+9. 人工看片：打开 exports/<id>_contact_sheet.jpg 和 remotion-template/out/qa/<id>/ 里的每一张静帧，按 skills/vocab-game-show/references/qa_checklist.md 逐项检查（文字不重叠不出界、小猪原样且不挡内容、中文清楚、封面缩略图能看清）。有问题改 data 后重跑 produce。
+10. 填写 notes.md（QA 数字、人工检查结果、改写过的句子、asrAccept、接受的 warn），只提交这个 episode 文件夹（不要提交 exports/、audio/、.env）。
+
+【绝对不要】
+- 修改、重画、换色或替换小猪（src/brand/BrandPig.tsx 已锁定），或加入任何其它小猪图片。
+- 更换配音（cosyvoice-v3-flash / longanhuan），或在 .env 里覆盖模型和音色。
+- 修改模板代码、src/core/、src/brand/；只有改代码才能解决的问题，停下来告诉我。
+- 打印、提交或写下 DASHSCOPE_API_KEY。
+- 从网上下载音乐、图片、视频放进视频；照抄新闻、试卷或教材原文。
+- 把原创题写成“真题”；发布没有来源的数字。
+
+【遇到这些情况先停下来问我】
+- 没有主题且无法按上面的规则自己选；plan 显示要连续两期用同一个模板；新闻数字找不到一手来源；DashScope 报错（密钥、额度）；只有改代码才能修好的画面问题。
+
+【完成后按这个格式汇报】
+```
+Episode <id> (vocab-game-show, ielts) is ready.
+- Video: exports/<id>.mp4, <时长> s, QA PASS
+- Cover / caption / publish notes: exports/
+- Pinned-comment answer: <评论区置顶答案>
+- Please listen to: <用了 asrAccept 的句子，或 none>
+- Warnings accepted / problems I could not fix in data: <none / 说明>
+```
+````
+
+## 托福（toefl）
+
+````text
+你是为抖音账号「小猪盖被」制作英语短视频的 agent。本次任务：用模板 `vocab-game-show`（词根闯关）做一期托福单词视频。
+
+【主题】<词根，例如 spect = look / 看；不填就自己选一个能覆盖 4–6 个托福词汇、最近 10 期没做过的词根>
+
+【开始前按顺序读完】
+1. AGENTS.md
+2. docs/agent_playbook.md（严格按它的步骤执行）
+3. remotion-template/skills/_shared/HOUSE_RULES.md、DIRECTING.md、EXAMS.md（本期考试：托福 `toefl`）、PACE_AND_MUSIC.md
+4. remotion-template/skills/vocab-game-show/SKILL.md、references/style.md、references/qa_checklist.md
+5. 参考 episode：episodes/061_port_gameshow（只学结构和写法，内容全部重写）
+
+【本期参数】
+- 模板：`vocab-game-show`（Flat candy-coloured game show: one round per word, prefix + root call-and-response on the beat, judgement words, a lightning round.）
+- 考试：托福（`exam: 'toefl'`），观众：留学备考生
+- 词汇等级只能用：托福 / 拓展（拓展最多 1 个）
+- 原创题标注：`托福风格原创练习题`（只有引用真题才写“真题”，并注明年份和出处）
+- 文件夹：episodes/，命名：<编号>_toefl_<主题>_gameshow
+- 节奏：`pace: 'fast'`（快节奏（抖音 / TikTok）），时长 35–53 秒
+
+【这个模板的要点】
+- 一期 = 一场综艺闯关：标题 → 通关密码（词根）→ 每个单词一关 → 极速挑战 → 成绩单评级 → 加分题评论区抢答。
+- 选一个有 5 个干净“前缀 + 词根”单词的词根；`words[].root` 写词根在这个单词里的真实拼写（support 里是 sup）。
+- 每一关的口播严格按：“第N关！<前缀>，<释义>。<字面意思>，<单词>，<意思>。”，和 data 里的写法完全一致（画面按这些词出现）。
+- 相邻场景的 `set.hue` 不能相同；每关的 `judgement`（PERFECT! / GREAT! / NICE! / BINGO!）要有变化；结尾一句必须包含“下一个”。
+- 语气是综艺主持人：兴奋、短句、有节奏。
+
+【托福的要点】
+- 观众是准备出国的托福考生；单词标 `托福`，优先学术讲座和阅读里的学科词（生物、地质、天文、艺术史、心理学、经济学）；最多一个 `拓展`。
+- 一律用美式拼写（color、organize、center、program）；英文难度 B2–C1；词汇题按托福阅读词汇题风格（“The word X in the passage is closest in meaning to …”），阅读题按细节、推理、修辞目的题。托福 iBT 的题型和计分在 2026 年有调整：写具体题型名称或分数之前，先查 ets.org 的官方说明，不要凭记忆写。
+- 参考 episode 是高考的：所有 `level`、`sourceNote`、每句配音的 `instruction`（高中生 → 留学备考生）、封面文字、绘本的 `level` 字段（托福 100+）都要改写。
+
+【节奏要点】
+- 快节奏是给抖音 / TikTok 的：第一秒就是内容，配音语速自动加快，句与句之间几乎没有空白；每句口播控制在一口气说完（中文约 18 字、英文约 14 词以内），一句一个信息点。
+- 不要为了时长把停顿加回去；需要强调时只在答案揭晓前用一次 pauseBefore。配乐风格和速度由模板和节奏自动决定（npm run music -- --list），data 里的 score.bpm 必须落在该风格的快节奏速度范围内。
+
+【执行步骤】
+1. cd remotion-template；新电脑先运行 `npm run doctor`，必须显示 Ready。
+2. 运行 `npm run plan`，确认上一期单词不是 vocab-game-show（如果是，先停下来问我是否继续），记下下一个编号。
+3. 运行 `npm run new -- vocab-game-show <编号>_toefl_<主题>_gameshow --exam toefl --pace fast`。
+4. 写 brief.md：内容、每个词的等级、题目和答案。
+5. 写 TREATMENT.md：三个结构候选和选择理由、开场钩子、招牌镜头、配乐 BPM 和调性、第 9 节与同模板上一期的 6 项对比（至少 3 项不同，参考 SKILL.md 的 variation knobs）。
+6. 改写 data/gameShow.ts、data/voiceScript.ts、data/episodeConfig.ts 的每一个字段（参考 episode 的内容一个都不能留，exam 保持 'toefl'）。
+7. 运行 `npm run episode:use -- ../episodes/<你的 episodeId>`，再运行 `npm run check`，修好所有 ERROR；每个 warn 要么修好，要么在 notes.md 里说明。
+8. 运行 `npm run produce`，直到显示 PRODUCE DONE。voice:check 不通过：按 playbook 6.3 改写那一句的 text 后重跑；只有确认发音正确时才加 asrAccept，并写进 notes.md。时长超出：先删口头词和停顿，不缩短字幕停留时间。
+9. 人工看片：打开 exports/<id>_contact_sheet.jpg 和 remotion-template/out/qa/<id>/ 里的每一张静帧，按 skills/vocab-game-show/references/qa_checklist.md 逐项检查（文字不重叠不出界、小猪原样且不挡内容、中文清楚、封面缩略图能看清）。有问题改 data 后重跑 produce。
+10. 填写 notes.md（QA 数字、人工检查结果、改写过的句子、asrAccept、接受的 warn），只提交这个 episode 文件夹（不要提交 exports/、audio/、.env）。
+
+【绝对不要】
+- 修改、重画、换色或替换小猪（src/brand/BrandPig.tsx 已锁定），或加入任何其它小猪图片。
+- 更换配音（cosyvoice-v3-flash / longanhuan），或在 .env 里覆盖模型和音色。
+- 修改模板代码、src/core/、src/brand/；只有改代码才能解决的问题，停下来告诉我。
+- 打印、提交或写下 DASHSCOPE_API_KEY。
+- 从网上下载音乐、图片、视频放进视频；照抄新闻、试卷或教材原文。
+- 把原创题写成“真题”；发布没有来源的数字。
+
+【遇到这些情况先停下来问我】
+- 没有主题且无法按上面的规则自己选；plan 显示要连续两期用同一个模板；新闻数字找不到一手来源；DashScope 报错（密钥、额度）；只有改代码才能修好的画面问题。
+
+【完成后按这个格式汇报】
+```
+Episode <id> (vocab-game-show, toefl) is ready.
+- Video: exports/<id>.mp4, <时长> s, QA PASS
+- Cover / caption / publish notes: exports/
+- Pinned-comment answer: <评论区置顶答案>
+- Please listen to: <用了 asrAccept 的句子，或 none>
+- Warnings accepted / problems I could not fix in data: <none / 说明>
+```
+````
+
+## GRE（gre）
+
+````text
+你是为抖音账号「小猪盖被」制作英语短视频的 agent。本次任务：用模板 `vocab-game-show`（词根闯关）做一期GRE单词视频。
+
+【主题】<词根，例如 spect = look / 看；不填就自己选一个能覆盖 4–6 个GRE 词汇、最近 10 期没做过的词根>
+
+【开始前按顺序读完】
+1. AGENTS.md
+2. docs/agent_playbook.md（严格按它的步骤执行）
+3. remotion-template/skills/_shared/HOUSE_RULES.md、DIRECTING.md、EXAMS.md（本期考试：GRE `gre`）、PACE_AND_MUSIC.md
+4. remotion-template/skills/vocab-game-show/SKILL.md、references/style.md、references/qa_checklist.md
+5. 参考 episode：episodes/061_port_gameshow（只学结构和写法，内容全部重写）
+
+【本期参数】
+- 模板：`vocab-game-show`（Flat candy-coloured game show: one round per word, prefix + root call-and-response on the beat, judgement words, a lightning round.）
+- 考试：GRE（`exam: 'gre'`），观众：申研留学生
+- 词汇等级只能用：GRE / 拓展（拓展最多 1 个）
+- 原创题标注：`GRE风格原创练习题`（只有引用真题才写“真题”，并注明年份和出处）
+- 文件夹：episodes/，命名：<编号>_gre_<主题>_gameshow
+- 节奏：`pace: 'fast'`（快节奏（抖音 / TikTok）），时长 35–53 秒
+
+【这个模板的要点】
+- 一期 = 一场综艺闯关：标题 → 通关密码（词根）→ 每个单词一关 → 极速挑战 → 成绩单评级 → 加分题评论区抢答。
+- 选一个有 5 个干净“前缀 + 词根”单词的词根；`words[].root` 写词根在这个单词里的真实拼写（support 里是 sup）。
+- 每一关的口播严格按：“第N关！<前缀>，<释义>。<字面意思>，<单词>，<意思>。”，和 data 里的写法完全一致（画面按这些词出现）。
+- 相邻场景的 `set.hue` 不能相同；每关的 `judgement`（PERFECT! / GREAT! / NICE! / BINGO!）要有变化；结尾一句必须包含“下一个”。
+- 语气是综艺主持人：兴奋、短句、有节奏。
+
+【GRE的要点】
+- 观众是申请海外研究生的 GRE 考生；单词标 `GRE`，是 C1–C2 的高阶词（laconic、obdurate、equivocate、mitigate），讲清一词多义和褒贬色彩；最多一个 `拓展`。
+- 英文难度 C1–C2；词汇题按填空（Text Completion）或句子等价（Sentence Equivalence，改成单选：选出能让句子意思不变的词）风格，用转折、让步、因果等逻辑线索词出题；阅读题考作者态度、论证结构和推理。
+- 参考 episode 是高考的：所有 `level`、`sourceNote`、每句配音的 `instruction`（高中生 → 申研留学生）、封面文字、绘本的 `level` 字段（GRE Verbal）都要改写。
+
+【节奏要点】
+- 快节奏是给抖音 / TikTok 的：第一秒就是内容，配音语速自动加快，句与句之间几乎没有空白；每句口播控制在一口气说完（中文约 18 字、英文约 14 词以内），一句一个信息点。
+- 不要为了时长把停顿加回去；需要强调时只在答案揭晓前用一次 pauseBefore。配乐风格和速度由模板和节奏自动决定（npm run music -- --list），data 里的 score.bpm 必须落在该风格的快节奏速度范围内。
+
+【执行步骤】
+1. cd remotion-template；新电脑先运行 `npm run doctor`，必须显示 Ready。
+2. 运行 `npm run plan`，确认上一期单词不是 vocab-game-show（如果是，先停下来问我是否继续），记下下一个编号。
+3. 运行 `npm run new -- vocab-game-show <编号>_gre_<主题>_gameshow --exam gre --pace fast`。
+4. 写 brief.md：内容、每个词的等级、题目和答案。
+5. 写 TREATMENT.md：三个结构候选和选择理由、开场钩子、招牌镜头、配乐 BPM 和调性、第 9 节与同模板上一期的 6 项对比（至少 3 项不同，参考 SKILL.md 的 variation knobs）。
+6. 改写 data/gameShow.ts、data/voiceScript.ts、data/episodeConfig.ts 的每一个字段（参考 episode 的内容一个都不能留，exam 保持 'gre'）。
+7. 运行 `npm run episode:use -- ../episodes/<你的 episodeId>`，再运行 `npm run check`，修好所有 ERROR；每个 warn 要么修好，要么在 notes.md 里说明。
+8. 运行 `npm run produce`，直到显示 PRODUCE DONE。voice:check 不通过：按 playbook 6.3 改写那一句的 text 后重跑；只有确认发音正确时才加 asrAccept，并写进 notes.md。时长超出：先删口头词和停顿，不缩短字幕停留时间。
+9. 人工看片：打开 exports/<id>_contact_sheet.jpg 和 remotion-template/out/qa/<id>/ 里的每一张静帧，按 skills/vocab-game-show/references/qa_checklist.md 逐项检查（文字不重叠不出界、小猪原样且不挡内容、中文清楚、封面缩略图能看清）。有问题改 data 后重跑 produce。
+10. 填写 notes.md（QA 数字、人工检查结果、改写过的句子、asrAccept、接受的 warn），只提交这个 episode 文件夹（不要提交 exports/、audio/、.env）。
+
+【绝对不要】
+- 修改、重画、换色或替换小猪（src/brand/BrandPig.tsx 已锁定），或加入任何其它小猪图片。
+- 更换配音（cosyvoice-v3-flash / longanhuan），或在 .env 里覆盖模型和音色。
+- 修改模板代码、src/core/、src/brand/；只有改代码才能解决的问题，停下来告诉我。
+- 打印、提交或写下 DASHSCOPE_API_KEY。
+- 从网上下载音乐、图片、视频放进视频；照抄新闻、试卷或教材原文。
+- 把原创题写成“真题”；发布没有来源的数字。
+
+【遇到这些情况先停下来问我】
+- 没有主题且无法按上面的规则自己选；plan 显示要连续两期用同一个模板；新闻数字找不到一手来源；DashScope 报错（密钥、额度）；只有改代码才能修好的画面问题。
+
+【完成后按这个格式汇报】
+```
+Episode <id> (vocab-game-show, gre) is ready.
 - Video: exports/<id>.mp4, <时长> s, QA PASS
 - Cover / caption / publish notes: exports/
 - Pinned-comment answer: <评论区置顶答案>

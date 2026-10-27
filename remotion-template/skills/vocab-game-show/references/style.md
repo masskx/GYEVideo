@@ -25,4 +25,4 @@ Flat, loud, friendly: a Japanese variety-show set rendered in flat vector. Consi
 ## Sound
 
 - Every tile, telop and judgement has its SFX (boing, stamp-small, pop, ding, crash, tick, buzzer).
-- Score palette `game-show`: jingle → round groove → faster lightning → report hit → light bonus bed.
+- Score: style `pop-bounce` (four-on-the-floor pop, piano stabs, brass hook, claps) at every pace; title = hook, root card = build, rounds = verses, lightning = drop, report = payoff, bonus = outro (`../../_shared/PACE_AND_MUSIC.md`).

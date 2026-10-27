@@ -30,3 +30,8 @@ Every line transcribes as written or as a same-sounding character (网回 = 往�
 
 ## For 061
 Differ from this episode on at least three of: structure (`case-investigation`), opening (typed cloze), signature (board pull-back), camera path, score shape (D, 100 BPM), ending (redacted homework).
+
+## Fast-pace re-cut (pace `fast`, new music engine)
+- Length 66.2 s → 52.0 s (range 39–54 s at fast); narration 83 % of the runtime (was 74 %).
+- Score: `spy-funk`, 118 BPM, D dorian, SoundFont backend; −16 LUFS bed, final −14 LUFS, peak −1.3 dBFS. QA PASS.
+- Voice check 14/14. At the faster rate `con，一起…conduct` was heard as "Kong … Combat": the line now starts in Chinese (`前缀 con，…就是 conduct`) at `medium-clear`. **Listen once**: the transcriber heard 开展 as "胎斩" (pinyin 0.94).

@@ -1,8 +1,10 @@
-# 小猪盖被 · 抖音英语备考短视频工厂（高考 / 四级 / 六级）
+# 小猪盖被 · 抖音英语备考短视频工厂（高考 / 四六级 / 考研 / 雅思 / 托福 / GRE）
 
-这是一个批量生产抖音竖屏英语备考短视频（1080×1920，约 60 秒）的 Remotion 工作区，服务三个考试：**高考英语**（高中生）、**大学英语四级**、**大学英语六级**（大学生）。
+这是一个批量生产抖音 / TikTok 竖屏英语备考短视频（1080×1920，快节奏约 35–55 秒）的 Remotion 工作区，服务七个考试：**高考**、**大学英语四级**、**六级**、**考研英语**、**雅思**、**托福**、**GRE**。
 
-- **两条内容线 × 三个考试**：单词、双语阅读；每个模板都能做高考、四级、六级。每条线有多个模板轮换，账号不会看起来重复。
+- **两条内容线 × 七个考试**：单词、双语阅读；每个模板都能做任何一个考试。每条线有多个模板轮换，账号不会看起来重复。
+- **快节奏**：默认 `fast` 节奏（抖音 / TikTok），配音更快、句间几乎无空白、配乐更有冲击力；需要慢讲时可选 `relaxed`。
+- **本地作曲**：背景音乐由代码按每期视频的时间轴现场作曲，用本地 SoundFont、你自己的采样或内置合成器渲染，不依赖任何在线服务，没有版权问题。
 - **一套规则**：所有模板共用同一个小猪 IP、同一个配音、同一套质检，任何人或任何 agent 按流程做出来的质量一致。
 - **只做数据，不改代码**：每期视频就是一个 episode 文件夹里的几份数据和文档；画面、配乐、音效、质检都由模板自动完成。
 
@@ -13,31 +15,32 @@
 ## 目录
 
 1. [五个模板](#五个模板)
-2. [三个考试：高考、四级、六级](#三个考试高考四级六级)
-3. [小猪 IP 与配音（不可修改）](#小猪-ip-与配音不可修改)
-4. [第一次使用：环境安装](#第一次使用环境安装)
-5. [每期怎么做（完整流程）](#每期怎么做完整流程)
-6. [让外部 Agent 做视频](#让外部-agent-做视频)
-7. [怎么检查 Agent 交回来的视频](#怎么检查-agent-交回来的视频)
-8. [发布](#发布)
-9. [命令速查](#命令速查)
-10. [目录结构](#目录结构)
-11. [常见问题](#常见问题)
-12. [内容规则](#内容规则)
-13. [安全与版权](#安全与版权)
-14. [旧内容线](#旧内容线)
+2. [七个考试](#七个考试)
+3. [快节奏与背景音乐](#快节奏与背景音乐)
+4. [小猪 IP 与配音（不可修改）](#小猪-ip-与配音不可修改)
+5. [第一次使用：环境安装](#第一次使用环境安装)
+6. [每期怎么做（完整流程）](#每期怎么做完整流程)
+7. [让外部 Agent 做视频](#让外部-agent-做视频)
+8. [怎么检查 Agent 交回来的视频](#怎么检查-agent-交回来的视频)
+9. [发布](#发布)
+10. [命令速查](#命令速查)
+11. [目录结构](#目录结构)
+12. [常见问题](#常见问题)
+13. [内容规则](#内容规则)
+14. [安全与版权](#安全与版权)
+15. [旧内容线](#旧内容线)
 
 ---
 
 ## 五个模板
 
-| 内容线 | 模板 id | 系列名 | 时长 | 参考 episode |
+| 内容线 | 模板 id | 系列名 | 时长（快节奏） | 参考 episode |
 |---|---|---|---|---|
-| 单词 | `vocab-dossier` | 词汇案卷（高考 / 四级 / 六级） | 55–68 秒 | `episodes/060_duc_dossier` |
-| 单词 | `vocab-game-show` | 词根闯关 | 50–66 秒 | `episodes/061_port_gameshow` |
-| 单词 | `vocab-whiteboard` | 白板词根图 | 50–66 秒 | `episodes/062_vis_whiteboard` |
-| 双语阅读 | `reading-picture-book` | 英文绘本精读 | 50–72 秒 | `reading-episodes/001_screen_promise` |
-| 双语阅读 | `reading-caption-news` | 双语新闻阅读 | 50–72 秒 | `reading-episodes/002_teen_sleep_news` |
+| 单词 | `vocab-dossier` | 词汇案卷（按考试命名：高考词汇案卷、雅思词汇案卷……） | 39–54 秒 | `episodes/060_duc_dossier` |
+| 单词 | `vocab-game-show` | 词根闯关 | 35–53 秒 | `episodes/061_port_gameshow` |
+| 单词 | `vocab-whiteboard` | 白板词根图 | 35–53 秒 | `episodes/062_vis_whiteboard` |
+| 双语阅读 | `reading-picture-book` | 英文绘本精读 | 35–58 秒 | `reading-episodes/001_screen_promise` |
+| 双语阅读 | `reading-caption-news` | 双语新闻阅读 | 35–58 秒 | `reading-episodes/002_teen_sleep_news` |
 
 ### 词汇案卷 `vocab-dossier`（高考词汇案卷 / 四级词汇案卷 / 六级词汇案卷）
 
@@ -65,25 +68,113 @@
 
 ---
 
-## 三个考试：高考、四级、六级
+## 七个考试
 
-每个模板都能做三个考试。每期在 `data/episodeConfig.ts` 里写一次 `exam`，新建时用 `--exam` 参数自动写好：
+每个模板都能做七个考试。每期在 `data/episodeConfig.ts` 里写一次 `exam`，新建时用 `--exam` 参数自动写好：
 
 ```powershell
-npm.cmd run new -- vocab-game-show 063_cet4_spect_gameshow --exam cet4
+npm.cmd run new -- vocab-game-show 063_ielts_env_gameshow --exam ielts --pace fast
 ```
 
-| | 高考 `gaokao` | 四级 `cet4` | 六级 `cet6` |
-|---|---|---|---|
-| 观众 | 高中生 | 大学生 | 大学生 |
-| 单词等级 | 课标（拓展最多 1 个） | 四级（拓展最多 1 个） | 四级 / 六级，至少一半是六级（拓展最多 1 个） |
-| 英文难度 | CEFR B1–B2 | B1–B2 | B2–C1 |
-| 题型风格 | 完形 / 语法填空、阅读理解 | 选词填空、仔细阅读 | 选词填空、仔细阅读（更多推理） |
-| 原创题标注 | 高考风格原创练习题 | 四级风格原创练习题 | 六级风格原创练习题 |
-| 画面标签 | 高考搭配、高考词汇… | 四级搭配、四级选词填空… | 六级搭配、六级选词填空… |
-| 话题标签 | #高考英语 #高考词汇 | #英语四级 #四级词汇 | #英语六级 #六级词汇 |
+**国内考试**
 
-画面上的考试标签和话题标签由 `remotion-template/src/core/exam.ts` 自动生成，不需要改模板。内容规则（选词、难度、题型、配音语气、四六级适合的选题）见 `remotion-template/skills/_shared/EXAMS.md`。`npm run check` 会拦截：等级和考试不符、六级里六级词不到一半、题目标注写错考试，并提醒画面或口播里残留别的考试名称、配音说明还写着“高中生”。
+| | 高考 `gaokao` | 四级 `cet4` | 六级 `cet6` | 考研 `kaoyan` |
+|---|---|---|---|---|
+| 观众 | 高中生 | 大学生 | 大学生 | 考研生 |
+| 单词等级 | 课标 | 四级 | 四级 / 六级（至少一半六级） | 考研（重点：熟词僻义） |
+| 英文难度 | CEFR B1–B2 | B1–B2 | B2–C1 | B2–C1，长难句拆解 |
+| 题型风格 | 完形 / 语法填空、阅读理解 | 选词填空、仔细阅读 | 选词填空、仔细阅读（更多推理） | 完形填空、阅读 Part A |
+| 话题标签 | #高考英语 #高考词汇 | #英语四级 #四级词汇 | #英语六级 #六级词汇 | #考研英语 #考研词汇 |
+
+**出国考试**
+
+| | 雅思 `ielts` | 托福 `toefl` | GRE `gre` |
+|---|---|---|---|
+| 观众 | 留学备考生 | 留学备考生 | 申研留学生 |
+| 单词来源 | 学术词汇表 AWL + 雅思话题词（写作 Task 2、口语 Part 3 能直接用） | 学术讲座和阅读里的学科词 | C1–C2 高阶词，讲清褒贬和一词多义 |
+| 拼写 | 英式（colour、organise） | 美式（color、organize） | 美式 |
+| 题型风格 | 句子 / 摘要填空，True / False / Not Given 改写为单选 | 阅读词汇题（closest in meaning）、推理、修辞目的 | 填空（Text Completion）、句子等价（改为单选） |
+| 话题标签 | #雅思 #雅思词汇 | #托福 #托福词汇 | #GRE #GRE词汇 |
+
+每个考试最多 1 个 `拓展` 词，原创题标注为“<考试>风格原创练习题 / 阅读题”。画面上的考试标签（雅思搭配、托福词汇题、考研完形……）和话题标签由 `remotion-template/src/core/exam.ts` 自动生成，不需要改模板。
+
+完整规则见 `remotion-template/skills/_shared/EXAMS.md`：每个考试怎么选词、难度、题型、配音语气、适合的选题、哪个模板最合适。托福 2026 年改版等题型变化，写具体题型前要先查官方网站。
+
+`npm run check` 会拦截：
+- 词汇等级和考试不符；
+- 六级里六级词不到一半；
+- 题目标注写错考试。
+
+它还会提醒：
+- 画面或口播里残留别的考试名称；
+- 配音说明的观众写错（例如雅思视频还写着“高中生”）。
+
+---
+
+## 快节奏与背景音乐
+
+### 节奏 `pace`
+
+旧版参考视频实测：每条视频有 25–30% 的时间没有口播（13–21 秒空白），语速只有每秒 2.6–3.8 个音节，对抖音 / TikTok 来说偏慢。现在每期在 `episodeConfig.ts` 里设置 `pace`：
+
+| | `relaxed` 舒缓 | `standard` 标准 | `fast` 快节奏（新视频默认） |
+|---|---|---|---|
+| 配音语速 | ×1.00 | ×1.08 | ×1.15 |
+| 句后字幕停留 | 100% | 70% | 40% |
+| 场景开头空白 | 100% | 70% | 45% |
+| 答案前停顿 | 100% | 75% | 55% |
+| 时长 | 模板原范围（50–72 秒） | ×0.85–0.9 | ×0.7–0.8（约 35–55 秒） |
+| 配乐 | 慢速、低能量 | 中速 | 快速、高能量 |
+
+改 `pace` 会自动改变配音速度；`npm run produce` 会发现配音过期并重新生成。`npm run timeline` 会显示总时长和口播占比（快节奏应在 80–90%）。
+
+### 背景音乐系统（本地作曲）
+
+每期的配乐由 `remotion-template/scripts/music/` 按这期视频的时间轴现场作曲，全部在本机完成：
+
+1. **选风格**：模板 + 节奏决定默认风格（可在 data 里指定其它风格）。共 9 种风格：
+   - pop-bounce 综艺流行
+   - trap-hype 抖音 808
+   - spy-funk 侦探放克
+   - noir-swing 爵士
+   - lofi-study 学习 lo-fi
+   - chill-pop 轻流行
+   - storybook 绘本
+   - ukulele-pop 尤克里里
+   - news-pulse 新闻律动
+2. **跟着画面编曲**：每个场景对应一个段落（开头 hook、主歌、铺垫、高潮、留白、揭晓、结尾），能量 1–4 级决定哪些乐器进来。
+   - 切场景前有鼓 fill，高能量切点有镲；
+   - 高潮和揭晓前有上升音效；
+   - 答案前的停顿会让音乐完全让开。
+3. **作曲**：
+   - 按风格的和弦进行和声部连接；
+   - 每期一个由种子生成的两小节旋律动机，反复出现，形成记忆点；
+   - 同一期永远生成同样的音乐。
+4. **为口播混音**：
+   - 说话时旋律自动压低；
+   - 音乐里 0.8–3.5 kHz 的“人声频段”自动让开；
+   - 底鼓 sidechain、统一混响、总线压缩；
+   - 每条配乐统一到 -16 LUFS。
+5. **本地渲染**，每个音轨自动选可用的最好方式：
+   - 你自己的采样（`shared-assets/music-kits/<套件>/`）；
+   - 本地 SoundFont（FluidSynth + `.sf2`，真实乐器音色）；
+   - 内置合成器（什么都不用装）。
+
+常用命令：
+
+```powershell
+npm.cmd run music -- --list                                  # 所有风格、各节奏速度范围、本机可用的渲染方式
+npm.cmd run music -- --preview pop-bounce --tempo fast       # 试听一个风格（out/music/）
+npm.cmd run music -- --preview trap-hype --tempo fast --stems   # 同时导出每个音轨
+npm.cmd run audio                                            # 为当前 episode 作曲（produce 会自动运行）
+```
+
+每期产出：
+- `score.mp3`；
+- `score.mid`：可以用任何音乐软件打开，或换一个 SoundFont 重新渲染；
+- `exports/<id>_music.md`：风格、速度、调性、每个音轨用的渲染方式、段落和能量。
+
+完整说明（安装 FluidSynth 和 SoundFont、自建采样套件、新增风格）见 `remotion-template/skills/_shared/PACE_AND_MUSIC.md`。
 
 ---
 
@@ -114,6 +205,7 @@ npm.cmd run new -- vocab-game-show 063_cet4_spect_gameshow --exam cet4
 | ffmpeg（含 ffprobe） | 较新版本 | 解压后把 `bin` 目录加入 PATH |
 | Python | 3.10 或更新 | Windows 安装时勾选 “Add python.exe to PATH” |
 | Git | 任意 | 拉取和提交仓库 |
+| FluidSynth + General MIDI SoundFont（推荐） | 2.x；FluidR3_GM 或 GeneralUser GS | 配乐用真实乐器音色。Windows：从 github.com/FluidSynth/fluidsynth/releases 下载并把 `bin` 加入 PATH；macOS：`brew install fluid-synth`；Linux：`sudo apt install fluidsynth fluid-soundfont-gm`。`.sf2` 放到 `shared-assets/soundfonts/`。不装也能用（内置合成器）。 |
 
 Windows 上如果输入 `python` 会打开应用商店，请在“设置 → 应用 → 应用执行别名”里关闭 python 的别名。PowerShell 可能拦截 `npm.ps1`，所以本文命令都写成 `npm.cmd`。
 
@@ -214,7 +306,7 @@ npm.cmd run prompt -- vocab-game-show --exam cet4 --topic "spect = look / 看"
 - 模板要点、考试要点；
 - 10 步执行流程、禁止事项、需要先问你的情况，以及汇报格式。
 
-**现成的提示词文件**：`docs/prompts/<模板 id>.md`，每个模板有高考 / 四级 / 六级三个版本，换掉 `<…>` 即可使用。
+**现成的提示词文件**：`docs/prompts/<模板 id>.md`，每个模板有七个考试的版本（快节奏），换掉 `<…>` 即可使用。
 
 **多个 agent 分工**：`docs/prompts/roles.md`，选题策划 → 编剧 → 制作 → 审片，每个角色有开始条件和交接条件。
 
@@ -284,15 +376,16 @@ Episode <id> (<模板>) is ready.
 |---|---|
 | `npm run doctor` | 检查电脑环境（每台电脑一次） |
 | `npm run plan` | 推荐下一期的模板和编号 |
-| `npm run new -- <模板> <id> --exam <考试>` | 新建 episode（考试：gaokao / cet4 / cet6） |
-| `npm run prompt -- <模板> --exam <考试> --topic "…"` | 生成给 agent 的完整提示词 |
+| `npm run new -- <模板> <id> --exam <考试> --pace fast` | 新建 episode（考试：gaokao / cet4 / cet6 / kaoyan / ielts / toefl / gre） |
+| `npm run prompt -- <模板> --exam <考试> --pace fast --topic "…"` | 生成给 agent 的完整提示词 |
+| `npm run music -- --list` / `--preview <风格>` | 查看配乐风格和渲染方式 / 试听风格 |
 | `npm run episode:use -- ../episodes/<id>` | 切换当前 episode |
 | `npm run check` | 检查内容规则 |
 | `npm run produce` | 一键生产（推荐） |
 | `npm run voice` | 只生成配音 |
 | `npm run voice:check` | 只做语音转写核对 |
 | `npm run timeline` | 每场时长和总时长 |
-| `npm run audio` | 只生成配乐和音效 |
+| `npm run audio` | 只生成配乐（本地作曲）和音效 |
 | `npm run render` | 只渲染和导出 |
 | `npm run qa` | 对已导出的视频重跑 QA |
 | `npm run preview` | 打开 Remotion Studio 预览 |
@@ -308,7 +401,7 @@ README.md                   本文件
 docs/
   agent_playbook.md         Agent 操作手册（逐步流程、排错表）
   agent_prompts.md          给 Agent 的提示词总目录
-  prompts/                  每个模板的完整提示词（高考 / 四级 / 六级）+ 分工协作提示词 roles.md
+  prompts/                  每个模板的完整提示词（七个考试）+ 分工协作提示词 roles.md
   production_workflow.md    生产流程速查
   publish_checklist.md      发布检查清单
   naming_rules.md           命名规则
@@ -322,9 +415,12 @@ remotion-template/
   src/core/                 共用时间轴、动效、字体、音频
   src/dossier/ gameshow/ whiteboard/ picturebook/ captionnews/   五个模板
   scripts/                  所有命令的实现
-  skills/_shared/           共用规则（HOUSE_RULES.md、EXAMS.md、DIRECTING.md）
+  scripts/music/            本地作曲引擎（乐理、风格、编曲、渲染、混音、MIDI）
+  skills/_shared/           共用规则（HOUSE_RULES.md、EXAMS.md、PACE_AND_MUSIC.md、DIRECTING.md）
   skills/<模板 id>/          每个模板的制作规范、风格、质检清单
-shared-assets/              旧内容线用的图标和音乐（没有小猪素材）
+shared-assets/              图标、旧内容线的音乐（没有小猪素材）
+  soundfonts/               放 .sf2 音色库（可选）
+  music-kits/<套件>/         你自己的采样套件（可选）
 content/                    素材
 ```
 
@@ -376,7 +472,7 @@ content/                    素材
 ## 安全与版权
 
 - 不要把 `.env` 或任何 API key 写入 README、notes、代码或日志；`DASHSCOPE_API_KEY` 只从 `.env` 或环境变量读取。
-- 配乐和音效全部由代码合成（`remotion-template/scripts/audio/`）；字体为 OFL 开源字体（`public/fonts/OFL.txt`）。
+- 配乐由本地作曲引擎生成（`remotion-template/scripts/music/`），音效由代码合成（`scripts/audio/`），不使用任何下载的音乐。用 SoundFont 渲染时，请使用允许商用的音色库（FluidR3_GM 为 MIT 许可；GeneralUser GS 允许用于音乐制作）；自建采样只用自己录制或有免版税商用授权的素材。字体为 OFL 开源字体（`public/fonts/OFL.txt`）。
 - 不从网上下载音乐、图片或视频放进视频。
 - 风格方法参考 [lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar)（MIT，许可见 `remotion-template/skills/_shared/LICENSE-lemo-opuscar.txt`），没有使用它的任何成片、角色、镜头或旋律。
 

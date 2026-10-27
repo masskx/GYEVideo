@@ -23,7 +23,8 @@
     "timeline": "tsx scripts/timeline.ts",
     "doctor": "tsx scripts/doctor.ts",
     "produce": "tsx scripts/produce.ts",
-    "prompt": "tsx scripts/prompt.ts"
+    "prompt": "tsx scripts/prompt.ts",
+    "music": "tsx scripts/music-cli.ts"
   },
   "dependencies": {
     "@jridgewell/trace-mapping": "^0.3.31",

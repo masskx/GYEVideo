@@ -3,6 +3,7 @@ import {writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 import type {SceneBase, Timeline} from '../src/core/timeline';
 import type {TemplateInfo} from '../src/templates/registry';
+import {lengthRange} from '../src/core/pace';
 
 // Measured checks on the final MP4, written next to it as <base>_qa.md plus a contact sheet.
 // Run automatically by `npm run render`; `npm run qa` re-runs it on the existing export.
@@ -31,7 +32,7 @@ export const writeQaReport = ({
   const duration = Number(info.format?.duration ?? 0);
   const size = info.streams?.find((stream) => stream.width)?.width;
   const height = info.streams?.find((stream) => stream.height)?.height;
-  const [minS, maxS] = template.targetSeconds;
+  const [minS, maxS] = lengthRange(template.targetSeconds);
   checks.push({name: 'Frame size 1080×1920', pass: size === 1080 && height === 1920, detail: `${size}×${height}`});
   checks.push({name: `Length ${minS}–${maxS} s`, pass: duration >= minS && duration <= maxS, detail: `${duration.toFixed(1)} s`});
 

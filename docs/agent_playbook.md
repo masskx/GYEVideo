@@ -1,6 +1,6 @@
 # Agent playbook: making a video in this repository
 
-This is the complete procedure for an agent (Codex, Claude Code, Cursor, or any other) that makes a 小猪盖被 video from this repository, for any of the three exams: 高考, 四级 (CET-4) or 六级 (CET-6). The owner usually starts you with a prompt from `docs/prompts/` (made by `npm run prompt`); this playbook is what that prompt tells you to follow. Follow the steps in order. If you follow them exactly, your video will match the others on the account: the same pig, the same voice, the same quality bar, and a different look from the previous episode.
+This is the complete procedure for an agent (Codex, Claude Code, Cursor, or any other) that makes a 小猪盖被 video from this repository, for any of seven exams: 高考, 四级 (CET-4), 六级 (CET-6), 考研, 雅思 (IELTS), 托福 (TOEFL) or GRE. The owner usually starts you with a prompt from `docs/prompts/` (made by `npm run prompt`); this playbook is what that prompt tells you to follow. Follow the steps in order. If you follow them exactly, your video will match the others on the account: the same pig, the same voice, the same quality bar, and a different look from the previous episode.
 
 `AGENTS.md` is the one-page summary. This file holds the details. When the two disagree, `remotion-template/skills/_shared/HOUSE_RULES.md` wins.
 
@@ -13,8 +13,10 @@ This is the complete procedure for an agent (Codex, Claude Code, Cursor, or any 
 3. **One pig.** Only `src/brand/BrandPig.tsx` draws 小猪, and its hash is locked. You choose its position, size, mirroring, and one of its built-in faces and poses. Nothing else about it can change.
 4. **One voice.** DashScope `cosyvoice-v3-flash` / `longanhuan`. The script refuses anything else.
 5. **Rotate the look.** `npm run plan` picks the template. Two episodes in a row from one template make the account look repetitive.
-6. **One exam per episode.** `exam` in `episodeConfig.ts` (`gaokao`, `cet4`, `cet6`) decides the word levels, the difficulty, the audience and every exam label on screen. Follow `remotion-template/skills/_shared/EXAMS.md` for it.
-7. **A video is done only when the definition of done holds** (§9). Rendering is not done.
+6. **One exam per episode.** `exam` in `episodeConfig.ts` (`gaokao`, `cet4`, `cet6`, `kaoyan`, `ielts`, `toefl`, `gre`) decides the word levels, the difficulty, the audience and every exam label on screen. Follow `remotion-template/skills/_shared/EXAMS.md` for it.
+7. **Fast by default.** `pace: 'fast'` (Douyin / TikTok) sets the voice speed, the gaps, the length and the music's energy. Don't slow it down with pauses. See `remotion-template/skills/_shared/PACE_AND_MUSIC.md`.
+8. **Music is composed, not downloaded.** `npm run audio` (part of `produce`) composes the score for your timeline from the template's style. Never add a downloaded track.
+9. **A video is done only when the definition of done holds** (§9). Rendering is not done.
 
 ---
 
@@ -27,6 +29,7 @@ This is the complete procedure for an agent (Codex, Claude Code, Cursor, or any 
 | Node.js | 18 or newer (22 recommended) | `node --version` |
 | ffmpeg + ffprobe | any recent build, on PATH | `ffmpeg -version` |
 | Python | 3.10 or newer, on PATH as `python` | `python --version` |
+| FluidSynth + a General MIDI `.sf2` (recommended) | any 2.x; FluidR3_GM or GeneralUser GS | `fluidsynth --version`; without it the music uses the built-in synth |
 | Git | any | `git --version` |
 
 Windows: install Python with "Add python.exe to PATH" ticked. If `python` opens the Microsoft Store, turn off the "App execution aliases" for python in Windows settings. PowerShell may block `npm.ps1`; always type `npm.cmd` instead of `npm`.
@@ -94,12 +97,14 @@ The output lists each line's latest episodes and ends with a suggestion, for exa
 
 The owner's prompt names it. If it doesn't, ask. Read `remotion-template/skills/_shared/EXAMS.md` for that exam. In short:
 
-| | 高考 `gaokao` | 四级 `cet4` | 六级 `cet6` |
-|---|---|---|---|
-| Audience | 高中生 | 大学生 | 大学生 |
-| Word levels | 课标 (+1 拓展) | 四级 (+1 拓展) | 四级 / 六级, at least half 六级 (+1 拓展) |
-| English level | B1–B2 | B1–B2 | B2–C1 |
-| Question label | 高考风格原创练习题 | 四级风格原创练习题 | 六级风格原创练习题 |
+| | 高考 | 四级 | 六级 | 考研 | 雅思 | 托福 | GRE |
+|---|---|---|---|---|---|---|---|
+| `exam` | `gaokao` | `cet4` | `cet6` | `kaoyan` | `ielts` | `toefl` | `gre` |
+| Audience | 高中生 | 大学生 | 大学生 | 考研生 | 留学备考生 | 留学备考生 | 申研留学生 |
+| Word level | 课标 | 四级 | 四级 / 六级 (≥ half 六级) | 考研 | 雅思 | 托福 | GRE |
+| English | B1–B2 | B1–B2 | B2–C1 | B2–C1 | B2–C1, British spelling | B2–C1, American spelling | C1–C2 |
+
+Every exam allows one 拓展 word, and original questions are labelled `<exam>风格原创练习题` / `…阅读题`. `EXAMS.md` has each exam's question styles, topics and what to rewrite from the 高考 reference.
 
 Then read the template's skill **completely** before writing anything: `remotion-template/skills/<template>/SKILL.md`, plus its `references/style.md` and `references/qa_checklist.md`.
 
@@ -108,10 +113,11 @@ Then read the template's skill **completely** before writing anything: `remotion
 ## 3. Step 2 — create the episode folder
 
 ```powershell
-npm.cmd run new -- <template> <episodeId> --exam <gaokao|cet4|cet6>
+npm.cmd run new -- <template> <episodeId> --exam <exam> --pace fast
 ```
 
-- `--exam` sets `exam` in `episodeConfig.ts` (default `gaokao`). For 四级 / 六级 put the exam after the number: `063_cet4_spect_dossier`.
+- `--exam` sets `exam` in `episodeConfig.ts` (default `gaokao`). For other exams put the exam after the number: `063_cet4_spect_dossier`, `064_ielts_env_whiteboard`.
+- `--pace` sets `pace` (default `fast`; `relaxed` only when the owner asks for a long, slow explanation).
 - `episodeId` = next number + topic + template suffix, lower case with `_`: `063_spect_dossier`, `064_struct_gameshow`, `003_umbrella_book`, `004_exercise_news`. `plan` prints the next number.
 - `new` copies the reference episode's data and renames the ids. It also creates `brief.md`, `TREATMENT.md` and `notes.md`.
 - Vocab episodes go to `episodes/`; reading episodes go to `reading-episodes/`.
@@ -178,7 +184,7 @@ Fill every section of the template file before touching `data/`:
   - `speedHint`: copy the reference episode's choice for the same kind of line: `fast-clear` for most vocab lines, `medium-clear` for the root line, `very-fast` only for the game-show lightning round, and `medium` for story and news lines.
 - Every line id used by a scene must exist in `voiceScript.ts`, and every voice line must be used by a scene.
 - `episodeConfig.ts`: keep `type`, `width`, `height` and `fps` as copied. Rewrite every `cover` field (a one-line headline of about 16 characters or fewer, readable at thumbnail size) and keep `creatorName: '小猪盖被'`.
-- `score: {bpm, key}`: change at least one of them from the previous episode of the template. Stay inside the template's BPM range from its skill.
+- `score: {bpm, key}`: change at least one of them from the previous episode of the template. `bpm` must sit inside the style's range for the pace (`npm run music -- --list`; e.g. game show at fast: 124–132). Leave `style` and `kit` out unless the owner asks for another sound (`PACE_AND_MUSIC.md`).
 
 ### 6.2 What to rewrite, per template
 
@@ -325,11 +331,16 @@ Never: edit or replace the pig, change the voice, add music or images from the i
 | `Only N of M words are 六级` | a 六级 episode teaching mostly 四级 words | swap in 六级 words of the same family |
 | `… is labelled "高考风格原创练习题" in a 四级 episode` | label copied from the reference | use the exam's label |
 | `"高考" appears in a 四级 episode` (warn) / `The voice instruction talks to 高中生` (warn) | reference wording left in data or voice | rewrite for the exam and its audience |
+| `雅思 uses British spelling (organise / organize)` (warn) | spelling convention of the exam | 雅思: British (colour, organise, centre); 托福 / GRE: American |
 | `Question "…" has answerIndex … outside its options` | index is 0-based | A = 0, B = 1, C = 2, D = 3 |
 | `says 真题 without a year and source` | 真题 label on an original question | use `高考风格原创练习题` |
 | `News line "c2" states a number but has no sourceId` | unsourced number | add the source to `sources` and `FACTS.md`, set `sourceId` |
 | `keyword "…" is not a phrase of its subtitle` | keyword text differs from the subtitle | copy the phrase exactly from `subtitle` |
-| `Length 73.1 s is outside 50–72 s` | too much narration | §7, "When the length is outside" |
+| `Length 57.0 s is outside 39–54 s (vocab-dossier at pace fast)` | too much narration for the pace | §7, "When the length is outside" |
+| `Length not checked yet: the voice is older than the script or the pace` (warn) | text or pace changed since the last voice | normal before `produce`; it re-voices and checks again |
+| `[score] warning: 92 BPM is outside lofi-study's slow range` | `score.bpm` doesn't fit the style at this pace | set `bpm` inside the range (`npm run music -- --list`) |
+| `Music: SoundFont` WARN in doctor | no FluidSynth or no `.sf2` | install them (`PACE_AND_MUSIC.md`); until then the built-in synth plays everything |
+| `Unknown style "…"` | typo in `score.style` | use an id from `npm run music -- --list` |
 | `brief.md is still the blank template` / `TREATMENT.md is still the blank template` | the documents were skipped | write them (§4, §5) before the data |
 | `TREATMENT.md §9 (versus the previous episode) is empty` | no originality comparison | fill the six rows; at least 3 must differ |
 | `data/<file> is still the reference episode's` | the copied data was not rewritten | rewrite every field for this episode (§6) |

@@ -2,6 +2,7 @@ import {mkdirSync, writeFileSync} from 'node:fs';
 import {join, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {EXAMS, ExamId, isExam} from '../src/core/exam';
+import {isPace, lengthRange, PACES, PaceId} from '../src/core/pace';
 import {isTemplate, TEMPLATES, TemplateId} from '../src/templates/registry';
 
 // npm run prompt — the prompt the owner gives an agent to make one video.
@@ -30,34 +31,34 @@ const TEMPLATE_NOTES: Record<TemplateId, string[]> = {
     '选一个能“解出”开场题的词根：四个选项共享词根，只有理解词根的人能选对。',
     '每件证物按顺序出现：拆分（前缀/词根/后缀 + 释义）→ 字面意思 → 单词 + 音标 → 考试释义 → 搭配。口播固定句式：“<前缀>，<释义>。<字面意思>，<单词>，<意思>。”',
     '`scenes[].cueAt`（loss / loupe / arrow / verdict / redact / end）里的每个词都必须真的出现在那一场的口播 text 里；`solveHint` 是破案时说的词根逻辑。',
-    '时长 55–68 秒；超时先删口头词，不删证物。',
+    '超时先删口头词，不删证物。',
   ],
   'vocab-game-show': [
     '一期 = 一场综艺闯关：标题 → 通关密码（词根）→ 每个单词一关 → 极速挑战 → 成绩单评级 → 加分题评论区抢答。',
     '选一个有 5 个干净“前缀 + 词根”单词的词根；`words[].root` 写词根在这个单词里的真实拼写（support 里是 sup）。',
     '每一关的口播严格按：“第N关！<前缀>，<释义>。<字面意思>，<单词>，<意思>。”，和 data 里的写法完全一致（画面按这些词出现）。',
     '相邻场景的 `set.hue` 不能相同；每关的 `judgement`（PERFECT! / GREAT! / NICE! / BINGO!）要有变化；结尾一句必须包含“下一个”。',
-    '时长 50–66 秒；语气是综艺主持人：兴奋、短句、有节奏。',
+    '语气是综艺主持人：兴奋、短句、有节奏。',
   ],
   'vocab-whiteboard': [
     '一期 = 一块白板现场板书：标题一个中文字 → 词根画圈居中 → 单词分支（蓝笔拆分和字面意思、红笔考试释义）→ 一个反转词（先写错误猜测、擦掉、再用拆分解释）→ 拉远成整张词根图 → 作业卡片。',
     '必须恰好有一个单词带 `twist`，它要让人意外（provide 和“看”有关）；分支 3–5 个。',
     '`scenes[].cueAt` 的每个词都必须是口播里真的说出来的形式；配音会读错的词根在 text 里逐个字母拼读（V I S），cueAt 也写 V I S。',
-    '语气像老师在白板前边想边讲：平静、一句一个意思。时长 50–66 秒。',
+    '语气像老师在白板前边想边讲：平静、一句一个意思。',
   ],
   'reading-picture-book': [
     '一期 = 一本蜡笔绘本：封面 → 4–6 页故事（每句英文朗读 + 中文 + 目标词卡）→ 目标词复习 → 阅读理解题（思考停顿）→ 结尾。',
     '小猪是唯一主角：英文永远叫 Little Pig，中文叫小猪。故事原创，8–10 句，过去时，句子长度按下面的考试要点，一个清楚的起承转合。',
     '每个目标词 `targets[].word` 必须原样出现在且只出现在一句故事里；`translations` 每个口播句都要有自然的中文。',
     '插图只能用现有的 setting（bedroom-night / classroom / street-morning / park-day）和道具（phone, clock, book, box, sun, moon, stars, tree, lamp）；小猪只选位置 x（0–1）、表情和姿势。',
-    '题目 `evidenceLineId` 指向能证明答案的那一句；答案前留约 2 秒思考停顿（`lineMeta.answer.pauseBefore`）。时长 50–72 秒。',
+    '题目 `evidenceLineId` 指向能证明答案的那一句；答案前留思考停顿（`lineMeta.answer.pauseBefore`，节奏会按比例缩短）。',
   ],
   'reading-caption-news': [
     '一期 = 一条字幕新闻：标题 → 5 个分句（每句一张数据图 + 大字英文按朗读出现 + 关键词黄块 + 中文 + 来源标签）→ 阅读题 + 原文定位 → 本篇词汇复习。',
     '先写 FACTS.md：只用一手来源（CDC、WHO、NIH、政府统计、期刊），每条写 URL、页面日期、原文引用；屏幕上每个数字都要和原文一致（四舍五入要说 about）。',
     '英文句子原创，不抄来源原文；结构：专家怎么说 → 意外的数字 → 为什么 → 后果 → 一个简单的行动。',
     '数字在配音 text 里写成英文单词（eight to ten hours），subtitle 里写阿拉伯数字（8 to 10 hours）；`keyword` 必须是 subtitle 里原样存在的短语；含数字的句子必须有 `sourceId`。',
-    '数据图只能用 clock / people / brain / trend / phone。健康话题只说来源说过的话，不给建议。时长 50–72 秒。',
+    '数据图只能用 clock / people / brain / trend / phone。健康话题只说来源说过的话，不给建议。',
   ],
 };
 
@@ -77,8 +78,29 @@ const EXAM_NOTES: Record<ExamId, string[]> = {
     '英文难度 B2–C1，句子可到约 28 个词；题目要有一步推理，选项同义改写、干扰项半对半错。',
     '参考 episode 是高考的：所有 `level`、`sourceNote`、每句配音的 `instruction`（高中生 → 大学生）、封面文字、绘本的 `level` 字段（大学英语六级）都要改写。',
   ],
+  kaoyan: [
+    '观众是考研生；单词来自考研英语大纲词汇（约 5,500 词），标 `考研`，最多一个 `拓展`；优先“熟词僻义”（address 处理、novel 新颖的、figure 认为）和阅读里的高频抽象词，这是考研最容易失分的地方。',
+    '英文难度 B2–C1，句子可到约 30 个词，可以用长难句（定语从句、插入语、倒装）并在中文里拆解；词汇题按完形填空风格（四选一、靠上下文逻辑），阅读题按阅读 Part A 风格（主旨、推理、作者态度、例证目的），选项同义改写。',
+    '参考 episode 是高考的：所有 `level`、`sourceNote`、每句配音的 `instruction`（高中生 → 考研生）、封面文字、绘本的 `level` 字段（考研英语一 / 英语二）都要改写。',
+  ],
+  ielts: [
+    '观众是准备出国的雅思考生；单词标 `雅思`，优先学术词汇表（AWL）和雅思高频话题词（教育、环境、科技、城市化、健康、全球化），要能直接用在写作 Task 2 和口语 Part 3；最多一个 `拓展`。',
+    '一律用英式拼写（colour、organise、centre、programme）；英文难度 B2–C1（目标 6.5–7 分）；词汇题按句子 / 摘要填空风格，阅读题可以把 True / False / Not Given 判断或段落主旨改写成四选一；口播可以加一句“写作或口语里怎么用”。',
+    '参考 episode 是高考的：所有 `level`、`sourceNote`、每句配音的 `instruction`（高中生 → 留学备考生）、封面文字、绘本的 `level` 字段（雅思 6.5+）都要改写。',
+  ],
+  toefl: [
+    '观众是准备出国的托福考生；单词标 `托福`，优先学术讲座和阅读里的学科词（生物、地质、天文、艺术史、心理学、经济学）；最多一个 `拓展`。',
+    '一律用美式拼写（color、organize、center、program）；英文难度 B2–C1；词汇题按托福阅读词汇题风格（“The word X in the passage is closest in meaning to …”），阅读题按细节、推理、修辞目的题。托福 iBT 的题型和计分在 2026 年有调整：写具体题型名称或分数之前，先查 ets.org 的官方说明，不要凭记忆写。',
+    '参考 episode 是高考的：所有 `level`、`sourceNote`、每句配音的 `instruction`（高中生 → 留学备考生）、封面文字、绘本的 `level` 字段（托福 100+）都要改写。',
+  ],
+  gre: [
+    '观众是申请海外研究生的 GRE 考生；单词标 `GRE`，是 C1–C2 的高阶词（laconic、obdurate、equivocate、mitigate），讲清一词多义和褒贬色彩；最多一个 `拓展`。',
+    '英文难度 C1–C2；词汇题按填空（Text Completion）或句子等价（Sentence Equivalence，改成单选：选出能让句子意思不变的词）风格，用转折、让步、因果等逻辑线索词出题；阅读题考作者态度、论证结构和推理。',
+    '参考 episode 是高考的：所有 `level`、`sourceNote`、每句配音的 `instruction`（高中生 → 申研留学生）、封面文字、绘本的 `level` 字段（GRE Verbal）都要改写。',
+  ],
 };
 
+const t0 = (id: TemplateId) => TEMPLATES[id].targetSeconds;
 const lineName = (id: TemplateId) => (TEMPLATES[id].line === 'vocab' ? '单词' : '双语阅读');
 const seriesName = (id: TemplateId, exam: ExamId) => (id === 'vocab-dossier' ? `${EXAMS[exam].vocab}案卷` : TEMPLATES[id].title);
 
@@ -90,7 +112,9 @@ const topicLine = (id: TemplateId, exam: ExamId, topic?: string) => {
     : `<故事主题，例如 一把丢了的伞；不填就自己选一个${EXAMS[exam].audience}熟悉的生活小事>`;
 };
 
-export const buildPrompt = (id: TemplateId, exam: ExamId, topic?: string) => {
+export const buildPrompt = (id: TemplateId, exam: ExamId, topic?: string, paceId: PaceId = 'fast') => {
+  const pace = PACES[paceId];
+  const [minS, maxS] = lengthRange(t0(id), pace);
   const t = TEMPLATES[id];
   const e = EXAMS[exam];
   const idHint = `<编号>_${exam === 'gaokao' ? '' : `${exam}_`}<主题>_${SUFFIX[id]}`;
@@ -99,7 +123,7 @@ export const buildPrompt = (id: TemplateId, exam: ExamId, topic?: string) => {
   const steps = [
     `cd remotion-template；新电脑先运行 \`npm run doctor\`，必须显示 Ready。`,
     `运行 \`npm run plan\`，确认上一期${lineName(id)}不是 ${id}（如果是，先停下来问我是否继续），记下下一个编号。`,
-    `运行 \`npm run new -- ${id} ${idHint} --exam ${exam}\`。`,
+    `运行 \`npm run new -- ${id} ${idHint} --exam ${exam} --pace ${paceId}\`。`,
     ...(id === 'reading-caption-news' ? ['先写 FACTS.md（来源、日期、原文引用），再写其它文件。'] : []),
     '写 brief.md：内容、每个词的等级、题目和答案。',
     '写 TREATMENT.md：三个结构候选和选择理由、开场钩子、招牌镜头、配乐 BPM 和调性、第 9 节与同模板上一期的 6 项对比（至少 3 项不同，参考 SKILL.md 的 variation knobs）。',
@@ -117,7 +141,7 @@ export const buildPrompt = (id: TemplateId, exam: ExamId, topic?: string) => {
     '【开始前按顺序读完】',
     '1. AGENTS.md',
     '2. docs/agent_playbook.md（严格按它的步骤执行）',
-    `3. remotion-template/skills/_shared/HOUSE_RULES.md、DIRECTING.md、EXAMS.md（本期考试：${e.name} \`${exam}\`）`,
+    `3. remotion-template/skills/_shared/HOUSE_RULES.md、DIRECTING.md、EXAMS.md（本期考试：${e.name} \`${exam}\`）、PACE_AND_MUSIC.md`,
     `4. remotion-template/${t.skill}/SKILL.md、references/style.md、references/qa_checklist.md`,
     `5. 参考 episode：${t.example}（只学结构和写法，内容全部重写）`,
     '',
@@ -127,13 +151,21 @@ export const buildPrompt = (id: TemplateId, exam: ExamId, topic?: string) => {
     `- 词汇等级只能用：${levels}（${e.extension}最多 1 个${e.coreLevels.length > 1 ? `，至少一半是 ${e.mainLevel}` : ''}）`,
     `- 原创题标注：\`${note}\`（只有引用真题才写“真题”，并注明年份和出处）`,
     `- 文件夹：${t.episodesDir}/，命名：${idHint}`,
-    `- 时长：${t.targetSeconds[0]}–${t.targetSeconds[1]} 秒`,
+    `- 节奏：\`pace: '${paceId}'\`（${pace.label}），时长 ${minS}–${maxS} 秒`,
     '',
     '【这个模板的要点】',
     ...TEMPLATE_NOTES[id].map((n) => `- ${n}`),
     '',
     `【${e.name}的要点】`,
     ...EXAM_NOTES[exam].map((n) => `- ${n}`),
+    '',
+    '【节奏要点】',
+    ...(paceId === 'fast'
+      ? [
+          '- 快节奏是给抖音 / TikTok 的：第一秒就是内容，配音语速自动加快，句与句之间几乎没有空白；每句口播控制在一口气说完（中文约 18 字、英文约 14 词以内），一句一个信息点。',
+          '- 不要为了时长把停顿加回去；需要强调时只在答案揭晓前用一次 pauseBefore。配乐风格和速度由模板和节奏自动决定（npm run music -- --list），data 里的 score.bpm 必须落在该风格的快节奏速度范围内。',
+        ]
+      : ['- 舒缓 / 标准节奏用于精读和长讲解：允许更长的停顿和字幕停留，但第一秒仍然必须是内容。']),
     '',
     '【执行步骤】',
     ...steps.map((s, i) => `${i + 1}. ${s}`),
@@ -165,15 +197,16 @@ export const buildPrompt = (id: TemplateId, exam: ExamId, topic?: string) => {
 // Prompts for a team of agents, one role each. The owner passes the episode folder from one to the next.
 export const buildRolePrompts = () => {
   const common = [
-    '先按顺序读：AGENTS.md、docs/agent_playbook.md、remotion-template/skills/_shared/HOUSE_RULES.md、EXAMS.md、本期模板的 skills/<模板 id>/SKILL.md。',
+    '先按顺序读：AGENTS.md、docs/agent_playbook.md、remotion-template/skills/_shared/HOUSE_RULES.md、EXAMS.md、PACE_AND_MUSIC.md、本期模板的 skills/<模板 id>/SKILL.md。',
     '只在本期 episode 文件夹里工作；不改模板代码、小猪、配音；不打印或提交 API key。',
+    '节奏默认 `pace: \'fast\'`（抖音 / TikTok），不要用停顿把节奏拖慢；配乐由 `npm run audio` 按时间轴自动作曲（见 PACE_AND_MUSIC.md），不要加入任何下载的音乐；`score.bpm` 要在风格的快节奏速度范围内。',
   ];
   const role = (title: string, mission: string, input: string, work: string[], done: string[], never: string[]) =>
     [
       `## ${title}`,
       '',
       '```text',
-      `你是「小猪盖被」视频团队的${title}。本期：模板 <模板 id>，考试 <gaokao / cet4 / cet6>，主题 <主题>，episode：<episodes/ 或 reading-episodes/ 下的文件夹，第一个角色会创建它>。`,
+      `你是「小猪盖被」视频团队的${title}。本期：模板 <模板 id>，考试 <gaokao / cet4 / cet6 / kaoyan / ielts / toefl / gre>，节奏 <fast>，主题 <主题>，episode：<episodes/ 或 reading-episodes/ 下的文件夹，第一个角色会创建它>。`,
       `你的任务：${mission}`,
       '',
       '【开始条件】' + input,
@@ -205,7 +238,7 @@ export const buildRolePrompts = () => {
       [
         '在 remotion-template 里运行 `npm run plan`，确认模板轮换（同一条线相邻两期不用同一个模板）和下一个编号。',
         '按 EXAMS.md 选内容：单词线选一个能覆盖 4–6 个本考试词汇的词根（最近 10 期没做过）；阅读线选故事或有一手来源的新闻话题。',
-        '运行 `npm run new -- <模板 id> <编号>_<考试前缀>_<主题>_<模板简称> --exam <考试>`（高考不写考试前缀）。',
+        '运行 `npm run new -- <模板 id> <编号>_<考试前缀>_<主题>_<模板简称> --exam <考试> --pace fast`（高考不写考试前缀）。',
         '写 brief.md：每个词的拼写、等级、拆分、意思、搭配；题目、四个选项、答案、sourceNote。新闻：先写 FACTS.md（URL、日期、原文引用）。',
       ],
       ['brief.md 写完且没有占位符；新闻有 FACTS.md。', '每个词都在本考试词表里，等级正确，拓展最多 1 个。'],
@@ -270,7 +303,7 @@ if (args.includes('--write')) {
       '选考试，复制对应的整段，把 `<…>` 换成本期内容，发给 agent。也可以直接生成填好主题的版本：',
       '',
       '```powershell',
-      `npm.cmd run prompt -- ${id} --exam cet4 --topic "<主题>"`,
+      `npm.cmd run prompt -- ${id} --exam ielts --pace fast --topic "<主题>"`,
       '```',
       '',
       ...(Object.keys(EXAMS) as ExamId[]).flatMap((exam) => [`## ${EXAMS[exam].name}（${exam}）`, '', '````text', buildPrompt(id, exam), '````', '']),
@@ -280,7 +313,7 @@ if (args.includes('--write')) {
   writeFileSync(join(outDir, 'roles.md'), buildRolePrompts(), 'utf8');
   console.log(`Wrote ${Object.keys(TEMPLATES).length} template prompt files and roles.md to ${outDir}`);
 } else {
-  const positional = args.filter((arg, i) => !arg.startsWith('--') && !['--exam', '--topic'].includes(args[i - 1] ?? ''));
+  const positional = args.filter((arg, i) => !arg.startsWith('--') && !['--exam', '--topic', '--pace'].includes(args[i - 1] ?? ''));
   const id = positional[0];
   const valueOf = (flag: string) => {
     const i = args.findIndex((arg) => arg === flag || arg.startsWith(`${flag}=`));
@@ -289,9 +322,14 @@ if (args.includes('--write')) {
   };
   const exam = valueOf('--exam') ?? 'gaokao';
   if (!id || !isTemplate(id) || !isExam(exam)) {
-    console.error('Usage: npm run prompt -- <template> [--exam gaokao|cet4|cet6] [--topic "..."]   or   npm run prompt -- --write');
+    console.error(`Usage: npm run prompt -- <template> [--exam ${Object.keys(EXAMS).join('|')}] [--pace relaxed|standard|fast] [--topic "..."]   or   npm run prompt -- --write`);
     console.error(`Templates: ${Object.keys(TEMPLATES).join(', ')}`);
     process.exit(1);
   }
-  console.log(buildPrompt(id, exam, valueOf('--topic')));
+  const pace = valueOf('--pace') ?? 'fast';
+  if (!isPace(pace)) {
+    console.error(`--pace must be one of: ${Object.keys(PACES).join(', ')}`);
+    process.exit(1);
+  }
+  console.log(buildPrompt(id, exam, valueOf('--topic'), pace));
 }

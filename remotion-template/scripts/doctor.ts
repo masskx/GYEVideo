@@ -6,6 +6,7 @@ import {fileURLToPath} from 'node:url';
 import {BRAND} from '../src/brand/brand';
 import {FONT_REGISTRY} from '../src/core/fonts';
 import {loadProjectEnv} from './load-env';
+import {available} from './music/backends';
 
 // npm run doctor — is this machine ready to make videos? Run it once per machine, before the first episode.
 // FAIL lines must be fixed; WARN lines only limit what you can do.
@@ -56,6 +57,17 @@ report(hash === lock ? 'ok' : 'FAIL', 'Brand pig lock', hash === lock ? 'BrandPi
 // Fonts
 const missingFonts = Object.values(FONT_REGISTRY).filter((font) => !existsSync(join(templateDir, 'public', 'fonts', font.file)));
 report(missingFonts.length ? 'FAIL' : 'ok', 'Fonts', missingFonts.length ? `missing: ${missingFonts.map((font) => font.file).join(', ')}` : `${Object.keys(FONT_REGISTRY).length} faces in public/fonts`);
+
+// Music backends (scripts/music/): all local. The SoundFont gives real instruments; the synth always works.
+const music = available();
+report(
+  music.soundfont && music.fluidsynth ? 'ok' : 'WARN',
+  'Music: SoundFont',
+  music.soundfont && music.fluidsynth
+    ? `FluidSynth + ${music.soundfont}`
+    : `${music.fluidsynth ? 'FluidSynth found, no .sf2' : 'FluidSynth not installed'}: scores use the built-in synth. Install FluidSynth and put a General MIDI .sf2 in shared-assets/soundfonts/ (skills/_shared/PACE_AND_MUSIC.md).`,
+);
+report('ok', 'Music: sample kits', music.kits.length ? music.kits.join(', ') : 'none (optional: shared-assets/music-kits/<kit>/)');
 
 // Active episode
 const activePath = join(templateDir, '.active-episode.json');

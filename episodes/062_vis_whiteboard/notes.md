@@ -13,3 +13,7 @@ All lines pass. The voice read *vis / vid* as /vaɪs/; the roots are now spelled
 - Top-branch arrows ran into the meaning: they now end under the example line.
 - Board edges showed during camera travel: the board surface extends 1600 px past every side.
 - The homework card was too wide and its text too small: the stem wraps to two lines at a larger size.
+
+## Fast-pace re-cut (pace `fast`, new music engine)
+- Length 52.4 s → 40.5 s (range 35–53 s at fast); narration 85 % of the runtime (was 75 %).
+- Score: `chill-pop`, 116 BPM, F major, SoundFont backend. QA PASS. Voice check 10/10.

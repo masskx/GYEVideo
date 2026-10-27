@@ -66,6 +66,12 @@ npm.cmd run check
 
 `check` 检查：小猪锁；brief.md / TREATMENT.md 已填写（不是空白模板，第 9 节已对比）；data 不是参考 episode 的原样拷贝；词汇等级（课标 / 拓展，拓展最多 1 个）；题目答案和来源；GB2312 字符；新闻数字出处和关键词；cueAt 是否在口播里；时长；模板轮换。所有 ERROR 修好再继续。
 
+## 节奏和配乐
+
+- 新视频默认 `pace: 'fast'`（抖音 / TikTok 快节奏）：配音更快、句间空白更少、时长约 35–55 秒；`relaxed` 用于长讲解。
+- 配乐由本地作曲引擎按时间轴生成，风格由模板和节奏决定；`score.bpm` 要落在风格的速度范围内（`npm.cmd run music -- --list`）。
+- 详见 `remotion-template/skills/_shared/PACE_AND_MUSIC.md`。
+
 ## 6. 一键生产
 
 ```powershell
