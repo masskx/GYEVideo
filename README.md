@@ -1,348 +1,107 @@
-# Douyin English Card Video Factory
+# 小猪盖被 · 抖音高考英语短视频工厂
 
-这是一个用于批量生产抖音风格英语短视频的 Remotion 工作区。
+这是一个批量生产抖音竖屏（1080×1920，约 60 秒）高考英语短视频的 Remotion 工作区，面向准备高考英语的高中生。
 
-核心原则：只维护一套 `remotion-template/` 模板工程，具体内容按 episode 管理。以后生成新视频时，不复制整个 Remotion 项目，只新增或更新对应 episode 内容包。
+核心原则：只维护一套 `remotion-template/` 模板工程，内容按 episode 管理。每条内容线有多个模板轮换使用，避免账号看起来重复；所有模板共用同一套规则、同一个小猪 IP、同一个配音，任何 agent 都能稳定复现。
 
-## 内容线
+**Agent 请先读 [AGENTS.md](AGENTS.md)。**
 
-- `episodes/`: 词根、词缀、单词族、易混词等 vocabulary 视频。
-- `sentence-episodes/`: 句型骨架、表达冲突、口语替换、写作升级等 sentence 视频。
-- `read-aloud-episodes/`: 英文素材精读、跟读、高亮词汇、情景记单词视频。
-- `remotion-template/`: 唯一 Remotion 模板工程。
-- `shared-assets/`: 字体、音效、BGM、图标等共享素材。
-- `docs/`: 生产流程、命名规则、发布检查清单。
-- `archive/`: 归档内容。
+## 内容线与模板
 
-## 单词视频 Skill
+| 内容线 | 模板 id | 系列名 | 风格 | 参考 episode |
+|---|---|---|---|---|
+| 单词 | `vocab-dossier` | 高考词汇案卷 | 网点印刷案卷：完形题是案子，词根是指纹，单词是证物，盖章结案 | `episodes/060_duc_dossier` |
+| 单词 | `vocab-game-show` | 词根闯关 | 扁平糖果色综艺：一关一个词，前缀 + 词根踩点组合，PERFECT 判定，极速挑战 | `episodes/061_port_gameshow` |
+| 单词 | `vocab-whiteboard` | 白板词根图 | 白板现场板书：词根居中，单词分支展开，镜头在白板上移动，最后拉远成整张词根图 | `episodes/062_vis_whiteboard` |
+| 双语阅读 | `reading-picture-book` | 英文绘本精读 | 蜡笔绘本：小猪主演的原创英文小故事，逐句英文朗读 + 中文，目标词卡片，阅读理解题 | `reading-episodes/001_screen_promise` |
+| 双语阅读 | `reading-caption-news` | 双语新闻阅读 | 字幕驱动的科普新闻：大字英文分段出现，中文在下，数据有出处，阅读理解题 | `reading-episodes/002_teen_sleep_news` |
 
-单词视频使用项目内 skill：
+模板目录（代码）：`remotion-template/src/templates/registry.ts`。每个模板的制作规范在 `remotion-template/skills/<模板 id>/SKILL.md`，共用规则在 `remotion-template/skills/_shared/HOUSE_RULES.md`。
 
-```text
-remotion-template/skills/douyin-remotion-video
-```
+其它内容线：
 
-这次已更新该 skill 和模板规则，重点修复：
+- `sentence-episodes/`：句型视频，继续使用 `remotion-template/skills/douyin-remotion-sentence-video`，不变。
+- `episodes/001–059`：旧版黑黄词根视频（root-word），已冻结：只保留渲染能力，不再做新期。
+- 旧的中英朗读/情景记单词跟读视频已停更，代码和素材已删除（保留在 git 历史中）。
 
-- 开场 orbit/bubble 单词不再固定 8-10 帧硬闪。
-- bubble 必须跟随真实 `flash-words` 口播时长逐个显现。
-- orbit 旋转要克制，约四分之一圈即可，避免转得太急。
-- grid 必须按实际词数动态对称布局，例如 7 个词用上 4 下 3 且下排居中。
-- 连线必须在卡片后方，从 root/card 边缘连接，避免遮挡文字。
-- 长词必须在 grid 卡片里自适应字号，不能缺词、溢出或被裁掉。
-- 新单词视频应默认以 `episodes/046_man_words` 作为视觉和动画基准，除非明确指定其它基准。
+## 小猪 IP（不可修改）
 
-相关规则文件：
+小猪（英文名 Little Pig，账号名 小猪盖被）只能由 `remotion-template/src/brand/BrandPig.tsx` 绘制，文件哈希锁在 `pig.lock`，`npm run check` 会校验。
 
-- `remotion-template/skills/douyin-remotion-video/SKILL.md`
-- `remotion-template/skills/douyin-remotion-video/references/rhythm_rules.md`
-- `remotion-template/skills/douyin-remotion-video/references/visual_rules.md`
+- 允许：位置、大小、镜像、落地弹跳、内置表情（neutral / squint / happy / surprised）和内置姿势（idle / inspect / cheer / point）。
+- 禁止：修改造型、颜色、衣服帽子，新增表情，添加第二只猪或任何其它小猪图片。
 
-## 情景记单词跟读 Skill
+## 每期怎么做
 
-情景记单词跟读视频使用项目内 skill：
-
-```text
-douyin-remotion-read-aloud-vocab
-```
-
-内容放在：
-
-```text
-read-aloud-episodes/
-```
-
-这个类型不是“讲解课”，也不是纯英文精读页。它的核心是：
-
-- 中文文案负责讲一个具体生活场景。
-- 英文单词嵌在中文句子里，作为记忆点。
-- 旁白直接读这段混合文案：中文读中文，遇到英文词就读英文。
-- 不加开场教学口播，不单独念单词解释。
-- 画面里当前英文词高亮，下方词卡同步显示音标、词性、中文意思和情景含义。
-- 视频控制在 25-35 秒，通常放 10-12 个目标词。
-
-### 怎么找素材
-
-优先找“有场景、有情绪、有冲突”的素材，不要先找单词表。
-
-适合的素材：
-
-- 熬夜刷手机，第二天早八崩溃。
-- 考试周复习、焦虑、硬撑。
-- 图书馆假装学习，其实一直分心。
-- 论文、作业、DDL 压迫感。
-- 周一上班、通勤、邮箱爆炸、身体被掏空。
-- 减肥失败、嘴馋、自责、重新开始。
-- 上台展示前紧张、卡壳、脆弱但撑住。
-- 想省钱，但又冲动消费。
-- 想睡觉，却一直刷短视频。
-
-不适合的素材：
-
-- 抽象鸡汤句。
-- 普通单词清单。
-- 纯语法讲解。
-- 太长的英语阅读原文。
-- 没有情绪变化的教材段落。
-- 别人视频里的完整文案照搬。
-
-找素材时可以从这些地方来：
-
-- 你自己的日常观察。
-- 评论区里高频痛点。
-- 小红书/抖音上的生活吐槽，但只借场景，不复制文案。
-- 校园、职场、学习、减肥、社交焦虑等短故事。
-- 现有英文阅读材料，但要改写成中文生活场景。
-- 仓库里已有的单词视频主题，把它改成一个具体故事。
-
-### 素材筛选标准
-
-找到素材后，先问 5 个问题：
-
-- 观众前 2 秒会不会觉得“这不就是我吗”？
-- 能不能自然嵌入 10-12 个英文词？
-- 每个英文词是不是在这个场景里有用，而不是为了凑难词？
-- 混合文案 25-35 秒能不能读完？
-- 结尾有没有一个小转折、情绪落点或记忆点？
-
-如果有两个以上答案是否定的，就换素材。
-
-### 找到素材后怎么让我生成视频
-
-把素材发给 Codex 时，直接用这个格式：
-
-```text
-请使用 F:\抖音英语卡片视频\douyin-remotion-read-aloud-vocab 这个 skill，
-生成一个新的情景记单词跟读视频。
-
-episodeId: 002_xxx
-素材/场景：
-这里粘贴你的中文素材、英文素材、评论区痛点，或者一句话描述。
-
-目标观众：
-比如大学生、考研党、上班族、英语基础一般的人。
-
-要求：
-1. 不要做成讲解课。
-2. 直接写一段中文里嵌英文的文案。
-3. 旁白直接读文案：中文读中文，英文读英文。
-4. 读到哪个英文词，下方词卡就切到哪个词。
-5. 不要加开头教学口播，不要单独念解释。
-6. 控制在 25-35 秒。
-7. 生成视频、封面、caption、publish notes。
-```
-
-如果你手里只有一个大概主题，也可以这样发：
-
-```text
-主题：考试周崩溃但还要硬撑
-目标观众：大学生
-风格：像 001_prevalent_habits，一张高密度中文学习图，英文词逐个高亮，下方词卡解释。
-请你自己选 10-12 个适合这个场景的英文词，并生成完整视频。
-```
-
-### 生成后的产物在哪里
-
-每条跟读视频都会在这里生成一个 episode：
-
-```text
-read-aloud-episodes/<episodeId>/
-```
-
-最终产物在：
-
-```text
-read-aloud-episodes/<episodeId>/exports/<episodeId>.mp4
-read-aloud-episodes/<episodeId>/exports/<episodeId>_cover.png
-read-aloud-episodes/<episodeId>/exports/<episodeId>_caption.txt
-read-aloud-episodes/<episodeId>/exports/<episodeId>_publish_notes.md
-read-aloud-episodes/<episodeId>/exports/<episodeId>_contact_sheet.jpg
-```
-
-当前样例产物在：
-
-```text
-read-aloud-episodes/001_prevalent_habits/exports/
-```
-
-常用命令：
+在 `remotion-template/` 里：
 
 ```powershell
-cd F:\抖音英语卡片视频\remotion-template
-npm.cmd run episode:use -- ../read-aloud-episodes/001_prevalent_habits
-npm.cmd run voice
-npm.cmd run render
+npm.cmd run plan                                   # 看各线最近几期，推荐下一期用哪个模板
+npm.cmd run new -- vocab-game-show 063_spect_gameshow
+# 先写 brief.md 和 TREATMENT.md，再改 data/ 里的数据（新闻还要写 FACTS.md）
+npm.cmd run episode:use -- ../episodes/063_spect_gameshow
+npm.cmd run check                                  # 小猪锁、词汇等级、题目、字符集、时长、轮换
+npm.cmd run voice                                  # DashScope CosyVoice 生成配音
+npm.cmd run voice:check                            # 语音转写逐句核对，读错就改写重生成
+npm.cmd run timeline                               # 每场时长和总时长
+npm.cmd run audio                                  # 按真实时间轴合成配乐和音效
+npm.cmd run render                                 # 分场静帧、成片、-14 LUFS、QA 报告、封面、文案
 ```
 
-## 推荐提示词：生成新词根视频
+其它命令：`npm.cmd run preview`（Remotion Studio）、`npm.cmd run typecheck`、`npm.cmd run qa`（重跑已导出视频的 QA）。
 
-以后让 Codex 生成新的单词视频，可以直接复制下面这段，把 episodeId、主题、核心含义换掉。
+PowerShell 可能拦截 `npm.ps1`，推荐使用 `npm.cmd`。
+
+## 推荐提示词
+
+新的单词视频：
 
 ```text
-请使用该项目下面的 remotion-template/skills/douyin-remotion-video 生成新 root-word episode。
-
-episodeId: 049_xxx_words
-主题：词根 -xxx
-核心含义：meaning / 中文含义
-
-重要：请严格以 episodes/046_man_words 为视觉和动画基准。
-不是只沿用黑黄风格，而是要沿用 046 的成片结构和运动语言：
-1. 开场：大字 hook，不要叠卡片，不要加额外图标。
-2. 第二段：orbit/bubble 单词按真实口播逐个显现，旋转不要急，之前出现的 bubble 保留在轨道上。
-3. 第三段：same-root 极简居中文案。
-4. 然后 root reveal、word card、grid、summary 按 046 的节奏走。
-5. 正文不要出现动物/icon 浮层；封面可以保留品牌小猪。
-6. grid 串词必须按实际词数动态对称布局；不能缺词，不能让线和模块/文字遮挡。
-7. 导出前必须和 046 抽帧做 contact sheet 对比，确认整体视觉一致。
-8. BGM 从 bgmRegistry.ts 选择；如前三秒是悬念/误区钩子，优先 suspense_003；bgmVolume=0.33，ducking 必须开启。
-9. notes.md 记录 bgmId、bgmVolume、licenseNote、动画对齐检查结果、BGM 是否压人声。
-10. 导出视频和封面，并检查封面内容一致、文字不溢出。
+请阅读 AGENTS.md，用 npm run plan 推荐的单词模板做一期新视频。
+词根：spect = look / 看
+目标学生：高三，完形和阅读里常见的词。
+按 skills/_shared/HOUSE_RULES.md 的完成标准交付：check、voice:check、render QA PASS，看过 contact sheet，写好 notes.md。
 ```
 
-## 推荐提示词：修复最新单词视频
+新的双语阅读视频：
 
 ```text
-请使用项目内 remotion-template/skills/douyin-remotion-video 检查并修复最新一次单词视频。
-
-重点检查：
-1. 开场 orbit/bubble 是否跟随口播逐个显现，旋转是否过急。
-2. 底部 active word 是否提前抢跑。
-3. grid 串词是否对称，是否缺词。
-4. 连线是否遮挡卡片、root 模块或文字。
-5. 长词是否在卡片内溢出。
-6. 重新导出视频和封面。
-7. 生成和 046 的 contact sheet 对比图。
-8. 把修复内容和 QA 结果写入该 episode 的 notes.md。
+请阅读 AGENTS.md，用 npm run plan 推荐的阅读模板做一期新视频。
+话题：teenagers and exercise
+新闻模板必须先写 FACTS.md，只用一手来源（CDC、WHO 等），屏幕上的每个数字都要有出处。
+绘本模板由小猪（Little Pig）主演，故事原创，高考难度。
 ```
 
-## 常用命令
-
-进入模板工程：
-
-```powershell
-cd F:\抖音英语卡片视频\remotion-template
-```
-
-切换到某个词根/单词 episode：
-
-```powershell
-npm.cmd run episode:use -- ../episodes/048_dent_words
-```
-
-生成 TTS 旁白：
-
-```powershell
-npm.cmd run voice
-```
-
-预览：
-
-```powershell
-npm.cmd run preview -- --port=3000
-```
-
-类型检查：
-
-```powershell
-cmd /c node_modules\.bin\tsc.cmd --noEmit
-```
-
-导出视频、封面、caption 和发布文案：
-
-```powershell
-npm.cmd run render
-```
-
-注意：PowerShell 可能因执行策略拦截 `npm.ps1`，因此推荐使用 `npm.cmd` 或 `cmd /c ...`。
+指定模板：把“npm run plan 推荐的模板”换成具体模板 id，例如 `reading-picture-book`。
 
 ## 导出物
 
-每个 episode 完成后必须有：
+每期完成后（`exports/` 不入库）：
 
 ```text
-episodes/<episodeId>/exports/<episodeId>.mp4
-episodes/<episodeId>/exports/<episodeId>_cover.png
-episodes/<episodeId>/exports/<episodeId>_caption.txt
-episodes/<episodeId>/exports/<episodeId>_publish_notes.md
-episodes/<episodeId>/notes.md
+<episode>/exports/<id>.mp4
+<episode>/exports/<id>_cover.png
+<episode>/exports/<id>_caption.txt
+<episode>/exports/<id>_publish_notes.md     # 含评论区置顶答案
+<episode>/exports/<id>_qa.md                # 自动 QA：尺寸、时长、响度、峰值、黑帧
+<episode>/exports/<id>_contact_sheet.jpg
+<episode>/brief.md, TREATMENT.md, notes.md  # 入库
 ```
 
-## QA 要求
+## 安全与版权
 
-单词视频导出前至少检查：
+- 不要把 `.env` 或任何 API key 写入 README、notes、代码或日志；`DASHSCOPE_API_KEY` 只从环境变量读取。
+- 配乐和音效全部由代码合成（`scripts/audio/`），字体为 OFL 开源字体（`public/fonts/OFL.txt`）。
+- 原创练习题标注“高考风格原创练习题”；只有引用真题时才写“真题”，并注明年份和出处。
+- 风格方法参考 [lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar)（MIT，许可见 `remotion-template/skills/_shared/LICENSE-lemo-opuscar.txt`），没有使用其任何成片、角色、镜头或旋律。
 
-- `tsc --noEmit` 通过。
-- Remotion composition 可读取。
-- 关键帧无空白、无文字溢出。
-- 开场大字 hook、orbit/bubble、same-root 三段式结构与 046 一致。
-- grid 没有缺词、遮挡、不对称问题。
-- BGM 使用 `bgmRegistry.ts` 中已有曲目。
-- 有旁白时 BGM ducking 开启。
-- BGM 不压人声。
-- 封面与内容一致，文字不溢出。
-- 与 `episodes/046_man_words` 做 contact sheet 对比。
+## 旧版黑黄词根视频（已冻结）
 
-## 安全规则
-
-- 不要把 `.env` 或任何 API key 写入 README、notes、代码或日志。
-- DashScope key 只从环境变量读取。
-- BGM 和图标使用本地素材，不在 Remotion 渲染时从网络加载。
-
-## 高考词汇案卷（新的单词视频线）
-
-面向高考生的约 60 秒竖屏（1080×1920）词汇视频，使用项目内 skill：
-
-```text
-remotion-template/skills/douyin-gaokao-dossier-vocab
-```
-
-风格改编自 [lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar) 的 Halftone Dossier（复古半调案卷），并带上它的导演方法：先写 TREATMENT.md、每个动作都有音效、字幕按阅读时间停留、每期都要和上一期不一样。
-
-每一期都是一份“案卷”：
-
-- 一道高考风格完形题是案发现场，四个长得像的选项是嫌疑人。
-- 词根是指纹，每个单词是一件编号证物：词块拆分 → 字面意思 → 单词 → 考试义 → 高考搭配。
-- 证据墙把所有证物连回词根，回到原题作答，盖章“结案”。
-- 结尾留一道新题，答案打码，让观众去评论区作答。
-
-和旧单词线相比：
-
-- 只选课标词汇（每个词标注 课标 / 拓展，拓展词最多一个），不再出现 altimeter、altiplano 这类高考用不上的词。
-- 画面统一（纸张、半调网点、五种油墨、印章、小猪侦探），但每期必须在结构、开场、招牌镜头、运镜、配乐、结尾六项里至少换三项，避免 59 期像一期。
-- 配乐和音效全部由代码按时间轴合成（`npm run dossier:audio`），没有版权问题；成片响度统一到 -14 LUFS。
-
-示例：`episodes/060_duc_dossier`（duc = lead：produce / reduce / introduce / conduct / education）。
-
-常用命令：
+`episodes/001–059` 使用 `RootWordTemplate`，规则在 `remotion-template/skills/douyin-remotion-video`。需要重新导出旧视频时：
 
 ```powershell
-cd F:\抖音英语卡片视频\remotion-template
-npm.cmd run episode:use -- ../episodes/060_duc_dossier
-npm.cmd run voice
-npm.cmd run dossier:audio
-npm.cmd run preview
+npm.cmd run episode:use -- ../episodes/046_man_words
 npm.cmd run render
-```
-
-`dossier:audio` 必须在 `voice` 之后运行，因为配乐跟随真实口播时长。
-
-### 推荐提示词：生成新的高考词汇案卷
-
-```text
-请使用 remotion-template/skills/douyin-gaokao-dossier-vocab 生成一期新的高考词汇案卷。
-
-episodeId: 061_xxx_dossier
-词根：-xxx = 英文 / 中文
-候选单词：……（只要课标词汇，最多一个拓展词）
-上一期：060_duc_dossier
-
-要求：
-1. 先写 brief.md 和 TREATMENT.md（三个候选结构、选定结构、和上一期的六项对比，至少三项不同）。
-2. 开场就是一道高考风格原创题，标注“高考风格原创练习题”。
-3. 每个证物都要有：词块、字面意思、单词、考试义、高考搭配。
-4. 生成配音后逐句做语音转写检查，读错的英文词改写后重新生成。
-5. 运行 dossier:audio 和 render，检查 out/qa 里的每场静帧、响度 -14 LUFS、无黑帧。
-6. 把 QA 结果写进 notes.md。
 ```
 
 ## GitHub 源码与复现

@@ -14,7 +14,7 @@ Use this skill when the user wants to turn English vocabulary material into a pu
 
 Do not use this skill for paper explanations, code-module explainers, architecture diagrams, general knowledge videos, or plug-and-play module projects. Those belong to separate skills or projects.
 
-For new vocabulary episodes aimed at Gaokao (高考) students, use `skills/douyin-gaokao-dossier-vocab` instead: vertical 1080×1920, ~60 s, Halftone Dossier style, curriculum words only. This skill remains for the existing black/yellow root-word line.
+**This line is frozen: no new root-word episodes.** New vocabulary episodes use one of the template skills (`skills/vocab-dossier`, `skills/vocab-game-show`, `skills/vocab-whiteboard`; pick with `npm run plan`, rules in `skills/_shared/HOUSE_RULES.md`). This skill remains only to re-render the existing black/yellow root-word episodes (001–059).
 
 ## Inputs
 

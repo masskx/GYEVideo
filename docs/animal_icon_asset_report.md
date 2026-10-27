@@ -51,13 +51,15 @@ cute_chameleon, cute_elephant, cute_seal, cute_fish, cute_raccoon,
 cute_chick, cute_whale, cute_dinosaur, cute_horse, cute_sheep,
 cute_bee, cute_squid, cute_crab, cute_frog, cute_snake, cute_lion,
 cute_rabbit, cute_turtle, cute_fish_002, cute_dog, cute_cat,
-cute_bird, cute_pig, cute_duck, cute_cat_002, cute_dog_002,
+cute_bird, cute_duck, cute_cat_002, cute_dog_002,
 cute_cat_003, cute_dog_003, cute_hamster, cute_dog_004,
-cute_dog_005, cute_dog_006, cute_cat_004, cute_pig_002,
+cute_dog_005, cute_dog_006, cute_cat_004,
 cute_dog_007, cute_cat_005, animal_001, cute_dog_008,
 cute_dog_009, cute_cat_006, cute_cat_007, cute_cat_008,
 cute_dog_010, cute_cat_009, cute_cat_010, cute_sheep_002
 ```
+
+`cute_pig` and `cute_pig_002` were removed (their SVGs too): the only pig is the locked brand pig, `remotion-template/src/brand/BrandPig.tsx`. Legacy covers that still say `cute_pig` render the brand pig through `BrandAvatar`.
 
 Registry path:
 

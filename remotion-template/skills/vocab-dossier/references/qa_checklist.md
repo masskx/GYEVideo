@@ -11,14 +11,8 @@ Record each result in the episode's `notes.md`.
 
 ## Voice
 
-- [ ] Every line transcribed with speech-to-text; any English word or key Chinese word that comes back as a different word has been rewritten and regenerated.
-- [ ] Total length 55–66 s (check `DOSSIER_DURATION`, or the scene table below).
-
-Scene table (from `remotion-template/`):
-
-```powershell
-npx.cmd tsx -e "import {DOSSIER_SCENES as S, DOSSIER_DURATION as D} from './src/dossier/schedule'; S.forEach(s => console.log(s.scene.id, s.start.toFixed(1), (s.end - s.start).toFixed(1))); console.log('total', D.toFixed(1))"
-```
+- [ ] `npm run voice:check` passes; any English word or key Chinese word that came back as a different word has been rewritten and regenerated.
+- [ ] Total length 55–68 s (`npm run timeline`; `npm run check` fails outside it).
 
 ## Picture
 

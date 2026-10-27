@@ -1,9 +1,9 @@
 # Notes: 060_duc_dossier
 
-First episode of the Gaokao dossier line (`skills/douyin-gaokao-dossier-vocab`).
+First episode of the Gaokao dossier line (`skills/vocab-dossier`).
 
 ## Build
-- `npm run episode:use -- ../episodes/060_duc_dossier`, `npm run voice` (DashScope cosyvoice-v3-flash / longanhuan), `npm run dossier:audio`, `npm run render`.
+- `npm run episode:use -- ../episodes/060_duc_dossier`, `npm run voice` (DashScope cosyvoice-v3-flash / longanhuan), `npm run audio` (then named `dossier:audio`), `npm run render`.
 - Score: synthesized, 100 BPM, D; silences before the fingerprint line (0.4 s) and the verdict (0.7 s).
 - Mix: `bgmVolume` 0.5, `bgmDuckingFactor` 0.6 (voice about 12 dB above the music while speaking), `sfxVolume` 0.55.
 

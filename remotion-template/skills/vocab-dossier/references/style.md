@@ -18,7 +18,7 @@ Not the old black/yellow template (no black void, no glow, no orbiting words), n
 | Dust specks reseeded every 2 frames | `PaperOverlay` |
 | Shading = halftone dots, radius = density × step × k (k ≈ 0.68), step 22–26 px, screen angle per layer | `Halftone`, `radialField`, `edgeField`, `linearField` |
 | Halftone-filled numerals and glyphs, may bleed off frame | `HalftoneGlyph` (exhibit numerals, the root's mugshot, cover) |
-| Line boil (~10×/s, ~4 px) on the mascot and hand-drawn props only, never on text, dots, HUD or captions | `BoilFilter` inside `PigDetective` |
+| Line boil (~10×/s, ~4 px) on the mascot and hand-drawn props only, never on text, dots, HUD or captions | the boil filter inside `BrandPig` (locked) |
 | Flat cards: fill + 5–6 px ink outline + hard offset shadow (no soft shadows) | `PrintCard` |
 | Stamps: double rounded rectangle, rough ink-eaten edges, ~93 % opacity, tilted ±12° | `Stamp` |
 
@@ -38,7 +38,7 @@ Flat inks only: no gradients and no transparency ramps on content; tone comes fr
 
 ## 4. Type & captions
 
-| Role | Font (OFL, `public/fonts/dossier/`) |
+| Role | Font (OFL, `public/fonts/`) |
 |---|---|
 | Headlines, English words, meanings | Noto Serif SC Black (`FONT.headline`), misregistration shadow +8/+8 in cobalt |
 | Big numerals, the root's mugshot, option letters | Bagel Fat One (`FONT.display`) |
@@ -78,7 +78,7 @@ A 2D camera over a frontal page. Use at least four different moves per episode.
 
 ## 7. Sound
 
-All synthesized by `scripts/dossier-audio.ts`, so it is original and needs no licence:
+All synthesized by `scripts/audio/` (`sfx.ts`, `score.ts`, palette `dossier`), so it is original and needs no licence:
 
 - **Score**: synth kick, clap, hats, soft square bass with a 2nd harmonic for phone speakers, marimba-like pluck, Karplus–Strong pizzicato, music-box bell. One chord per bar (i–VI–III–VII in the episode key). Sections follow scene kinds: *sneak* (pizzicato + snaps) for the case, *secret* (bass + snaps) for the fingerprint, *groove* for root and exhibits, *strip* (bass + snaps) for solving, *light* for homework.
 - **A snare roll + riser** into the root reveal and into each silence.
@@ -100,7 +100,7 @@ All synthesized by `scripts/dossier-audio.ts`, so it is original and needs no li
 
 - **Text laid out before fonts load** → overlapping glyphs. `useDossierFonts` blocks rendering until the fonts are loaded.
 - **Boil on text or dots** turns them to mush → filter only the mascot.
-- **Clip-path / filter ids are global** → every `Stamp`, `HalftoneGlyph` and `PigDetective` needs a unique `id`.
+- **Clip-path / filter ids are global** → every `Stamp`, `HalftoneGlyph` and `BrandPig` needs a unique `id`.
 - **Dot wipe short of full cover** shows the hard switch → max radius ≥ 0.75 × cell.
 - **Too many inks** lose the print feel → five plus paper, no exceptions.
 - **Dots below ~14 px step** alias after Douyin re-encodes → keep 20–26 px.

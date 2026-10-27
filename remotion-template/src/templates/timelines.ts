@@ -9,6 +9,12 @@ import {GAME_SHOW} from '../gameshow/schedule';
 import {whiteboard} from '../data/whiteboard';
 import {whiteboardCopy} from '../whiteboard/copy';
 import {WHITEBOARD} from '../whiteboard/schedule';
+import {pictureBook} from '../data/pictureBook';
+import {pictureBookCopy} from '../picturebook/copy';
+import {PICTURE_BOOK} from '../picturebook/schedule';
+import {captionNews} from '../data/captionNews';
+import {captionNewsCopy} from '../captionnews/copy';
+import {CAPTION_NEWS} from '../captionnews/schedule';
 import type {TemplateId} from './registry';
 
 // Per-template runtime parts that scripts need (no React): the timeline, the score plan and the
@@ -62,5 +68,23 @@ export const RUNTIMES: Partial<Record<TemplateId, TemplateRuntime>> = {
       sections: {title: 'quiet', root: 'think', branch: 'build', twist: 'think', overview: 'reveal', homework: 'think'},
     },
     copy: whiteboardCopy,
+  },
+  'reading-picture-book': {
+    timeline: PICTURE_BOOK as unknown as Timeline<SceneBase>,
+    score: {
+      bpm: pictureBook.score.bpm,
+      key: pictureBook.score.key,
+      sections: {cover: 'story', page: 'story', words: 'turn', question: 'quiz', end: 'end'},
+    },
+    copy: pictureBookCopy,
+  },
+  'reading-caption-news': {
+    timeline: CAPTION_NEWS as unknown as Timeline<SceneBase>,
+    score: {
+      bpm: captionNews.score.bpm,
+      key: captionNews.score.key,
+      sections: {headline: 'pulse', chunk: 'pulse', question: 'question', recap: 'end'},
+    },
+    copy: captionNewsCopy,
   },
 };

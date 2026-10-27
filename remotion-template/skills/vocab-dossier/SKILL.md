@@ -1,5 +1,5 @@
 ---
-name: douyin-gaokao-dossier-vocab
+name: vocab-dossier
 description: Build ~60-second vertical Douyin vocabulary shorts for Gaokao (高考) English students in the Halftone Dossier house style (高考词汇案卷) — cream printed paper, halftone dots, stamps, numbered exhibits, the 小猪 detective — with a Gaokao-style cloze question as the case, word roots as fingerprints, a per-episode synthesized score and SFX, DashScope CosyVoice narration, and Remotion. Use for word roots, affixes and word families aimed at Gaokao vocabulary.
 ---
 
@@ -7,7 +7,9 @@ description: Build ~60-second vertical Douyin vocabulary shorts for Gaokao (高�
 
 Every episode is a case file (案卷). A Gaokao-style question is the crime scene, the word root is the fingerprint, each word is a numbered exhibit, and the verdict is a stamp. The viewer leaves with the root, five exam words with their collocations, and one question to answer in the comments.
 
-This skill adapts the **Halftone Dossier** style and the directing method of [lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar) (`DIRECTOR.md`, `styles/halftone-dossier/STYLE.md`) to this repository's Remotion pipeline, vertical 1080×1920 and Gaokao content. It replaces nothing: the older `douyin-remotion-video` root-word line still renders as before.
+This skill adapts the **Halftone Dossier** style and the directing method of [lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar) (`DIRECTOR.md`, `styles/halftone-dossier/STYLE.md`) to this repository's Remotion pipeline, vertical 1080×1920 and Gaokao content.
+
+It is one of three vocabulary templates (with `vocab-game-show` and `vocab-whiteboard`). **Read `../_shared/HOUSE_RULES.md` and `../_shared/DIRECTING.md` first**: the pig, the voice, the Gaokao rules, the pipeline and the definition of done are there. Use this template when `npm run plan` names it.
 
 ## Why this line exists
 
@@ -24,24 +26,36 @@ The old root-word line had two problems that this skill is built to fix:
 ## Outputs (per episode, in `episodes/<id>/`)
 
 - `brief.md`, `TREATMENT.md`, `notes.md`
-- `data/dossier.ts`, `data/voiceScript.ts`, `data/episodeConfig.ts` (`type: 'gaokao-dossier'`), `data/generatedVoiceTimeline.ts`
-- `audio/` (voice segments, `dossier-score.mp3`) — generated, gitignored
-- `exports/<id>.mp4` (1080×1920, 30 fps, −14 LUFS), `_cover.png`, `_caption.txt`, `_publish_notes.md` — gitignored
+- `data/dossier.ts`, `data/voiceScript.ts`, `data/episodeConfig.ts` (`type: 'vocab-dossier'`), `data/generatedVoiceTimeline.ts`
+- `audio/` (voice segments, `score.mp3`) — generated, gitignored
+- `exports/<id>.mp4` (1080×1920, 30 fps, −14 LUFS), `_cover.png`, `_caption.txt`, `_publish_notes.md`, `_qa.md`, `_contact_sheet.jpg` — gitignored
 
 ## Workflow
 
-1. **Brief** (`templates/episode_brief_template.md`): root, meaning, words with their 课标/拓展 tag, collocations.
-2. **Treatment first** (`templates/TREATMENT_template.md`), before any data: three candidate structures and the one chosen, the hook, the signature shot, the ending, the cue map, the sound table. Read `references/content_rules.md`.
-3. **Data**: write `dossier.ts` (scenes, words, cloze, lineMeta) and `voiceScript.ts`. Copy `episodes/060_duc_dossier/` as the starting point.
-4. **Sync and voice**:
+From `remotion-template/`:
+
+1. `npm run new -- vocab-dossier <id>` (e.g. `063_spect_dossier`): copies `episodes/060_duc_dossier/data`, renames ids, adds `brief.md`, `TREATMENT.md`, `notes.md`.
+2. **Brief** (`brief.md`): root, meaning, words with their 课标/拓展 tag, collocations.
+3. **Treatment first** (`TREATMENT.md`), before any data: three candidate structures and the one chosen, the hook, the signature shot, the ending, the cue map, the sound table, §9 versus the previous dossier. Read `references/content_rules.md`.
+4. **Data**: rewrite every field of `dossier.ts` (scenes, words, cloze, `cueAt`, `solveHint`, lineMeta) and `voiceScript.ts` for the new root. Nothing of 060 may survive.
+5. Pipeline:
    ```powershell
    npm.cmd run episode:use -- ../episodes/<id>
+   npm.cmd run check
    npm.cmd run voice
+   npm.cmd run voice:check
+   npm.cmd run timeline     # scene table; 55–68 s
+   npm.cmd run audio        # score + SFX, after voice: the score follows the real timing
+   npm.cmd run preview      # optional, Remotion studio
+   npm.cmd run render       # stills in out/qa/<id>/, render, −14 LUFS, QA report, cover, caption, notes
    ```
-5. **Voice check**: transcribe every line (speech-to-text) and fix any English word or key Chinese word that comes back wrong. See "Voice" in `references/content_rules.md`.
-6. **Score and SFX**: `npm.cmd run dossier:audio` (after `voice`: the score follows the real timing).
-7. **Review**: `npm.cmd run preview`, then `npm.cmd run render`. The render writes one QA still per scene to `out/qa/<id>/`, renders, normalizes loudness to −14 LUFS, and exports cover, caption and publish notes.
-8. **One fix round** against `references/qa_checklist.md`; record the results in `notes.md`.
+6. **One fix round** against `references/qa_checklist.md`; record the results in `notes.md`.
+
+### Data fields that time the film
+
+- `scene.cueAt`: the spoken word that fires a beat inside a scene (e.g. `{options: 'pro', fingerprint: 'duc'}`); fallback is a fixed fraction of the line.
+- `dossier.solveHint`: the root's logic said in the solve (往回带).
+- The fingerprint rows and the evidence-board card are derived from the options and the root, so they change with the data.
 
 ## The house style in one screen
 
@@ -72,19 +86,20 @@ Built scene kinds: `cloze-case`, `fingerprint`, `root-reveal`, `exhibit`, `evide
 
 ## Files
 
-- `src/GaokaoDossierVideo.tsx`, `src/DossierCover.tsx` — compositions `GaokaoDossierVideo`, `DossierCover`
-- `src/dossier/schedule.ts` — the one timeline: line placement from real TTS durations, read-time holds, half-beat snapping, cues for every animation and sound
-- `src/dossier/print.tsx` — paper, halftone, per-character pop, stamps, caption bar, HUD, dot wipe, shake, flash, line boil, fonts
+- `src/dossier/VocabDossierVideo.tsx`, `src/dossier/VocabDossierCover.tsx` — compositions `VocabDossierVideo`, `VocabDossierCover`
+- `src/dossier/schedule.ts` — `DOSSIER`, the one timeline (`src/core/timeline.ts`): line placement from real TTS durations, read-time holds, half-beat snapping, cues for every animation and sound
+- `src/dossier/print.tsx` — paper, halftone, per-character pop, stamps, caption bar, HUD, dot wipe, shake, flash
 - `src/dossier/scenes.tsx` — the scene kinds
-- `src/dossier/PigDetective.tsx` — the mascot (faces: neutral, squint, happy, surprised; poses: idle, inspect, cheer, point)
 - `src/dossier/theme.ts` — inks, fonts, safe area
-- `scripts/dossier-audio.ts` — synthesized SFX kit (`public/sfx/dossier/`) and per-episode score
-- `scripts/make-dossier-paper.py` — regenerates the paper texture (numpy + pillow; only needed to change it)
-- `public/fonts/dossier/` — OFL fonts subset to GB2312 + Latin + IPA (Noto Serif SC Black, Noto Sans SC Black, Bagel Fat One, ZCOOL KuaiLe, JetBrains Mono)
+- `src/dossier/copy.ts` — Douyin title, caption and tags
+- `src/brand/BrandPig.tsx` — the 小猪 detective (locked; faces neutral, squint, happy, surprised; poses idle, inspect, cheer, point)
+- `scripts/audio/` — synthesized SFX kit (`public/sfx/`) and the `dossier` score palette
+- `scripts/make-dossier-paper.py` — regenerates `public/dossier/paper.jpg` (numpy + pillow; only needed to change it)
+- `public/fonts/` — OFL fonts subset to GB2312 + Latin + IPA (Noto Serif SC Black, Noto Sans SC Black, Bagel Fat One, ZCOOL KuaiLe, JetBrains Mono)
 
 ## Safety and rights
 
 - `DASHSCOPE_API_KEY` from the environment only.
 - Practice questions are original and labelled `高考风格原创练习题`. Never present them as real past papers (真题) unless you quote a real one with its year and source.
-- Fonts are OFL (`public/fonts/dossier/OFL.txt`); score and SFX are synthesized in code, nothing sampled.
-- The style spec and directing method are adapted from the lemo-opuscar docs (MIT, Copyright (c) 2026 LemoLab; notice in `references/LICENSE-lemo-opuscar.txt`). None of its demo films, stills, characters, shots or melodies are reused.
+- Fonts are OFL (`public/fonts/OFL.txt`); score and SFX are synthesized in code, nothing sampled.
+- The style spec and directing method are adapted from the lemo-opuscar docs (MIT, Copyright (c) 2026 LemoLab; notice in `../_shared/LICENSE-lemo-opuscar.txt`). None of its demo films, stills, characters, shots or melodies are reused.

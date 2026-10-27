@@ -23,6 +23,7 @@ from pypinyin import lazy_pinyin
 ROOT = Path(__file__).resolve().parent.parent
 LINES = ROOT / "out" / "voice_lines.json"
 PINYIN_PASS = 0.8
+FUNCTION_WORDS = {"a", "an", "the", "of", "to", "in", "on", "at", "and", "is", "it", "as"}
 
 
 def load_lines():
@@ -38,8 +39,12 @@ def pinyin(text):
     return " ".join(lazy_pinyin(re.sub(r"[^一-鿿]", "", text)))
 
 
+NUMBERS = {w: str(i) for i, w in enumerate("zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty".split())}
+
+
 def english(text):
-    return [w.lower() for w in re.findall(r"[A-Za-z][A-Za-z'’-]*", text)]
+    """Lower-case English words; spelled-out numbers become digits, as speech-to-text writes them."""
+    return [NUMBERS.get(w.lower(), w.lower()) for w in re.findall(r"[A-Za-z0-9][A-Za-z0-9'’-]*", text)]
 
 
 def expected_words(text):
@@ -72,6 +77,9 @@ def main():
             if w not in heard_words and not (len(w) <= 3 and w in compact) and not (w in accept and accept[w] in heard.lower())
         ]
         zh_ratio = difflib.SequenceMatcher(None, pinyin(text), pinyin(heard)).ratio() if pinyin(text) else 1.0
+        if mostly_english:
+            # Speech-to-text often drops unstressed function words ("half of the" -> "half the").
+            missing = [w for w in missing if w not in FUNCTION_WORDS]
         ok = not missing and zh_ratio >= PINYIN_PASS
         failed += 0 if ok else 1
         results.append({"id": line_id, "ok": ok, "text": text, "heard": heard.strip(), "missingEnglish": missing, "pinyinMatch": round(zh_ratio, 2)})

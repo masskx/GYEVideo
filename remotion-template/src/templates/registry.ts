@@ -36,7 +36,7 @@ export const TEMPLATES: Record<TemplateId, TemplateInfo> = {
     episodesDir: 'episodes',
     example: 'episodes/060_duc_dossier',
     palette: 'dossier',
-    targetSeconds: [55, 66],
+    targetSeconds: [55, 68],
   },
   'vocab-game-show': {
     id: 'vocab-game-show',

@@ -67,7 +67,7 @@ Scene stills: \`remotion-template/out/qa/${baseName}/\`.
 
 ## Still to check by eye
 - Every frame shows the template's look (see ${template.skill}/references/style.md).
-- Nothing essential under the caption or behind the Douyin buttons (safe area in skills/_shared/house_rules.md).
+- Nothing essential under the caption or behind the Douyin buttons (safe area in skills/_shared/HOUSE_RULES.md).
 - The pig is the brand pig only, unaltered.
 - Voice check passed (\`npm run voice:check\`).
 `;

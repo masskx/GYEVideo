@@ -1,57 +1,42 @@
-# AGENTS.md
+# AGENTS.md (remotion-template)
 
-## Project Role
+The single Remotion project for every video line. Read `../AGENTS.md` first, then `skills/_shared/HOUSE_RULES.md` and the skill of the template you are making.
 
-This is the single reusable Remotion template for `DouyinVideoFactory`.
+Do not duplicate this folder for new episodes. Episode content lives in `../episodes/`, `../reading-episodes/` or `../sentence-episodes/`; `npm run episode:use` copies an episode's `data/` into `src/data/` and its `audio/` into `public/`.
 
-Do not duplicate this whole folder for new episodes.
-New content belongs under either:
+## Code map
 
-- `../episodes/` for vocabulary videos
-- `../sentence-episodes/` for sentence videos
+| Path | What it is |
+|---|---|
+| `src/templates/registry.ts` | the template catalogue (ids, compositions, data file, skill, episode folder, length range) |
+| `src/templates/timelines.ts`, `compositions.tsx` | per-template timeline, score plan, release copy, React compositions |
+| `src/core/` | shared timeline builder, motion helpers, fonts, audio player, release copy |
+| `src/brand/` | `BrandPig.tsx` (locked by `pig.lock`), `BrandAvatar.tsx`, `brand.ts` (names, voice) |
+| `src/dossier/`, `src/gameshow/`, `src/whiteboard/`, `src/picturebook/`, `src/captionnews/` | one folder per template: theme, schedule, scenes, video, cover, copy |
+| `src/data/` | the active episode's data (overwritten by `episode:use`; defaults are the reference episodes) |
+| `scripts/` | `use-episode`, `check-episode`, `generate-voice`, `voice-check.py`, `timeline`, `episode-audio` + `audio/`, `render-runner`, `qa-report`, `new-episode`, `plan` |
+| `skills/` | `_shared/` house rules and directing method, one skill per template, legacy skills |
 
-## Episode Workflow
+Legacy compositions (`RootWordTemplate`, `SentencePatternVideo`, `DouyinCover`, `SentenceCover`) still render through the same scripts.
 
-1. Create or edit an episode package.
-2. Keep episode-specific data in `episode/data/`.
-3. Keep generated voice audio in `episode/audio/`.
-4. Sync the episode into this template.
+## Adding or changing a template
 
-Vocabulary:
-
-```powershell
-npm.cmd run episode:use -- ../episodes/001_ject_words_douyin_v1
-```
-
-Sentence:
-
-```powershell
-npm.cmd run episode:use -- ../sentence-episodes/001_not_that_sentence
-```
-
-5. Preview or render from this template.
-6. Copy final outputs back into `episode/exports/` with strict names.
+- A new template: add it to `registry.ts`, `timelines.ts`, `compositions.tsx`, the `EpisodeType` union in `scripts/use-episode.ts` and `src/data/episodeConfig.ts`, a score palette in `scripts/audio/score.ts`, a reference episode and a skill in `skills/<id>/`. Use `src/core/timeline.ts`, `src/core/fonts.ts`, `src/core/audio.tsx` and `BrandPig`; don't fork them.
+- A fix to an existing template: fix it in the template, then re-render its reference episode (`npm run episode:use -- ../<reference>` → `npm run render`) and confirm `QA PASS`.
+- Never put an episode's words or text in template code; add a data field.
 
 ## Safety
 
-- Never commit or write API keys.
-- Use `DASHSCOPE_API_KEY` from the environment.
-- Do not name exports `final.mp4`, `final2.mp4`, or Chinese final-version variants.
-- Keep generated files inside the relevant episode package whenever possible.
+- Never commit or write API keys. `DASHSCOPE_API_KEY` comes from the environment.
+- Export names are strict (`<id>.mp4`, `<id>_cover.png`); never `final.mp4`, `final2.mp4` or 最终版 variants.
 
-## Checks
-
-Run before delivery:
+## Checks before delivery
 
 ```powershell
-npx.cmd tsc --noEmit
+npm.cmd run typecheck
+npm.cmd run check
+npm.cmd run voice:check
 npm.cmd run render
 ```
 
-For sentence episodes, also enforce:
-
-- skeleton appears within 3 seconds
-- scene first, explanation second
-- slot swap is visually clear
-- at least one drill-repeat section exists
-- the result does not feel like PPT
+Sentence episodes (legacy line) also keep their own rules: skeleton within 3 seconds, scene first and explanation second, a clear slot swap, at least one drill-repeat section, nothing that feels like a slide deck.
