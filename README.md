@@ -288,6 +288,10 @@ episodes/<episodeId>/notes.md
 - DashScope key 只从环境变量读取。
 - BGM 和图标使用本地素材，不在 Remotion 渲染时从网络加载。
 
+## 仓库讲解视频
+
+`repo-explainer/` 是一条介绍本仓库的竖屏讲解视频（独立的 Remotion 小工程，不改动 `remotion-template/`），复现方法见 [repo-explainer/README.md](repo-explainer/README.md)。
+
 ## GitHub 源码与复现
 
 首次安装、密钥配置、音色标准和忽略范围见 [仓库使用说明](docs/repository_setup.md)。

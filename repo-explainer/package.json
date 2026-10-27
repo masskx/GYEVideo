@@ -1,0 +1,21 @@
+{
+  "name": "gyevideo-repo-explainer",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "media": "python3 -I scripts/prepare-media.py",
+    "preview": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts RepoExplainer exports/gyevideo_explainer.mp4 --codec=h264 --crf=20",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.481",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "remotion": "4.0.481",
+    "typescript": "^5.8.2"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.10"
+  }
+}
