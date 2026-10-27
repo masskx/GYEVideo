@@ -48,16 +48,16 @@ A template may change the background around the pig (crayon page, whiteboard, st
 
 ## 4. Frame, type and safe area
 
-- 1080 × 1920, 30 fps, 50–72 s (each template's `targetSeconds` ✔). Vocabulary aims at about 60 s, reading may run to 70 s.
+- 1080 × 1920, 30 fps. **Pace** (`pace` in `episodeConfig.ts`, details in `PACE_AND_MUSIC.md`) sets the voice speed, the gaps and the length range ✔: new episodes use `fast` (Douyin / TikTok; about 35–55 s, 80–90 % of the runtime narrated). `relaxed` keeps the old 50–72 s cut for long explanations.
 - Keep essentials inside x 70–930, y 170–1650. The right column (x > 930, y 900–1500) has the Douyin buttons; the bottom 270 px has the account name and description.
 - Fonts come only from `src/core/fonts.ts` (`stack(...)`, `useFonts`). They are subset to GB2312 + Latin + IPA; every visible Chinese character must be in `public/fonts/charset-gb2312.txt` ✔ (use 着 not 著, 里 not 裡 — simplified, common characters).
 - The root / keyword highlight is yellow in every template (each template has its own exact hue). Red means wrong, a stamp or an alarm — nothing else.
 
-## 5. Exam content (高考, 四级, 六级)
+## 5. Exam content (高考, 四级, 六级, 考研, 雅思, 托福, GRE)
 
 Each episode is made for one exam: `exam: 'gaokao' | 'cet4' | 'cet6'` in `data/episodeConfig.ts` (missing = gaokao). The audience, word levels, difficulty and labels per exam are in **`EXAMS.md`**; the labels on screen come from `src/core/exam.ts` automatically.
 
-- **Words** carry a level the exam allows ✔: 高考 `课标`; 四级 `四级`; 六级 `四级` / `六级` (at least half `六级` ✔); every exam also allows `拓展`, at most once per episode ✔. A vocabulary episode has 4–6 words ✔. No word the exam's students will not meet in reading, cloze, translation or writing.
+- **Words** carry a level the exam allows ✔: 高考 `课标`; 四级 `四级`; 六级 `四级` / `六级` (at least half `六级` ✔); 考研 `考研`; 雅思 `雅思`; 托福 `托福`; GRE `GRE`; every exam also allows `拓展`, at most once per episode ✔. A vocabulary episode has 4–6 words ✔. No word the exam's students will not meet in reading, cloze, translation or writing.
 - Every vocabulary word gets an exam collocation or example, the phrase that shows up in papers.
 - **Questions** have exactly one correct option, an `answerIndex` inside the options ✔ and a `sourceNote` ✔. Original items say the exam's label (`高考风格原创练习题`, `四级风格原创练习题`, `六级风格原创练习题`; `…原创阅读题` for reading) ✔. Quote a real past paper (真题) only with its year and source ✔.
 - **Reading texts** are original, written at the exam's level (高考 and 四级 CEFR B1–B2, 六级 B2–C1; sentence lengths in `EXAMS.md`; 3–6 target words, at most one of them 拓展). Don't copy news articles or exam passages; adapt the facts and write your own sentences.
@@ -66,7 +66,8 @@ Each episode is made for one exam: `exam: 'gaokao' | 'cet4' | 'cet6'` in `data/e
 
 ## 6. Sound
 
-- Music and SFX are synthesized in code (`scripts/audio/`), never sampled. `npm run audio` writes them after the voice, because the score follows the real timing.
+- The score is composed per episode by the local music engine (`scripts/music/`, `PACE_AND_MUSIC.md`): the style comes from the template and the pace, the sections follow the scenes, and it renders with a local SoundFont, your own sample kit or the built-in synth. Never use downloaded or copyrighted tracks. SFX are synthesized (`scripts/audio/`). `npm run audio` runs after the voice, because the score follows the real timing.
+- `score.bpm` sits inside the style's range for the pace (`npm run music -- --list`); every score is mastered to −16 LUFS so beds are equally loud.
 - Every visible action has its sound (a cue in the timeline names the SFX); the music empties before the payoff and the payoff is the first sound after the silence.
 - Loudness −14 LUFS ±0.5, peak ≤ −0.5 dBFS ✔ (the render normalizes and checks).
 

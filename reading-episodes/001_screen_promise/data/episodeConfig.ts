@@ -1,6 +1,7 @@
 export const episodeConfig: EpisodeConfig = {
   type: 'reading-picture-book',
   exam: 'gaokao',
+  pace: 'fast',
   episodeId: '001_screen_promise',
   exportBaseName: '001_screen_promise',
   durationTargetSeconds: 65,

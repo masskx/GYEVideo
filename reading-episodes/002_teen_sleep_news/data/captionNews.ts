@@ -2,8 +2,9 @@
 // Self-contained: types live here. Visible Chinese must use GB2312 characters (`npm run check`).
 // Every number on screen needs a source in `sources` and a `source` tag on its chunk (FACTS.md).
 
-// 课标 = Gaokao curriculum list; 四级 / 六级 = CET-4 / CET-6 syllabus; 拓展 = outside the exam's list (at most one).
-export type WordLevel = '课标' | '四级' | '六级' | '拓展';
+// The exam's word list (skills/_shared/EXAMS.md): 课标 高考 · 四级 / 六级 CET · 考研 · 雅思 IELTS · 托福 TOEFL · GRE;
+// 拓展 = outside the exam's list (at most one per episode).
+export type WordLevel = '课标' | '四级' | '六级' | '考研' | '雅思' | '托福' | 'GRE' | '拓展';
 export type LineMeta = {keywords?: string[]; pauseBefore?: number; holdAfter?: number};
 
 export type NewsGraphic =
@@ -49,7 +50,9 @@ export type CaptionNews = {
   sources: NewsSource[];
   scenes: NewsScene[];
   lineMeta: Record<string, LineMeta>;
-  score: {bpm: number; key: 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'Bb'};
+  // Tempo (inside the style's range for the pace: npm run music -- --list), key, and optionally a style
+  // and a local sample kit (skills/_shared/PACE_AND_MUSIC.md).
+  score: {bpm: number; key: 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'Bb'; style?: string; kit?: string};
 };
 
 export const captionNews: CaptionNews = {
@@ -130,5 +133,5 @@ export const captionNews: CaptionNews = {
     answer: {pauseBefore: 2.2},
     signoff: {holdAfter: 0.8},
   },
-  score: {bpm: 108, key: 'A'},
+  score: {bpm: 124, key: 'A'},
 };

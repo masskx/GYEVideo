@@ -27,5 +27,5 @@ Captions-first social news: the words are the picture. Dark grounds, heavy white
 
 ## Sound
 
-- Score palette `caption-news`: tight synth pulse with a low sub and kick/hat → woodblock ticks for the question → pad for the end.
+- Score: style `news-pulse` (8th-note synth pulse, sub bass, tight drums) at every pace; headline = hook, chunks = verses, question = break (music drops back), recap = outro (`../../_shared/PACE_AND_MUSIC.md`).
 - A hit on each cut, ticks while numbers roll, a ding on the answer.

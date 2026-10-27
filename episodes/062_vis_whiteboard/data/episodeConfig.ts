@@ -1,6 +1,7 @@
 export const episodeConfig: EpisodeConfig = {
   type: 'vocab-whiteboard',
   exam: 'gaokao',
+  pace: 'fast',
   episodeId: '062_vis_whiteboard',
   exportBaseName: '062_vis_whiteboard',
   durationTargetSeconds: 60,

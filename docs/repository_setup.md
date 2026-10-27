@@ -19,6 +19,17 @@ npm.cmd run produce                                  # 校准渲染：应显示 
 
 首次渲染会自动下载无头 Chromium，首次 `voice:check` 会下载语音识别模型（约 1.5 GB），需要联网。
 
+## 配乐（推荐安装 FluidSynth + SoundFont）
+
+配乐由本地作曲引擎生成（`remotion-template/scripts/music/`）。装了 FluidSynth 和一个 General MIDI SoundFont，乐器就是真实音色；不装也能用内置合成器。
+
+- Windows：从 https://github.com/FluidSynth/fluidsynth/releases 下载最新版，解压后把 `bin` 目录加入 PATH（或设置环境变量 `MUSIC_FLUIDSYNTH` 指向 `fluidsynth.exe`）。
+- macOS：`brew install fluid-synth`
+- Linux：`sudo apt install fluidsynth fluid-soundfont-gm`
+- SoundFont：FluidR3_GM（MIT 许可）或 GeneralUser GS，放到 `shared-assets/soundfonts/`（或设置 `MUSIC_SOUNDFONT`）。体积较大，不需要提交到仓库。
+
+装好后运行 `npm.cmd run doctor`，“Music: SoundFont” 一行应为 ok；`npm.cmd run music -- --preview pop-bounce --tempo fast` 可以试听。详见 `remotion-template/skills/_shared/PACE_AND_MUSIC.md`。
+
 单词、双语阅读和句型内容分别从 `episodes/`、`reading-episodes/` 和 `sentence-episodes/` 选择（模板列表见 `AGENTS.md`）。配音音频不入库：新克隆的仓库里没有音频，`npm run produce` 会自动重新生成缺失或文字已改动的配音。运行时的 `.active-episode.json` 由 `episode:use` 生成。
 
 ## 音色与口播标准

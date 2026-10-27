@@ -16,3 +16,7 @@ All 10 lines pass after fixes:
 ## Fixes made during review
 - The SOURCE tag overlapped the second line of Chinese in chunk 2: it now sits in the caption's flow under the Chinese line, and unrevealed caption phrases keep their space so nothing jumps.
 - Keywords that span two caption phrases ("1 in 4", "first step") were not highlighted: the yellow block now follows the keyword across phrases, and `npm run check` fails if a keyword is not in its subtitle.
+
+## Fast-pace re-cut (pace `fast`, new music engine)
+- Length 57.8 s → 43.8 s (range 35–58 s at fast); narration 80 % of the runtime (was 70 %).
+- Score: `news-pulse`, 124 BPM, A minor, SoundFont backend. QA PASS. Voice check 10/10.

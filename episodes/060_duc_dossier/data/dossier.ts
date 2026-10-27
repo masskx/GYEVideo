@@ -2,8 +2,9 @@
 // Types live here so the file is self-contained. Every visible string must use characters covered by
 // the GB2312 font subset (public/fonts/charset-gb2312.txt); `npm run check` verifies it.
 
-// 课标 = Gaokao curriculum list; 四级 / 六级 = CET-4 / CET-6 syllabus; 拓展 = outside the exam's list (at most one).
-export type WordLevel = '课标' | '四级' | '六级' | '拓展';
+// The exam's word list (skills/_shared/EXAMS.md): 课标 高考 · 四级 / 六级 CET · 考研 · 雅思 IELTS · 托福 TOEFL · GRE;
+// 拓展 = outside the exam's list (at most one per episode).
+export type WordLevel = '课标' | '四级' | '六级' | '考研' | '雅思' | '托福' | 'GRE' | '拓展';
 
 // Same shape as LineMeta in src/core/timeline.ts.
 export type LineMeta = {keywords?: string[]; pauseBefore?: number; holdAfter?: number};
@@ -74,7 +75,9 @@ export type Dossier = {
   verdictStamp: string;
   scenes: DossierScene[];
   lineMeta: Record<string, LineMeta>;
-  score: {bpm: number; key: 'D' | 'E' | 'F' | 'G' | 'A'};
+  // Tempo (inside the style's range for the pace: npm run music -- --list), key, and optionally a style
+  // and a local sample kit (skills/_shared/PACE_AND_MUSIC.md).
+  score: {bpm: number; key: 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'Bb'; style?: string; kit?: string};
 };
 
 export const dossier: Dossier = {
@@ -206,5 +209,5 @@ export const dossier: Dossier = {
     homework: {keywords: ['开展']},
     signoff: {keywords: ['评论区'], holdAfter: 1.0},
   },
-  score: {bpm: 100, key: 'D'},
+  score: {bpm: 118, key: 'D'},
 };

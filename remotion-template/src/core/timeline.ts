@@ -1,5 +1,6 @@
 import {generatedVoiceTimeline} from '../data/generatedVoiceTimeline';
 import {voiceScript} from '../data/voiceScript';
+import {PACE} from './pace';
 
 // One timeline drives picture, captions, SFX and the synthesized score, for every template.
 // Voice durations come from generatedVoiceTimeline (real TTS); each scene hangs off its voice
@@ -175,7 +176,18 @@ export const wordTimes = (line: LineTiming) => {
 };
 
 export const buildTimeline = <S extends SceneBase>(options: TimelineOptions<S>): Timeline<S> => {
-  const {scenes: specs, lineMeta, bpm, active, cuesFor, minHold = 1.8, captionTail = 0.6, leadIn = 0.35, endTail = 0.9} = options;
+  const {scenes: specs, lineMeta: rawMeta, bpm, active, cuesFor} = options;
+  // The episode's pace (src/core/pace.ts) scales every gap the template asks for.
+  const minHold = Math.min(options.minHold ?? 1.8, PACE.minHold);
+  const captionTail = (options.captionTail ?? 0.6) * PACE.tailScale;
+  const leadIn = (options.leadIn ?? 0.35) * PACE.leadInScale;
+  const endTail = (options.endTail ?? 0.9) * (PACE.endTail / 0.9);
+  const lineMeta: Record<string, LineMeta> = Object.fromEntries(
+    Object.entries(rawMeta).map(([id, meta]) => [
+      id,
+      {...meta, pauseBefore: meta.pauseBefore === undefined ? undefined : meta.pauseBefore * PACE.pauseScale, holdAfter: meta.holdAfter === undefined ? undefined : meta.holdAfter * PACE.holdScale},
+    ]),
+  );
   const beat = 60 / bpm;
   const halfBeat = beat / 2;
   const snapUp = (t: number) => Math.ceil(t / halfBeat - 1e-6) * halfBeat;
@@ -195,7 +207,7 @@ export const buildTimeline = <S extends SceneBase>(options: TimelineOptions<S>):
       }
       const meta = lineMeta[id] ?? {};
       const timing = timingById.get(id);
-      const duration = timing ? timing.end - timing.start : estimateDuration(voice.text);
+      const duration = timing ? timing.end - timing.start : estimateDuration(voice.text) / PACE.voiceRate;
       lineCursor += meta.pauseBefore ?? 0;
       const lineStart = lineCursor;
       const lineEnd = lineStart + duration;

@@ -90,7 +90,7 @@ Built scene kinds: `cloze-case`, `fingerprint`, `root-reveal`, `exhibit`, `evide
 - `src/dossier/theme.ts` — inks, fonts, safe area
 - `src/dossier/copy.ts` — Douyin title, caption and tags
 - `src/brand/BrandPig.tsx` — the 小猪 detective (locked; faces neutral, squint, happy, surprised; poses idle, inspect, cheer, point)
-- `scripts/audio/` — synthesized SFX kit (`public/sfx/`) and the `dossier` score palette
+- `scripts/audio/` — synthesized SFX kit (`public/sfx/`); the score: `scripts/music/` (styles `noir-swing` / `spy-funk`, `../_shared/PACE_AND_MUSIC.md`)
 - `scripts/make-dossier-paper.py` — regenerates `public/dossier/paper.jpg` (numpy + pillow; only needed to change it)
 - `public/fonts/` — OFL fonts subset to GB2312 + Latin + IPA (Noto Serif SC Black, Noto Sans SC Black, Bagel Fat One, ZCOOL KuaiLe, JetBrains Mono)
 

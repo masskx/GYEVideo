@@ -25,4 +25,4 @@ A warm, handmade picture book — crayon on cream paper — that a 17-year-old d
 
 - Pages turn (flip of the previous scene) with a page sound; the pig hops in on the cover.
 - Word cards pop with a sparkle; the answer reveal is the first sound after the silence.
-- Score palette `picture-book`: music box over pizzicato and a warm pad for the story → a bell on the words recap → woodblock ticks for the quiz (the music drops out for the thinking pause) → music-box finale.
+- Score: style `storybook` (pizzicato, celesta, glockenspiel) at relaxed / standard pace, `ukulele-pop` (strummed nylon, claps, flute hook) at fast pace; cover = intro, pages = verses, words = build, question = break (the music drops out for the thinking pause), end = outro (`../../_shared/PACE_AND_MUSIC.md`).

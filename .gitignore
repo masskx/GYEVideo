@@ -25,6 +25,8 @@ build/
 # Generated episode audio, exports and QA artifacts
 **/exports/
 **/audio/
+# …but not the audio source code
+!remotion-template/scripts/audio/
 **/qa/
 *.mp4
 *.mov

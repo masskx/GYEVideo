@@ -7,7 +7,7 @@ Captions-first social news: a Gaokao-style passage in big English chunks with Ch
 选考试，复制对应的整段，把 `<…>` 换成本期内容，发给 agent。也可以直接生成填好主题的版本：
 
 ```powershell
-npm.cmd run prompt -- reading-caption-news --exam cet4 --topic "<主题>"
+npm.cmd run prompt -- reading-caption-news --exam ielts --pace fast --topic "<主题>"
 ```
 
 ## 高考（gaokao）
@@ -20,7 +20,7 @@ npm.cmd run prompt -- reading-caption-news --exam cet4 --topic "<主题>"
 【开始前按顺序读完】
 1. AGENTS.md
 2. docs/agent_playbook.md（严格按它的步骤执行）
-3. remotion-template/skills/_shared/HOUSE_RULES.md、DIRECTING.md、EXAMS.md（本期考试：高考 `gaokao`）
+3. remotion-template/skills/_shared/HOUSE_RULES.md、DIRECTING.md、EXAMS.md（本期考试：高考 `gaokao`）、PACE_AND_MUSIC.md
 4. remotion-template/skills/reading-caption-news/SKILL.md、references/style.md、references/qa_checklist.md
 5. 参考 episode：reading-episodes/002_teen_sleep_news（只学结构和写法，内容全部重写）
 
@@ -30,23 +30,27 @@ npm.cmd run prompt -- reading-caption-news --exam cet4 --topic "<主题>"
 - 词汇等级只能用：课标 / 拓展（拓展最多 1 个）
 - 原创题标注：`高考风格原创阅读题`（只有引用真题才写“真题”，并注明年份和出处）
 - 文件夹：reading-episodes/，命名：<编号>_<主题>_news
-- 时长：50–72 秒
+- 节奏：`pace: 'fast'`（快节奏（抖音 / TikTok）），时长 35–58 秒
 
 【这个模板的要点】
 - 一期 = 一条字幕新闻：标题 → 5 个分句（每句一张数据图 + 大字英文按朗读出现 + 关键词黄块 + 中文 + 来源标签）→ 阅读题 + 原文定位 → 本篇词汇复习。
 - 先写 FACTS.md：只用一手来源（CDC、WHO、NIH、政府统计、期刊），每条写 URL、页面日期、原文引用；屏幕上每个数字都要和原文一致（四舍五入要说 about）。
 - 英文句子原创，不抄来源原文；结构：专家怎么说 → 意外的数字 → 为什么 → 后果 → 一个简单的行动。
 - 数字在配音 text 里写成英文单词（eight to ten hours），subtitle 里写阿拉伯数字（8 to 10 hours）；`keyword` 必须是 subtitle 里原样存在的短语；含数字的句子必须有 `sourceId`。
-- 数据图只能用 clock / people / brain / trend / phone。健康话题只说来源说过的话，不给建议。时长 50–72 秒。
+- 数据图只能用 clock / people / brain / trend / phone。健康话题只说来源说过的话，不给建议。
 
 【高考的要点】
 - 观众是高中生；单词全部来自高考课标词汇，标 `课标`，最多一个 `拓展`。
 - 英文难度 CEFR B1–B2，句子不超过 20 个词；题型对应高考完形 / 语法填空 / 阅读理解。
 
+【节奏要点】
+- 快节奏是给抖音 / TikTok 的：第一秒就是内容，配音语速自动加快，句与句之间几乎没有空白；每句口播控制在一口气说完（中文约 18 字、英文约 14 词以内），一句一个信息点。
+- 不要为了时长把停顿加回去；需要强调时只在答案揭晓前用一次 pauseBefore。配乐风格和速度由模板和节奏自动决定（npm run music -- --list），data 里的 score.bpm 必须落在该风格的快节奏速度范围内。
+
 【执行步骤】
 1. cd remotion-template；新电脑先运行 `npm run doctor`，必须显示 Ready。
 2. 运行 `npm run plan`，确认上一期双语阅读不是 reading-caption-news（如果是，先停下来问我是否继续），记下下一个编号。
-3. 运行 `npm run new -- reading-caption-news <编号>_<主题>_news --exam gaokao`。
+3. 运行 `npm run new -- reading-caption-news <编号>_<主题>_news --exam gaokao --pace fast`。
 4. 先写 FACTS.md（来源、日期、原文引用），再写其它文件。
 5. 写 brief.md：内容、每个词的等级、题目和答案。
 6. 写 TREATMENT.md：三个结构候选和选择理由、开场钩子、招牌镜头、配乐 BPM 和调性、第 9 节与同模板上一期的 6 项对比（至少 3 项不同，参考 SKILL.md 的 variation knobs）。
@@ -89,7 +93,7 @@ Episode <id> (reading-caption-news, gaokao) is ready.
 【开始前按顺序读完】
 1. AGENTS.md
 2. docs/agent_playbook.md（严格按它的步骤执行）
-3. remotion-template/skills/_shared/HOUSE_RULES.md、DIRECTING.md、EXAMS.md（本期考试：四级 `cet4`）
+3. remotion-template/skills/_shared/HOUSE_RULES.md、DIRECTING.md、EXAMS.md（本期考试：四级 `cet4`）、PACE_AND_MUSIC.md
 4. remotion-template/skills/reading-caption-news/SKILL.md、references/style.md、references/qa_checklist.md
 5. 参考 episode：reading-episodes/002_teen_sleep_news（只学结构和写法，内容全部重写）
 
@@ -99,24 +103,28 @@ Episode <id> (reading-caption-news, gaokao) is ready.
 - 词汇等级只能用：四级 / 拓展（拓展最多 1 个）
 - 原创题标注：`四级风格原创阅读题`（只有引用真题才写“真题”，并注明年份和出处）
 - 文件夹：reading-episodes/，命名：<编号>_cet4_<主题>_news
-- 时长：50–72 秒
+- 节奏：`pace: 'fast'`（快节奏（抖音 / TikTok）），时长 35–58 秒
 
 【这个模板的要点】
 - 一期 = 一条字幕新闻：标题 → 5 个分句（每句一张数据图 + 大字英文按朗读出现 + 关键词黄块 + 中文 + 来源标签）→ 阅读题 + 原文定位 → 本篇词汇复习。
 - 先写 FACTS.md：只用一手来源（CDC、WHO、NIH、政府统计、期刊），每条写 URL、页面日期、原文引用；屏幕上每个数字都要和原文一致（四舍五入要说 about）。
 - 英文句子原创，不抄来源原文；结构：专家怎么说 → 意外的数字 → 为什么 → 后果 → 一个简单的行动。
 - 数字在配音 text 里写成英文单词（eight to ten hours），subtitle 里写阿拉伯数字（8 to 10 hours）；`keyword` 必须是 subtitle 里原样存在的短语；含数字的句子必须有 `sourceId`。
-- 数据图只能用 clock / people / brain / trend / phone。健康话题只说来源说过的话，不给建议。时长 50–72 秒。
+- 数据图只能用 clock / people / brain / trend / phone。健康话题只说来源说过的话，不给建议。
 
 【四级的要点】
 - 观众是备考四级的大学生；单词来自四级大纲词汇，标 `四级`，最多一个 `拓展`；不要选高中生都会的基础词。
 - 英文难度 B1–B2，句子不超过 22 个词；词汇题是“选词填空”风格的单空四选一，阅读题是“仔细阅读”风格（细节 / 推理 / 主旨 / 态度），选项要同义改写原文。
 - 参考 episode 是高考的：所有 `level`、`sourceNote`、每句配音的 `instruction`（高中生 → 大学生）、封面文字、绘本的 `level` 字段（大学英语四级）都要改写。
 
+【节奏要点】
+- 快节奏是给抖音 / TikTok 的：第一秒就是内容，配音语速自动加快，句与句之间几乎没有空白；每句口播控制在一口气说完（中文约 18 字、英文约 14 词以内），一句一个信息点。
+- 不要为了时长把停顿加回去；需要强调时只在答案揭晓前用一次 pauseBefore。配乐风格和速度由模板和节奏自动决定（npm run music -- --list），data 里的 score.bpm 必须落在该风格的快节奏速度范围内。
+
 【执行步骤】
 1. cd remotion-template；新电脑先运行 `npm run doctor`，必须显示 Ready。
 2. 运行 `npm run plan`，确认上一期双语阅读不是 reading-caption-news（如果是，先停下来问我是否继续），记下下一个编号。
-3. 运行 `npm run new -- reading-caption-news <编号>_cet4_<主题>_news --exam cet4`。
+3. 运行 `npm run new -- reading-caption-news <编号>_cet4_<主题>_news --exam cet4 --pace fast`。
 4. 先写 FACTS.md（来源、日期、原文引用），再写其它文件。
 5. 写 brief.md：内容、每个词的等级、题目和答案。
 6. 写 TREATMENT.md：三个结构候选和选择理由、开场钩子、招牌镜头、配乐 BPM 和调性、第 9 节与同模板上一期的 6 项对比（至少 3 项不同，参考 SKILL.md 的 variation knobs）。
@@ -159,7 +167,7 @@ Episode <id> (reading-caption-news, cet4) is ready.
 【开始前按顺序读完】
 1. AGENTS.md
 2. docs/agent_playbook.md（严格按它的步骤执行）
-3. remotion-template/skills/_shared/HOUSE_RULES.md、DIRECTING.md、EXAMS.md（本期考试：六级 `cet6`）
+3. remotion-template/skills/_shared/HOUSE_RULES.md、DIRECTING.md、EXAMS.md（本期考试：六级 `cet6`）、PACE_AND_MUSIC.md
 4. remotion-template/skills/reading-caption-news/SKILL.md、references/style.md、references/qa_checklist.md
 5. 参考 episode：reading-episodes/002_teen_sleep_news（只学结构和写法，内容全部重写）
 
@@ -169,24 +177,28 @@ Episode <id> (reading-caption-news, cet4) is ready.
 - 词汇等级只能用：四级 / 六级 / 拓展（拓展最多 1 个，至少一半是 六级）
 - 原创题标注：`六级风格原创阅读题`（只有引用真题才写“真题”，并注明年份和出处）
 - 文件夹：reading-episodes/，命名：<编号>_cet6_<主题>_news
-- 时长：50–72 秒
+- 节奏：`pace: 'fast'`（快节奏（抖音 / TikTok）），时长 35–58 秒
 
 【这个模板的要点】
 - 一期 = 一条字幕新闻：标题 → 5 个分句（每句一张数据图 + 大字英文按朗读出现 + 关键词黄块 + 中文 + 来源标签）→ 阅读题 + 原文定位 → 本篇词汇复习。
 - 先写 FACTS.md：只用一手来源（CDC、WHO、NIH、政府统计、期刊），每条写 URL、页面日期、原文引用；屏幕上每个数字都要和原文一致（四舍五入要说 about）。
 - 英文句子原创，不抄来源原文；结构：专家怎么说 → 意外的数字 → 为什么 → 后果 → 一个简单的行动。
 - 数字在配音 text 里写成英文单词（eight to ten hours），subtitle 里写阿拉伯数字（8 to 10 hours）；`keyword` 必须是 subtitle 里原样存在的短语；含数字的句子必须有 `sourceId`。
-- 数据图只能用 clock / people / brain / trend / phone。健康话题只说来源说过的话，不给建议。时长 50–72 秒。
+- 数据图只能用 clock / people / brain / trend / phone。健康话题只说来源说过的话，不给建议。
 
 【六级的要点】
 - 观众是备考六级的大学生；单词标 `四级` 或 `六级`，至少一半是 `六级`，最多一个 `拓展`。
 - 英文难度 B2–C1，句子可到约 28 个词；题目要有一步推理，选项同义改写、干扰项半对半错。
 - 参考 episode 是高考的：所有 `level`、`sourceNote`、每句配音的 `instruction`（高中生 → 大学生）、封面文字、绘本的 `level` 字段（大学英语六级）都要改写。
 
+【节奏要点】
+- 快节奏是给抖音 / TikTok 的：第一秒就是内容，配音语速自动加快，句与句之间几乎没有空白；每句口播控制在一口气说完（中文约 18 字、英文约 14 词以内），一句一个信息点。
+- 不要为了时长把停顿加回去；需要强调时只在答案揭晓前用一次 pauseBefore。配乐风格和速度由模板和节奏自动决定（npm run music -- --list），data 里的 score.bpm 必须落在该风格的快节奏速度范围内。
+
 【执行步骤】
 1. cd remotion-template；新电脑先运行 `npm run doctor`，必须显示 Ready。
 2. 运行 `npm run plan`，确认上一期双语阅读不是 reading-caption-news（如果是，先停下来问我是否继续），记下下一个编号。
-3. 运行 `npm run new -- reading-caption-news <编号>_cet6_<主题>_news --exam cet6`。
+3. 运行 `npm run new -- reading-caption-news <编号>_cet6_<主题>_news --exam cet6 --pace fast`。
 4. 先写 FACTS.md（来源、日期、原文引用），再写其它文件。
 5. 写 brief.md：内容、每个词的等级、题目和答案。
 6. 写 TREATMENT.md：三个结构候选和选择理由、开场钩子、招牌镜头、配乐 BPM 和调性、第 9 节与同模板上一期的 6 项对比（至少 3 项不同，参考 SKILL.md 的 variation knobs）。
@@ -210,6 +222,302 @@ Episode <id> (reading-caption-news, cet4) is ready.
 【完成后按这个格式汇报】
 ```
 Episode <id> (reading-caption-news, cet6) is ready.
+- Video: exports/<id>.mp4, <时长> s, QA PASS
+- Cover / caption / publish notes: exports/
+- Pinned-comment answer: <评论区置顶答案>
+- Please listen to: <用了 asrAccept 的句子，或 none>
+- Sources: <FACTS.md 里的链接>
+- Warnings accepted / problems I could not fix in data: <none / 说明>
+```
+````
+
+## 考研（kaoyan）
+
+````text
+你是为抖音账号「小猪盖被」制作英语短视频的 agent。本次任务：用模板 `reading-caption-news`（双语新闻阅读）做一期考研双语阅读视频。
+
+【主题】<话题，例如 teenagers and exercise；不填就自己选一个有一手来源的考研生关心的话题>
+
+【开始前按顺序读完】
+1. AGENTS.md
+2. docs/agent_playbook.md（严格按它的步骤执行）
+3. remotion-template/skills/_shared/HOUSE_RULES.md、DIRECTING.md、EXAMS.md（本期考试：考研 `kaoyan`）、PACE_AND_MUSIC.md
+4. remotion-template/skills/reading-caption-news/SKILL.md、references/style.md、references/qa_checklist.md
+5. 参考 episode：reading-episodes/002_teen_sleep_news（只学结构和写法，内容全部重写）
+
+【本期参数】
+- 模板：`reading-caption-news`（Captions-first social news: a Gaokao-style passage in big English chunks with Chinese under, sourced numbers, a reading question.）
+- 考试：考研（`exam: 'kaoyan'`），观众：考研生
+- 词汇等级只能用：考研 / 拓展（拓展最多 1 个）
+- 原创题标注：`考研风格原创阅读题`（只有引用真题才写“真题”，并注明年份和出处）
+- 文件夹：reading-episodes/，命名：<编号>_kaoyan_<主题>_news
+- 节奏：`pace: 'fast'`（快节奏（抖音 / TikTok）），时长 35–58 秒
+
+【这个模板的要点】
+- 一期 = 一条字幕新闻：标题 → 5 个分句（每句一张数据图 + 大字英文按朗读出现 + 关键词黄块 + 中文 + 来源标签）→ 阅读题 + 原文定位 → 本篇词汇复习。
+- 先写 FACTS.md：只用一手来源（CDC、WHO、NIH、政府统计、期刊），每条写 URL、页面日期、原文引用；屏幕上每个数字都要和原文一致（四舍五入要说 about）。
+- 英文句子原创，不抄来源原文；结构：专家怎么说 → 意外的数字 → 为什么 → 后果 → 一个简单的行动。
+- 数字在配音 text 里写成英文单词（eight to ten hours），subtitle 里写阿拉伯数字（8 to 10 hours）；`keyword` 必须是 subtitle 里原样存在的短语；含数字的句子必须有 `sourceId`。
+- 数据图只能用 clock / people / brain / trend / phone。健康话题只说来源说过的话，不给建议。
+
+【考研的要点】
+- 观众是考研生；单词来自考研英语大纲词汇（约 5,500 词），标 `考研`，最多一个 `拓展`；优先“熟词僻义”（address 处理、novel 新颖的、figure 认为）和阅读里的高频抽象词，这是考研最容易失分的地方。
+- 英文难度 B2–C1，句子可到约 30 个词，可以用长难句（定语从句、插入语、倒装）并在中文里拆解；词汇题按完形填空风格（四选一、靠上下文逻辑），阅读题按阅读 Part A 风格（主旨、推理、作者态度、例证目的），选项同义改写。
+- 参考 episode 是高考的：所有 `level`、`sourceNote`、每句配音的 `instruction`（高中生 → 考研生）、封面文字、绘本的 `level` 字段（考研英语一 / 英语二）都要改写。
+
+【节奏要点】
+- 快节奏是给抖音 / TikTok 的：第一秒就是内容，配音语速自动加快，句与句之间几乎没有空白；每句口播控制在一口气说完（中文约 18 字、英文约 14 词以内），一句一个信息点。
+- 不要为了时长把停顿加回去；需要强调时只在答案揭晓前用一次 pauseBefore。配乐风格和速度由模板和节奏自动决定（npm run music -- --list），data 里的 score.bpm 必须落在该风格的快节奏速度范围内。
+
+【执行步骤】
+1. cd remotion-template；新电脑先运行 `npm run doctor`，必须显示 Ready。
+2. 运行 `npm run plan`，确认上一期双语阅读不是 reading-caption-news（如果是，先停下来问我是否继续），记下下一个编号。
+3. 运行 `npm run new -- reading-caption-news <编号>_kaoyan_<主题>_news --exam kaoyan --pace fast`。
+4. 先写 FACTS.md（来源、日期、原文引用），再写其它文件。
+5. 写 brief.md：内容、每个词的等级、题目和答案。
+6. 写 TREATMENT.md：三个结构候选和选择理由、开场钩子、招牌镜头、配乐 BPM 和调性、第 9 节与同模板上一期的 6 项对比（至少 3 项不同，参考 SKILL.md 的 variation knobs）。
+7. 改写 data/captionNews.ts、data/voiceScript.ts、data/episodeConfig.ts 的每一个字段（参考 episode 的内容一个都不能留，exam 保持 'kaoyan'）。
+8. 运行 `npm run episode:use -- ../reading-episodes/<你的 episodeId>`，再运行 `npm run check`，修好所有 ERROR；每个 warn 要么修好，要么在 notes.md 里说明。
+9. 运行 `npm run produce`，直到显示 PRODUCE DONE。voice:check 不通过：按 playbook 6.3 改写那一句的 text 后重跑；只有确认发音正确时才加 asrAccept，并写进 notes.md。时长超出：先删口头词和停顿，不缩短字幕停留时间。
+10. 人工看片：打开 exports/<id>_contact_sheet.jpg 和 remotion-template/out/qa/<id>/ 里的每一张静帧，按 skills/reading-caption-news/references/qa_checklist.md 逐项检查（文字不重叠不出界、小猪原样且不挡内容、中文清楚、封面缩略图能看清）。有问题改 data 后重跑 produce。
+11. 填写 notes.md（QA 数字、人工检查结果、改写过的句子、asrAccept、接受的 warn），只提交这个 episode 文件夹（不要提交 exports/、audio/、.env）。
+
+【绝对不要】
+- 修改、重画、换色或替换小猪（src/brand/BrandPig.tsx 已锁定），或加入任何其它小猪图片。
+- 更换配音（cosyvoice-v3-flash / longanhuan），或在 .env 里覆盖模型和音色。
+- 修改模板代码、src/core/、src/brand/；只有改代码才能解决的问题，停下来告诉我。
+- 打印、提交或写下 DASHSCOPE_API_KEY。
+- 从网上下载音乐、图片、视频放进视频；照抄新闻、试卷或教材原文。
+- 把原创题写成“真题”；发布没有来源的数字。
+
+【遇到这些情况先停下来问我】
+- 没有主题且无法按上面的规则自己选；plan 显示要连续两期用同一个模板；新闻数字找不到一手来源；DashScope 报错（密钥、额度）；只有改代码才能修好的画面问题。
+
+【完成后按这个格式汇报】
+```
+Episode <id> (reading-caption-news, kaoyan) is ready.
+- Video: exports/<id>.mp4, <时长> s, QA PASS
+- Cover / caption / publish notes: exports/
+- Pinned-comment answer: <评论区置顶答案>
+- Please listen to: <用了 asrAccept 的句子，或 none>
+- Sources: <FACTS.md 里的链接>
+- Warnings accepted / problems I could not fix in data: <none / 说明>
+```
+````
+
+## 雅思（ielts）
+
+````text
+你是为抖音账号「小猪盖被」制作英语短视频的 agent。本次任务：用模板 `reading-caption-news`（双语新闻阅读）做一期雅思双语阅读视频。
+
+【主题】<话题，例如 teenagers and exercise；不填就自己选一个有一手来源的留学备考生关心的话题>
+
+【开始前按顺序读完】
+1. AGENTS.md
+2. docs/agent_playbook.md（严格按它的步骤执行）
+3. remotion-template/skills/_shared/HOUSE_RULES.md、DIRECTING.md、EXAMS.md（本期考试：雅思 `ielts`）、PACE_AND_MUSIC.md
+4. remotion-template/skills/reading-caption-news/SKILL.md、references/style.md、references/qa_checklist.md
+5. 参考 episode：reading-episodes/002_teen_sleep_news（只学结构和写法，内容全部重写）
+
+【本期参数】
+- 模板：`reading-caption-news`（Captions-first social news: a Gaokao-style passage in big English chunks with Chinese under, sourced numbers, a reading question.）
+- 考试：雅思（`exam: 'ielts'`），观众：留学备考生
+- 词汇等级只能用：雅思 / 拓展（拓展最多 1 个）
+- 原创题标注：`雅思风格原创阅读题`（只有引用真题才写“真题”，并注明年份和出处）
+- 文件夹：reading-episodes/，命名：<编号>_ielts_<主题>_news
+- 节奏：`pace: 'fast'`（快节奏（抖音 / TikTok）），时长 35–58 秒
+
+【这个模板的要点】
+- 一期 = 一条字幕新闻：标题 → 5 个分句（每句一张数据图 + 大字英文按朗读出现 + 关键词黄块 + 中文 + 来源标签）→ 阅读题 + 原文定位 → 本篇词汇复习。
+- 先写 FACTS.md：只用一手来源（CDC、WHO、NIH、政府统计、期刊），每条写 URL、页面日期、原文引用；屏幕上每个数字都要和原文一致（四舍五入要说 about）。
+- 英文句子原创，不抄来源原文；结构：专家怎么说 → 意外的数字 → 为什么 → 后果 → 一个简单的行动。
+- 数字在配音 text 里写成英文单词（eight to ten hours），subtitle 里写阿拉伯数字（8 to 10 hours）；`keyword` 必须是 subtitle 里原样存在的短语；含数字的句子必须有 `sourceId`。
+- 数据图只能用 clock / people / brain / trend / phone。健康话题只说来源说过的话，不给建议。
+
+【雅思的要点】
+- 观众是准备出国的雅思考生；单词标 `雅思`，优先学术词汇表（AWL）和雅思高频话题词（教育、环境、科技、城市化、健康、全球化），要能直接用在写作 Task 2 和口语 Part 3；最多一个 `拓展`。
+- 一律用英式拼写（colour、organise、centre、programme）；英文难度 B2–C1（目标 6.5–7 分）；词汇题按句子 / 摘要填空风格，阅读题可以把 True / False / Not Given 判断或段落主旨改写成四选一；口播可以加一句“写作或口语里怎么用”。
+- 参考 episode 是高考的：所有 `level`、`sourceNote`、每句配音的 `instruction`（高中生 → 留学备考生）、封面文字、绘本的 `level` 字段（雅思 6.5+）都要改写。
+
+【节奏要点】
+- 快节奏是给抖音 / TikTok 的：第一秒就是内容，配音语速自动加快，句与句之间几乎没有空白；每句口播控制在一口气说完（中文约 18 字、英文约 14 词以内），一句一个信息点。
+- 不要为了时长把停顿加回去；需要强调时只在答案揭晓前用一次 pauseBefore。配乐风格和速度由模板和节奏自动决定（npm run music -- --list），data 里的 score.bpm 必须落在该风格的快节奏速度范围内。
+
+【执行步骤】
+1. cd remotion-template；新电脑先运行 `npm run doctor`，必须显示 Ready。
+2. 运行 `npm run plan`，确认上一期双语阅读不是 reading-caption-news（如果是，先停下来问我是否继续），记下下一个编号。
+3. 运行 `npm run new -- reading-caption-news <编号>_ielts_<主题>_news --exam ielts --pace fast`。
+4. 先写 FACTS.md（来源、日期、原文引用），再写其它文件。
+5. 写 brief.md：内容、每个词的等级、题目和答案。
+6. 写 TREATMENT.md：三个结构候选和选择理由、开场钩子、招牌镜头、配乐 BPM 和调性、第 9 节与同模板上一期的 6 项对比（至少 3 项不同，参考 SKILL.md 的 variation knobs）。
+7. 改写 data/captionNews.ts、data/voiceScript.ts、data/episodeConfig.ts 的每一个字段（参考 episode 的内容一个都不能留，exam 保持 'ielts'）。
+8. 运行 `npm run episode:use -- ../reading-episodes/<你的 episodeId>`，再运行 `npm run check`，修好所有 ERROR；每个 warn 要么修好，要么在 notes.md 里说明。
+9. 运行 `npm run produce`，直到显示 PRODUCE DONE。voice:check 不通过：按 playbook 6.3 改写那一句的 text 后重跑；只有确认发音正确时才加 asrAccept，并写进 notes.md。时长超出：先删口头词和停顿，不缩短字幕停留时间。
+10. 人工看片：打开 exports/<id>_contact_sheet.jpg 和 remotion-template/out/qa/<id>/ 里的每一张静帧，按 skills/reading-caption-news/references/qa_checklist.md 逐项检查（文字不重叠不出界、小猪原样且不挡内容、中文清楚、封面缩略图能看清）。有问题改 data 后重跑 produce。
+11. 填写 notes.md（QA 数字、人工检查结果、改写过的句子、asrAccept、接受的 warn），只提交这个 episode 文件夹（不要提交 exports/、audio/、.env）。
+
+【绝对不要】
+- 修改、重画、换色或替换小猪（src/brand/BrandPig.tsx 已锁定），或加入任何其它小猪图片。
+- 更换配音（cosyvoice-v3-flash / longanhuan），或在 .env 里覆盖模型和音色。
+- 修改模板代码、src/core/、src/brand/；只有改代码才能解决的问题，停下来告诉我。
+- 打印、提交或写下 DASHSCOPE_API_KEY。
+- 从网上下载音乐、图片、视频放进视频；照抄新闻、试卷或教材原文。
+- 把原创题写成“真题”；发布没有来源的数字。
+
+【遇到这些情况先停下来问我】
+- 没有主题且无法按上面的规则自己选；plan 显示要连续两期用同一个模板；新闻数字找不到一手来源；DashScope 报错（密钥、额度）；只有改代码才能修好的画面问题。
+
+【完成后按这个格式汇报】
+```
+Episode <id> (reading-caption-news, ielts) is ready.
+- Video: exports/<id>.mp4, <时长> s, QA PASS
+- Cover / caption / publish notes: exports/
+- Pinned-comment answer: <评论区置顶答案>
+- Please listen to: <用了 asrAccept 的句子，或 none>
+- Sources: <FACTS.md 里的链接>
+- Warnings accepted / problems I could not fix in data: <none / 说明>
+```
+````
+
+## 托福（toefl）
+
+````text
+你是为抖音账号「小猪盖被」制作英语短视频的 agent。本次任务：用模板 `reading-caption-news`（双语新闻阅读）做一期托福双语阅读视频。
+
+【主题】<话题，例如 teenagers and exercise；不填就自己选一个有一手来源的留学备考生关心的话题>
+
+【开始前按顺序读完】
+1. AGENTS.md
+2. docs/agent_playbook.md（严格按它的步骤执行）
+3. remotion-template/skills/_shared/HOUSE_RULES.md、DIRECTING.md、EXAMS.md（本期考试：托福 `toefl`）、PACE_AND_MUSIC.md
+4. remotion-template/skills/reading-caption-news/SKILL.md、references/style.md、references/qa_checklist.md
+5. 参考 episode：reading-episodes/002_teen_sleep_news（只学结构和写法，内容全部重写）
+
+【本期参数】
+- 模板：`reading-caption-news`（Captions-first social news: a Gaokao-style passage in big English chunks with Chinese under, sourced numbers, a reading question.）
+- 考试：托福（`exam: 'toefl'`），观众：留学备考生
+- 词汇等级只能用：托福 / 拓展（拓展最多 1 个）
+- 原创题标注：`托福风格原创阅读题`（只有引用真题才写“真题”，并注明年份和出处）
+- 文件夹：reading-episodes/，命名：<编号>_toefl_<主题>_news
+- 节奏：`pace: 'fast'`（快节奏（抖音 / TikTok）），时长 35–58 秒
+
+【这个模板的要点】
+- 一期 = 一条字幕新闻：标题 → 5 个分句（每句一张数据图 + 大字英文按朗读出现 + 关键词黄块 + 中文 + 来源标签）→ 阅读题 + 原文定位 → 本篇词汇复习。
+- 先写 FACTS.md：只用一手来源（CDC、WHO、NIH、政府统计、期刊），每条写 URL、页面日期、原文引用；屏幕上每个数字都要和原文一致（四舍五入要说 about）。
+- 英文句子原创，不抄来源原文；结构：专家怎么说 → 意外的数字 → 为什么 → 后果 → 一个简单的行动。
+- 数字在配音 text 里写成英文单词（eight to ten hours），subtitle 里写阿拉伯数字（8 to 10 hours）；`keyword` 必须是 subtitle 里原样存在的短语；含数字的句子必须有 `sourceId`。
+- 数据图只能用 clock / people / brain / trend / phone。健康话题只说来源说过的话，不给建议。
+
+【托福的要点】
+- 观众是准备出国的托福考生；单词标 `托福`，优先学术讲座和阅读里的学科词（生物、地质、天文、艺术史、心理学、经济学）；最多一个 `拓展`。
+- 一律用美式拼写（color、organize、center、program）；英文难度 B2–C1；词汇题按托福阅读词汇题风格（“The word X in the passage is closest in meaning to …”），阅读题按细节、推理、修辞目的题。托福 iBT 的题型和计分在 2026 年有调整：写具体题型名称或分数之前，先查 ets.org 的官方说明，不要凭记忆写。
+- 参考 episode 是高考的：所有 `level`、`sourceNote`、每句配音的 `instruction`（高中生 → 留学备考生）、封面文字、绘本的 `level` 字段（托福 100+）都要改写。
+
+【节奏要点】
+- 快节奏是给抖音 / TikTok 的：第一秒就是内容，配音语速自动加快，句与句之间几乎没有空白；每句口播控制在一口气说完（中文约 18 字、英文约 14 词以内），一句一个信息点。
+- 不要为了时长把停顿加回去；需要强调时只在答案揭晓前用一次 pauseBefore。配乐风格和速度由模板和节奏自动决定（npm run music -- --list），data 里的 score.bpm 必须落在该风格的快节奏速度范围内。
+
+【执行步骤】
+1. cd remotion-template；新电脑先运行 `npm run doctor`，必须显示 Ready。
+2. 运行 `npm run plan`，确认上一期双语阅读不是 reading-caption-news（如果是，先停下来问我是否继续），记下下一个编号。
+3. 运行 `npm run new -- reading-caption-news <编号>_toefl_<主题>_news --exam toefl --pace fast`。
+4. 先写 FACTS.md（来源、日期、原文引用），再写其它文件。
+5. 写 brief.md：内容、每个词的等级、题目和答案。
+6. 写 TREATMENT.md：三个结构候选和选择理由、开场钩子、招牌镜头、配乐 BPM 和调性、第 9 节与同模板上一期的 6 项对比（至少 3 项不同，参考 SKILL.md 的 variation knobs）。
+7. 改写 data/captionNews.ts、data/voiceScript.ts、data/episodeConfig.ts 的每一个字段（参考 episode 的内容一个都不能留，exam 保持 'toefl'）。
+8. 运行 `npm run episode:use -- ../reading-episodes/<你的 episodeId>`，再运行 `npm run check`，修好所有 ERROR；每个 warn 要么修好，要么在 notes.md 里说明。
+9. 运行 `npm run produce`，直到显示 PRODUCE DONE。voice:check 不通过：按 playbook 6.3 改写那一句的 text 后重跑；只有确认发音正确时才加 asrAccept，并写进 notes.md。时长超出：先删口头词和停顿，不缩短字幕停留时间。
+10. 人工看片：打开 exports/<id>_contact_sheet.jpg 和 remotion-template/out/qa/<id>/ 里的每一张静帧，按 skills/reading-caption-news/references/qa_checklist.md 逐项检查（文字不重叠不出界、小猪原样且不挡内容、中文清楚、封面缩略图能看清）。有问题改 data 后重跑 produce。
+11. 填写 notes.md（QA 数字、人工检查结果、改写过的句子、asrAccept、接受的 warn），只提交这个 episode 文件夹（不要提交 exports/、audio/、.env）。
+
+【绝对不要】
+- 修改、重画、换色或替换小猪（src/brand/BrandPig.tsx 已锁定），或加入任何其它小猪图片。
+- 更换配音（cosyvoice-v3-flash / longanhuan），或在 .env 里覆盖模型和音色。
+- 修改模板代码、src/core/、src/brand/；只有改代码才能解决的问题，停下来告诉我。
+- 打印、提交或写下 DASHSCOPE_API_KEY。
+- 从网上下载音乐、图片、视频放进视频；照抄新闻、试卷或教材原文。
+- 把原创题写成“真题”；发布没有来源的数字。
+
+【遇到这些情况先停下来问我】
+- 没有主题且无法按上面的规则自己选；plan 显示要连续两期用同一个模板；新闻数字找不到一手来源；DashScope 报错（密钥、额度）；只有改代码才能修好的画面问题。
+
+【完成后按这个格式汇报】
+```
+Episode <id> (reading-caption-news, toefl) is ready.
+- Video: exports/<id>.mp4, <时长> s, QA PASS
+- Cover / caption / publish notes: exports/
+- Pinned-comment answer: <评论区置顶答案>
+- Please listen to: <用了 asrAccept 的句子，或 none>
+- Sources: <FACTS.md 里的链接>
+- Warnings accepted / problems I could not fix in data: <none / 说明>
+```
+````
+
+## GRE（gre）
+
+````text
+你是为抖音账号「小猪盖被」制作英语短视频的 agent。本次任务：用模板 `reading-caption-news`（双语新闻阅读）做一期GRE双语阅读视频。
+
+【主题】<话题，例如 teenagers and exercise；不填就自己选一个有一手来源的申研留学生关心的话题>
+
+【开始前按顺序读完】
+1. AGENTS.md
+2. docs/agent_playbook.md（严格按它的步骤执行）
+3. remotion-template/skills/_shared/HOUSE_RULES.md、DIRECTING.md、EXAMS.md（本期考试：GRE `gre`）、PACE_AND_MUSIC.md
+4. remotion-template/skills/reading-caption-news/SKILL.md、references/style.md、references/qa_checklist.md
+5. 参考 episode：reading-episodes/002_teen_sleep_news（只学结构和写法，内容全部重写）
+
+【本期参数】
+- 模板：`reading-caption-news`（Captions-first social news: a Gaokao-style passage in big English chunks with Chinese under, sourced numbers, a reading question.）
+- 考试：GRE（`exam: 'gre'`），观众：申研留学生
+- 词汇等级只能用：GRE / 拓展（拓展最多 1 个）
+- 原创题标注：`GRE风格原创阅读题`（只有引用真题才写“真题”，并注明年份和出处）
+- 文件夹：reading-episodes/，命名：<编号>_gre_<主题>_news
+- 节奏：`pace: 'fast'`（快节奏（抖音 / TikTok）），时长 35–58 秒
+
+【这个模板的要点】
+- 一期 = 一条字幕新闻：标题 → 5 个分句（每句一张数据图 + 大字英文按朗读出现 + 关键词黄块 + 中文 + 来源标签）→ 阅读题 + 原文定位 → 本篇词汇复习。
+- 先写 FACTS.md：只用一手来源（CDC、WHO、NIH、政府统计、期刊），每条写 URL、页面日期、原文引用；屏幕上每个数字都要和原文一致（四舍五入要说 about）。
+- 英文句子原创，不抄来源原文；结构：专家怎么说 → 意外的数字 → 为什么 → 后果 → 一个简单的行动。
+- 数字在配音 text 里写成英文单词（eight to ten hours），subtitle 里写阿拉伯数字（8 to 10 hours）；`keyword` 必须是 subtitle 里原样存在的短语；含数字的句子必须有 `sourceId`。
+- 数据图只能用 clock / people / brain / trend / phone。健康话题只说来源说过的话，不给建议。
+
+【GRE的要点】
+- 观众是申请海外研究生的 GRE 考生；单词标 `GRE`，是 C1–C2 的高阶词（laconic、obdurate、equivocate、mitigate），讲清一词多义和褒贬色彩；最多一个 `拓展`。
+- 英文难度 C1–C2；词汇题按填空（Text Completion）或句子等价（Sentence Equivalence，改成单选：选出能让句子意思不变的词）风格，用转折、让步、因果等逻辑线索词出题；阅读题考作者态度、论证结构和推理。
+- 参考 episode 是高考的：所有 `level`、`sourceNote`、每句配音的 `instruction`（高中生 → 申研留学生）、封面文字、绘本的 `level` 字段（GRE Verbal）都要改写。
+
+【节奏要点】
+- 快节奏是给抖音 / TikTok 的：第一秒就是内容，配音语速自动加快，句与句之间几乎没有空白；每句口播控制在一口气说完（中文约 18 字、英文约 14 词以内），一句一个信息点。
+- 不要为了时长把停顿加回去；需要强调时只在答案揭晓前用一次 pauseBefore。配乐风格和速度由模板和节奏自动决定（npm run music -- --list），data 里的 score.bpm 必须落在该风格的快节奏速度范围内。
+
+【执行步骤】
+1. cd remotion-template；新电脑先运行 `npm run doctor`，必须显示 Ready。
+2. 运行 `npm run plan`，确认上一期双语阅读不是 reading-caption-news（如果是，先停下来问我是否继续），记下下一个编号。
+3. 运行 `npm run new -- reading-caption-news <编号>_gre_<主题>_news --exam gre --pace fast`。
+4. 先写 FACTS.md（来源、日期、原文引用），再写其它文件。
+5. 写 brief.md：内容、每个词的等级、题目和答案。
+6. 写 TREATMENT.md：三个结构候选和选择理由、开场钩子、招牌镜头、配乐 BPM 和调性、第 9 节与同模板上一期的 6 项对比（至少 3 项不同，参考 SKILL.md 的 variation knobs）。
+7. 改写 data/captionNews.ts、data/voiceScript.ts、data/episodeConfig.ts 的每一个字段（参考 episode 的内容一个都不能留，exam 保持 'gre'）。
+8. 运行 `npm run episode:use -- ../reading-episodes/<你的 episodeId>`，再运行 `npm run check`，修好所有 ERROR；每个 warn 要么修好，要么在 notes.md 里说明。
+9. 运行 `npm run produce`，直到显示 PRODUCE DONE。voice:check 不通过：按 playbook 6.3 改写那一句的 text 后重跑；只有确认发音正确时才加 asrAccept，并写进 notes.md。时长超出：先删口头词和停顿，不缩短字幕停留时间。
+10. 人工看片：打开 exports/<id>_contact_sheet.jpg 和 remotion-template/out/qa/<id>/ 里的每一张静帧，按 skills/reading-caption-news/references/qa_checklist.md 逐项检查（文字不重叠不出界、小猪原样且不挡内容、中文清楚、封面缩略图能看清）。有问题改 data 后重跑 produce。
+11. 填写 notes.md（QA 数字、人工检查结果、改写过的句子、asrAccept、接受的 warn），只提交这个 episode 文件夹（不要提交 exports/、audio/、.env）。
+
+【绝对不要】
+- 修改、重画、换色或替换小猪（src/brand/BrandPig.tsx 已锁定），或加入任何其它小猪图片。
+- 更换配音（cosyvoice-v3-flash / longanhuan），或在 .env 里覆盖模型和音色。
+- 修改模板代码、src/core/、src/brand/；只有改代码才能解决的问题，停下来告诉我。
+- 打印、提交或写下 DASHSCOPE_API_KEY。
+- 从网上下载音乐、图片、视频放进视频；照抄新闻、试卷或教材原文。
+- 把原创题写成“真题”；发布没有来源的数字。
+
+【遇到这些情况先停下来问我】
+- 没有主题且无法按上面的规则自己选；plan 显示要连续两期用同一个模板；新闻数字找不到一手来源；DashScope 报错（密钥、额度）；只有改代码才能修好的画面问题。
+
+【完成后按这个格式汇报】
+```
+Episode <id> (reading-caption-news, gre) is ready.
 - Video: exports/<id>.mp4, <时长> s, QA PASS
 - Cover / caption / publish notes: exports/
 - Pinned-comment answer: <评论区置顶答案>

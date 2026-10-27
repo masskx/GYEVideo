@@ -6,7 +6,7 @@
 
 | 用法 | 什么时候用 | 在哪里 |
 |---|---|---|
-| **单人完整提示词** | 一个 agent 从选题做到成片（最常用） | `docs/prompts/<模板 id>.md`，每个模板有高考 / 四级 / 六级三个版本 |
+| **单人完整提示词** | 一个 agent 从选题做到成片（最常用） | `docs/prompts/<模板 id>.md`，每个模板有七个考试（高考、四级、六级、考研、雅思、托福、GRE）的版本 |
 | **分工协作提示词** | 4 个 agent 流水线：选题 → 编剧 → 制作 → 审片 | `docs/prompts/roles.md` |
 | **通用提示词** | 首次配置、一次做一批、修改、只审片 | 本页下方 |
 
@@ -75,9 +75,9 @@ npm.cmd run prompt -- reading-picture-book --exam gaokao --topic "一把丢了�
 
 ```text
 请阅读 AGENTS.md、docs/agent_playbook.md 和 remotion-template/skills/_shared/EXAMS.md，连续做 3 期视频：
-1. <高考 / 四级 / 六级> 单词：<词根 A>
-2. <高考 / 四级 / 六级> 双语阅读：<话题 B>
-3. <高考 / 四级 / 六级> 单词：<词根 C>
+1. <考试> 单词：<词根 A>
+2. <考试> 双语阅读：<话题 B>
+3. <考试> 单词：<词根 C>
 每一期开始前：运行 npm run plan 选模板（同一条线相邻两期不用同一个模板），
 再运行 npm run prompt -- <模板 id> --exam <考试> --topic "<主题>"，严格按生成的提示词完成这一期。
 每一期都必须单独达到完成标准（check、produce 显示 PRODUCE DONE、人工看片、notes.md），一期没完成不要开始下一期。

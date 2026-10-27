@@ -78,13 +78,13 @@ A 2D camera over a frontal page. Use at least four different moves per episode.
 
 ## 7. Sound
 
-All synthesized by `scripts/audio/` (`sfx.ts`, `score.ts`, palette `dossier`), so it is original and needs no licence:
+The SFX are synthesized by `scripts/audio/sfx.ts`. The score is composed for every episode by the local music engine (`../../_shared/PACE_AND_MUSIC.md`), so it is original and needs no licence:
 
-- **Score**: synth kick, clap, hats, soft square bass with a 2nd harmonic for phone speakers, marimba-like pluck, Karplus–Strong pizzicato, music-box bell. One chord per bar (i–VI–III–VII in the episode key). Sections follow scene kinds: *sneak* (pizzicato + snaps) for the case, *secret* (bass + snaps) for the fingerprint, *groove* for root and exhibits, *strip* (bass + snaps) for solving, *light* for homework.
+- **Score**: style `noir-swing` (brushed jazz, walking bass, vibraphone) at relaxed / standard pace, `spy-funk` (dorian groove, clav stabs, muted trumpet) at fast pace. Scene roles: case = hook, fingerprint = build, root reveal = drop, exhibits = verse, evidence board = build, solve = payoff, homework = outro.
 - **A snare roll + riser** into the root reveal and into each silence.
 - **Silence before the verdict**: `lineMeta.pauseBefore` empties the score so the line and the stamp land alone. The first sound after it is the stamp.
 - **Foley follows the print**: pop (cards, glyphs), stamp / stamp-small, shutter (flash), whoosh (loupe, strings), paper (cards, folders), type (typewriter clicks), pin (evidence board), bell (case closed).
-- **Mix**: voice about 12 dB above the music while speaking (`bgmDuckingFactor` 0.6); SFX ahead of the music on impacts; master −14 LUFS with a −1 dB limiter (`render-runner.ts`).
+- **Mix**: voice about 12 dB above the music while speaking (`bgmDuckingFactor` 0.6); SFX ahead of the music on impacts; score mastered to −16 LUFS (`npm run audio`), final mix −14 LUFS with a −1 dB limiter (`render-runner.ts`).
 
 ## 8. Native moves (the menu)
 
