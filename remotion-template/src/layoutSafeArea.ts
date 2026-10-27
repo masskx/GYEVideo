@@ -1,0 +1,3 @@
+export const PLATFORM_UI_SAFE_BOTTOM = 320;
+export const PLATFORM_UI_SAFE_BOTTOM_TIGHT = 260;
+export const SUBTITLE_SAFE_BOTTOM = 236;

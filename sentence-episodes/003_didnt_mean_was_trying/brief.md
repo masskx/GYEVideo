@@ -1,0 +1,27 @@
+# Auto Generated Episode Brief
+
+- `episodeId`: `003_didnt_mean_was_trying`
+- `contentType`: `emotional_repair`
+- `sentencePattern`: `I didn't mean to A. I was just trying to B.`
+- `chinesePainPoint`: `我不是故意让你难受的，我只是想把事情处理好。`
+- `coreMeaning`: `先止损冒犯感，再补上真正本意。`
+- `targetViewer`: `中文母语英语学习者`
+- `useCase`: `道歉、缓和气氛、修复关系里的误伤`
+- `emotion`: `懊恼、补救、放低姿态`
+- `firstInterruptText`: `道歉别更尴尬`
+- `painFlashLines`: `话说重了？ / 解释更糟？ / 想补救却越描越黑？`
+- `conflictLine`: `很多人不是不会道歉，是不会把本意说出来。`
+- `patternSlamLine`: `I didn't mean to A. I was just trying to B.`
+- `memoryFormula`: `不是故意 A，我只是想 B。`
+- `sceneMetaphor`: `雨夜窗边，一条道歉消息改了又删。`
+- `requiredSceneElements`: `rain / typing / deleted message`
+- `slotSwapDesign`: `A 用红色冒犯卡，B 用黄色本意卡，逐个翻转。`
+- `examples`: `hurt you -> be honest / sound harsh -> make things clear / push you away -> protect myself`
+- `drillLines`: `Didn't mean to A. / Just trying to B. / 不是故意 A，我只是想 B。`
+- `coverMainTitle`: `道歉别再只会 say sorry`
+- `coverSubtitle`: `把本意说出来，关系才有得救`
+- `coverPatternLine`: `I didn't mean to A. I was just trying to B.`
+- `douyinCaption`: `不是一句 sorry 就够了。`
+- `publishTitleOptions`: `道歉别再只会 say sorry / 不是故意 A 我只是想 B / 越描越黑时就用这个`
+- `antiPptRisk`: `最容易做成空泛道歉课，所以必须放进真实聊天补救场景。`
+- `whyThisWillBeSaved`: `关系里一旦说重了，这个骨架几乎能立刻救场。`

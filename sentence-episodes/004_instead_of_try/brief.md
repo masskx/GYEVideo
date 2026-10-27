@@ -1,0 +1,27 @@
+# Auto Generated Episode Brief
+
+- `episodeId`: `004_instead_of_try`
+- `contentType`: `higher_level_replacement`
+- `sentencePattern`: `Instead of A, try B.`
+- `chinesePainPoint`: `别再只会硬说 don't，给建议也能说得更高级。`
+- `coreMeaning`: `别直接堵死，用替换感给出更顺耳的建议。`
+- `targetViewer`: `中文母语英语学习者`
+- `useCase`: `提建议、改表达、做高级替换`
+- `emotion`: `利落、干脆、有点老师傅感`
+- `firstInterruptText`: `别再硬说别`
+- `painFlashLines`: `太像命令？ / 太像老师？ / 一开口就生硬？`
+- `conflictLine`: `你不是不会提建议，你是只会硬拦。`
+- `patternSlamLine`: `Instead of A, try B.`
+- `memoryFormula`: `别 A，换成 B。`
+- `sceneMetaphor`: `低级表达被划掉，高级表达直接 slam 上来。`
+- `requiredSceneElements`: `strikeout / swap card / replacement hit`
+- `slotSwapDesign`: `A 是低级说法，B 是更顺耳替换，像换模块。`
+- `examples`: `saying very good -> saying really solid / saying don't panic -> taking a breath / saying I think -> saying the thing is`
+- `drillLines`: `Instead of A. / Try B. / 别 A，换成 B。`
+- `coverMainTitle`: `别再硬说 don't 了`
+- `coverSubtitle`: `建议也能说得像短视频而不是语法课`
+- `coverPatternLine`: `Instead of A, try B.`
+- `douyinCaption`: `高级替换最适合收藏的一类。`
+- `publishTitleOptions`: `别再硬说 don't 了 / 别 A 换成 B / 提建议别太像命令`
+- `antiPptRisk`: `最容易做成写作课，所以要强替换感和划掉感。`
+- `whyThisWillBeSaved`: `特别适合直接偷句式，马上就能替换原来低级说法。`

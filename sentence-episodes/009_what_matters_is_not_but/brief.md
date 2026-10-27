@@ -1,0 +1,27 @@
+# Auto Generated Episode Brief
+
+- `episodeId`: `009_what_matters_is_not_but`
+- `contentType`: `focus_upgrade`
+- `sentencePattern`: `What matters is not A, but B.`
+- `chinesePainPoint`: `写了很多，但重点还是没亮出来，句子总有股中式味。`
+- `coreMeaning`: `把次要点压暗，把真正重要的点打亮。`
+- `targetViewer`: `基础英文没问题，但平时写作和表达容易写中式英语的人。`
+- `useCase`: `写观点、写总结、写关系表达、写强调重点`
+- `emotion`: `清醒、聚焦、像一束光打在重点上`
+- `firstInterruptText`: `不是没内容`
+- `painFlashLines`: `重点跑了？ / 写很多没打亮？ / 句子像直译？`
+- `conflictLine`: `你不是没内容，你是没把真正重要的那一层打出来。`
+- `patternSlamLine`: `What matters is not A, but B.`
+- `memoryFormula`: `重要的不是 A，而是 B。`
+- `sceneMetaphor`: `A 区域被压暗，B 区域被黄光打亮。`
+- `requiredSceneElements`: `spotlight / darken / contrast hit`
+- `slotSwapDesign`: `A 是次要点，B 是真正重点，像聚光灯从左切到右。`
+- `examples`: `how long it is -> how clear it is / sounding difficult -> sounding precise / the excuse -> the impact`
+- `drillLines`: `Not A. / But B. / 重要的不是 A，而是 B。`
+- `coverMainTitle`: `重点不是这个 是那个`
+- `coverSubtitle`: `把句子真正想强调的东西打亮`
+- `coverPatternLine`: `What matters is not A, but B.`
+- `douyinCaption`: `很多句子问题不是没内容，是重点没亮。这条骨架就是专门打重点。`
+- `publishTitleOptions`: `重点不是这个 是那个 / 写了很多 重点却没亮 / What matters is not A but B`
+- `antiPptRisk`: `最容易做成逻辑课，所以必须用明暗对比和聚光灯把重点感做出来。`
+- `whyThisWillBeSaved`: `写观点和写总结都高频，而且特别适合做 A/B 对比记忆。`

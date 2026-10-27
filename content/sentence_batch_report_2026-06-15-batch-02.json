@@ -1,0 +1,37 @@
+﻿[
+    {
+        "episodeId":  "006_not_that_but_that",
+        "sync":  "ok",
+        "voice":  "ok",
+        "render":  "ok",
+        "error":  ""
+    },
+    {
+        "episodeId":  "007_what_i_mean_is",
+        "sync":  "ok",
+        "voice":  "ok",
+        "render":  "ok",
+        "error":  ""
+    },
+    {
+        "episodeId":  "008_instead_of_try_writing",
+        "sync":  "ok",
+        "voice":  "ok",
+        "render":  "ok",
+        "error":  ""
+    },
+    {
+        "episodeId":  "009_what_matters_is_not_but",
+        "sync":  "ok",
+        "voice":  "ok",
+        "render":  "ok",
+        "error":  ""
+    },
+    {
+        "episodeId":  "010_i_didnt_mean_to_i_was_trying_to",
+        "sync":  "ok",
+        "voice":  "ok",
+        "render":  "ok",
+        "error":  ""
+    }
+]

@@ -1,0 +1,27 @@
+# Auto Generated Episode Brief
+
+- `episodeId`: `006_not_that_but_that`
+- `contentType`: `writing_upgrade`
+- `sentencePattern`: `Not that A, but that B.`
+- `chinesePainPoint`: `不是没东西写，是一写原因就写偏，一股中文直译味。`
+- `coreMeaning`: `先排除表面原因，再打亮真正原因，让表达更像英语。`
+- `targetViewer`: `基础英文没问题，但平时写作和表达容易写中式英语的人。`
+- `useCase`: `写解释、写复盘、写观点、发消息澄清原因`
+- `emotion`: `清醒、克制、像把重点拨正`
+- `firstInterruptText`: `不是没内容`
+- `painFlashLines`: `原因写偏了？ / 句子像直译？ / 重点没打亮？`
+- `conflictLine`: `你不是没想法，你是总把真正原因写到后面去了。`
+- `patternSlamLine`: `Not that A, but that B.`
+- `memoryFormula`: `不是 A，而是 B。`
+- `sceneMetaphor`: `文档里第一句被红笔划掉，真正重点那句被黄字打亮。`
+- `requiredSceneElements`: `doc cursor / strikeout / highlight slam`
+- `slotSwapDesign`: `A 是表面原因，B 是真正原因，像两张理由卡片硬切替换。`
+- `examples`: `I lacked ideas -> I couldn't organize them / the plan was impossible -> the timing was wrong / the message was unclear -> the tone felt too cold`
+- `drillLines`: `Not that A. / But that B. / 不是 A，而是 B。`
+- `coverMainTitle`: `不是这个原因 是那个原因`
+- `coverSubtitle`: `把写偏的原因拉回真正重点`
+- `coverPatternLine`: `Not that A, but that B.`
+- `douyinCaption`: `平时写作最容易写偏的一种原因句，换成这个骨架会顺很多。`
+- `publishTitleOptions`: `不是这个原因 是那个原因 / 原因别再写偏了 / Not that A but that B`
+- `antiPptRisk`: `最容易做成逻辑讲解卡，所以必须先打“写偏原因”的痛点，再用红笔划掉旧句。`
+- `whyThisWillBeSaved`: `能直接拿去写解释和观点，而且 A/B 特别适合替换练习。`

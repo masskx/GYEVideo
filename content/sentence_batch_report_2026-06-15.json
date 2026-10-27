@@ -1,0 +1,37 @@
+[
+  {
+    "episodeId": "001_not_that_just_that",
+    "sync": "ok",
+    "voice": "ok",
+    "render": "ok",
+    "notes": "Completed in the first production pass."
+  },
+  {
+    "episodeId": "002_not_saying_saying",
+    "sync": "ok",
+    "voice": "ok",
+    "render": "ok",
+    "notes": "Re-run completed successfully after re-syncing the active sentence episode into the template."
+  },
+  {
+    "episodeId": "003_didnt_mean_was_trying",
+    "sync": "ok",
+    "voice": "ok",
+    "render": "ok",
+    "notes": "Completed in the first production pass."
+  },
+  {
+    "episodeId": "004_instead_of_try",
+    "sync": "ok",
+    "voice": "ok",
+    "render": "ok",
+    "notes": "Completed in the first production pass."
+  },
+  {
+    "episodeId": "005_what_matters_not_but",
+    "sync": "ok",
+    "voice": "ok",
+    "render": "ok",
+    "notes": "Re-run completed successfully after regenerating voice assets and re-syncing the active sentence episode into the template."
+  }
+]

@@ -1,0 +1,27 @@
+# Auto Generated Episode Brief
+
+- `episodeId`: `007_what_i_mean_is`
+- `contentType`: `meaning_clarification`
+- `sentencePattern`: `What I mean is A.`
+- `chinesePainPoint`: `不是没想法，是英文一写出来总像没说到点上。`
+- `coreMeaning`: `把说偏的话拉回真正意思，让句子更像自然表达。`
+- `targetViewer`: `基础英文没问题，但平时写作和表达容易写中式英语的人。`
+- `useCase`: `发消息、写评论、写说明、补充真正意思`
+- `emotion`: `克制、补救、把话说正`
+- `firstInterruptText`: `不是没想法`
+- `painFlashLines`: `写偏了？ / 不像你本意？ / 总差那一下？`
+- `conflictLine`: `你不是没东西说，你是英文总把意思写偏。`
+- `patternSlamLine`: `What I mean is A.`
+- `memoryFormula`: `我真正想表达的是 A。`
+- `sceneMetaphor`: `一句话从聊天气泡里撤回，另一句更准的话重新落下。`
+- `requiredSceneElements`: `chat bubble / undo / second line slam`
+- `slotSwapDesign`: `B 是原来那句说偏的话，A 是真正意思，先错后正。`
+- `examples`: `it's kind of a problem -> the problem is getting bigger / I don't like it -> I'm not convinced yet / it's okay -> it needs a clearer structure`
+- `drillLines`: `What I mean is A. / 我真正想表达的是 A。`
+- `coverMainTitle`: `英文总写偏 用这句拉回来`
+- `coverSubtitle`: `把你真正想说的话重新扶正`
+- `coverPatternLine`: `What I mean is A.`
+- `douyinCaption`: `脑子里有意思，但一写就偏？这句就是把表达拉回来的手刹。`
+- `publishTitleOptions`: `英文总写偏 用这句拉回来 / 不是没想法 是没说准 / What I mean is A`
+- `antiPptRisk`: `最容易做成普通口语句型介绍，所以必须让撤回旧句和重写新句很明显。`
+- `whyThisWillBeSaved`: `日常表达、发消息、写评论都能立刻用，而且特别适合修正中文直译。`

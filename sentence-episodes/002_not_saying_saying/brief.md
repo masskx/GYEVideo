@@ -1,0 +1,27 @@
+# Auto Generated Episode Brief
+
+- `episodeId`: `002_not_saying_saying`
+- `contentType`: `contrast_and_sting`
+- `sentencePattern`: `I'm not saying A. I'm saying B.`
+- `chinesePainPoint`: `我不是在怪你，我是在说这个事真的有问题。`
+- `coreMeaning`: `先切掉对方误会，再把真正立场亮出来。`
+- `targetViewer`: `中文母语英语学习者`
+- `useCase`: `澄清立场、避免吵偏、把重点说回来`
+- `emotion`: `克制、冷静、压着火`
+- `firstInterruptText`: `别越说越吵`
+- `painFlashLines`: `你误会了？ / 我不是那个意思？ / 重点跑偏了？`
+- `conflictLine`: `很多人不是不会表达，是不会把重点掰回来。`
+- `patternSlamLine`: `I'm not saying A. I'm saying B.`
+- `memoryFormula`: `不是在说 A，我是在说 B。`
+- `sceneMetaphor`: `对话气泡被撕成两半，一边误解，一边重点。`
+- `requiredSceneElements`: `split bubbles / tearing line / contrast flash`
+- `slotSwapDesign`: `A 用红色偏题卡，B 用黄色重点卡，强切换。`
+- `examples`: `you're lazy -> this approach isn't working / I want to fight -> this matters to me / you're hopeless -> you need a better way`
+- `drillLines`: `Not saying A. / Saying B. / 不是在说 A，我是在说 B。`
+- `coverMainTitle`: `不是在怪你 是在说重点`
+- `coverSubtitle`: `把中文那种绕着说的味道剪掉`
+- `coverPatternLine`: `I'm not saying A. I'm saying B.`
+- `douyinCaption`: `把吵偏的话题拉回重点。`
+- `publishTitleOptions`: `不是在怪你 是在说重点 / 别把重点越说越偏 / 不是 A 我是在说 B`
+- `antiPptRisk`: `最容易做成抽象逻辑课，所以必须先给争执场景。`
+- `whyThisWillBeSaved`: `一开口就能把立场说清，而且特别适合关系场景。`

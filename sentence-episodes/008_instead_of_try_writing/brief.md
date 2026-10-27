@@ -1,0 +1,27 @@
+# Auto Generated Episode Brief
+
+- `episodeId`: `008_instead_of_try_writing`
+- `contentType`: `higher_level_replacement`
+- `sentencePattern`: `Instead of A, try B.`
+- `chinesePainPoint`: `一给建议就写得太硬，像命令，不像自然英语。`
+- `coreMeaning`: `别直接堵住对方，换成更顺耳的建议表达。`
+- `targetViewer`: `基础英文没问题，但平时写作和表达容易写中式英语的人。`
+- `useCase`: `写建议、写提醒、写改进意见、发消息给建议`
+- `emotion`: `利落、自然、像把话说柔一点但更高级`
+- `firstInterruptText`: `别再硬写建议`
+- `painFlashLines`: `太像命令？ / 太冲？ / 一开口就生硬？`
+- `conflictLine`: `你不是不会提建议，你是总把建议写成堵人。`
+- `patternSlamLine`: `Instead of A, try B.`
+- `memoryFormula`: `别 A，换 B。`
+- `sceneMetaphor`: `一条生硬表达被划掉，另一条更顺耳的表达直接砸下来。`
+- `requiredSceneElements`: `strikeout / hard swap / replacement slam`
+- `slotSwapDesign`: `A 是生硬说法，B 是更自然说法，像替换积木一样轮流切。`
+- `examples`: `saying very important -> saying hard to ignore / saying don't worry -> saying take a breath first / saying I think this is good -> saying what works here is`
+- `drillLines`: `Instead of A. / Try B. / 别 A，换 B。`
+- `coverMainTitle`: `建议别再写得这么硬`
+- `coverSubtitle`: `换个说法 语气立刻顺很多`
+- `coverPatternLine`: `Instead of A, try B.`
+- `douyinCaption`: `很多建议句不是错，是太硬。这个骨架就是把语气拧顺。`
+- `publishTitleOptions`: `建议别再写得这么硬 / 别 A 换 B / Instead of A try B`
+- `antiPptRisk`: `最容易做成替换表，所以必须让划掉旧句和砸下新句的动作足够强。`
+- `whyThisWillBeSaved`: `能立刻拿去改平时的建议句，A/B 替换也特别适合跟练。`

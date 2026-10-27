@@ -1,0 +1,4 @@
+interface:
+  display_name: "Douyin Scene Vocab"
+  short_description: "Build Chinese-story vocabulary shorts with embedded English words."
+  default_prompt: "Create a scene-vocabulary episode with a high-density Chinese story board, embedded English target words, word-by-word cards, top progress, cover, caption, and publish notes."

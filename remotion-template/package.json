@@ -1,0 +1,36 @@
+{
+  "name": "root-word-video",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "episode:use": "tsx scripts/use-episode.ts",
+    "preview": "remotion studio src/index.ts",
+    "still": "remotion still src/index.ts RootWordTemplate --frame=540 --scale=0.5",
+    "render:video": "tsx scripts/render-video.ts",
+    "render:cover": "tsx scripts/render-cover.ts",
+    "render": "tsx scripts/render-package.ts",
+    "render:batch:sentences": "tsx scripts/render-batch-sentences.ts --all-pre-019",
+    "upgrade:sentence:voice": "tsx scripts/upgrade-sentence-voice-scripts.ts",
+    "copy": "node scripts/copy-package.mjs",
+    "voice": "tsx scripts/generate-voice.ts"
+  },
+  "dependencies": {
+    "@jridgewell/trace-mapping": "^0.3.31",
+    "@remotion/cli": "^4.0.481",
+    "@remotion/lottie": "^4.0.481",
+    "@remotion/media-parser": "^4.0.481",
+    "@remotion/timeline-utils": "^4.0.481",
+    "@rspack/core": "^2.0.8",
+    "lottie-web": "^5.13.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "remotion": "^4.0.481",
+    "typescript": "^5.8.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "tsx": "^4.19.4"
+  }
+}

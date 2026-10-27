@@ -1,0 +1,42 @@
+# Local credentials (only sanitized examples are versioned)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*credentials*.json
+*token*.json
+
+# Dependencies, caches and temporary local state
+node_modules/
+node_modules*/
+out/
+dist/
+build/
+.cache/
+.remotion/
+*.log
+*.tmp
+*.tsbuildinfo
+.active-episode.json
+.agents/
+.claude/
+
+# Generated episode audio, exports and QA artifacts
+**/exports/
+**/audio/
+**/qa/
+*.mp4
+*.mov
+*.webm
+*.wav
+*.srt
+*.zip
+
+# Local archives and original material libraries
+/archive/
+/背景音乐素材/
+/矢量图标素材/
+/*整理记录.json
+/*无法识别.json
+/opencode-proxy.bat

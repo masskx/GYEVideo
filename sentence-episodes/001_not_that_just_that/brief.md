@@ -1,0 +1,27 @@
+# Auto Generated Episode Brief
+
+- `episodeId`: `001_not_that_just_that`
+- `contentType`: `emotional_spoken_english`
+- `sentencePattern`: `It's not that A, it's just that B.`
+- `chinesePainPoint`: `不是我不在乎，只是我不知道怎么说。`
+- `coreMeaning`: `先拿掉误会，再说出真正原因。`
+- `targetViewer`: `中文母语英语学习者`
+- `useCase`: `解释误会、澄清关系、低冲突表达委屈`
+- `emotion`: `委屈、克制、解释不清`
+- `firstInterruptText`: `别急着解释`
+- `painFlashLines`: `不是不在乎？ / 生气了？ / 不回你了？`
+- `conflictLine`: `你不是不会说，你是没有句子骨架。`
+- `patternSlamLine`: `It's not that A, it's just that B.`
+- `memoryFormula`: `不是 A，只是 B。`
+- `sceneMetaphor`: `已读不回聊天框里，消息删了又打。`
+- `requiredSceneElements`: `chat bubbles / typing / seen-no-reply`
+- `slotSwapDesign`: `A 用红色误会卡，B 用黄色真相卡，逐组替换。`
+- `examples`: `I don't care -> I don't know what to say / I'm angry -> I'm disappointed / I'm ignoring you -> I need a little time`
+- `drillLines`: `Not that A. / Just that B. / 不是 A，只是 B。`
+- `coverMainTitle`: `不是不在乎 只是不会说`
+- `coverSubtitle`: `解释误会别再一大段直译`
+- `coverPatternLine`: `It's not that A, it's just that B.`
+- `douyinCaption`: `解释误会时最好用的英语骨架。`
+- `publishTitleOptions`: `不是不在乎 只是不会说 / 解释误会别再硬翻中文 / 不是 A 只是 B`
+- `antiPptRisk`: `最容易做成语法卡，所以必须先打情绪，再 slam 骨架。`
+- `whyThisWillBeSaved`: `能立刻拿去解释误会，而且可以反复替换。`

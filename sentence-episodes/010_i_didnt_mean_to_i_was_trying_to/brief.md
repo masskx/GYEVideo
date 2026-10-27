@@ -1,0 +1,27 @@
+# Auto Generated Episode Brief
+
+- `episodeId`: `010_i_didnt_mean_to_i_was_trying_to`
+- `contentType`: `emotional_repair`
+- `sentencePattern`: `I didn't mean to A. I was just trying to B.`
+- `chinesePainPoint`: `不是故意把话说难听，但一解释又更像在找借口。`
+- `coreMeaning`: `先承认冒犯感，再说出原来目的，让解释不再越说越尴尬。`
+- `targetViewer`: `基础英文没问题，但平时写作和表达容易写中式英语的人。`
+- `useCase`: `解释误会、缓和语气、写补充说明、发消息道歉`
+- `emotion`: `克制、补救、想把场面拉回来`
+- `firstInterruptText`: `别越解释越尴尬`
+- `painFlashLines`: `不是故意的？ / 解释更像借口？ / 语气越来越糟？`
+- `conflictLine`: `你不是不会解释，你是少了先认 A 再说 B 的骨架。`
+- `patternSlamLine`: `I didn't mean to A. I was just trying to B.`
+- `memoryFormula`: `不是故意 A，只是想 B。`
+- `sceneMetaphor`: `深夜消息框里一句解释删了又改，最后留下更稳的版本。`
+- `requiredSceneElements`: `typing / delete / resend`
+- `slotSwapDesign`: `A 是造成的冒犯，B 是原来目的，先认冒犯再交代本意。`
+- `examples`: `sound cold -> be clear / shut you down -> move faster / make it awkward -> be honest`
+- `drillLines`: `Didn't mean to A. / Just trying to B. / 不是故意 A，只是想 B。`
+- `coverMainTitle`: `解释别越说越尴尬`
+- `coverSubtitle`: `先认冒犯 再说本意 会顺很多`
+- `coverPatternLine`: `I didn't mean to A. I was just trying to B.`
+- `douyinCaption`: `很多解释不是没诚意，是顺序错了。先认 A，再说 B，气氛会好很多。`
+- `publishTitleOptions`: `解释别越说越尴尬 / 不是故意 A 只是想 B / I didn't mean to A`
+- `antiPptRisk`: `最容易做成道歉句型课，所以必须让删改消息和场面降温感很明显。`
+- `whyThisWillBeSaved`: `解释误会和缓和关系都高频，套上就能直接用。`

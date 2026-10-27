@@ -1,0 +1,29 @@
+# Auto Generated Episode Brief
+
+- `episodeId`: `005_what_matters_not_but`
+- `referenceDirectionId`: `005_tone_not_words`
+- `contentType`: `chat-rescue`
+- `sentencePattern`: `What matters is not A, but B.`
+- `scene`:
+  - `setting`: `朋友聊天`
+  - `speakerA`: `对方`
+  - `speakerB`: `你`
+  - `conflict`: `你以为问题在内容，对方其实是被你的语气刺到了。`
+- `chinesePainPoint`: `很多人不是没表达重点，是一开口语气就把关系说僵了。`
+- `wrongExpression`:
+  - `text`: `I just told you.`
+  - `whyItFails`: `听起来像：我没错，是你自己想多了。`
+- `rescueExpression`:
+  - `en`: `It's not what you said. It's how you said it.`
+  - `zh`: `不是你说了什么，是你怎么说的。`
+  - `whenToUse`: `当你在解释语气、提醒关系里的误解、指出问题不在内容时。`
+  - `naturalnessNote`: `完整、自然、像真实聊天里会说出来的一句判断。`
+- `reuseScenes`:
+  - `工作群提醒同事 -> I didn't mean to sound harsh. I just wanted to make sure we're on the same page.`
+- `openingType`: `chat-cold-open`
+- `beatStyle`: `chat-thread`
+- `memoryLock`: `It's not what you said. It's how you said it.`
+- `coverMainTitle`: `别把提醒说成责怪`
+- `coverSubtitle`: `一句英语救场`
+- `antiPptRisk`: `最容易又滑回抽象句型讲解，所以这次第一屏必须是聊天翻车，不是大标题。`
+- `whyThisVersionIsBetter`: `观众先看懂发生了什么，再记住一句自然英语，不再只是被迫复读一个口号。`

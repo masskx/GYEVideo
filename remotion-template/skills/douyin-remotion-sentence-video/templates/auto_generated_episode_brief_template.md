@@ -1,0 +1,29 @@
+# Auto Generated Episode Brief
+
+- `episodeId`
+- `contentType`
+- `sentencePattern`
+- `earwormCandidates`
+- `earwormLine`
+- `chorusLines`
+- `chinesePainPoint`
+- `entertainmentHook`
+- `memorySound`
+- `coreMeaning`
+- `openingType`
+- `rhythmType`
+- `targetViewer`
+- `useCase`
+- `emotion`
+- `sceneMetaphor`
+- `avoidSimilarityTags`
+- `examples`
+- `voiceScript`
+- `coverMainTitle`
+- `coverSubtitle`
+- `coverPatternLine`
+- `douyinCaption`
+- `publishTitleOptions`
+- `endingLockPlan`
+- `antiPptRisk`
+- `whyThisWillBeSaved`
