@@ -4,6 +4,7 @@ import {clamp01, easeInOut, mulberry} from '../core/motion';
 import {arrowFor, BOARD, HOMEWORK_POS, ROOT_POS, ROOT_RADIUS, slotOf, TITLE_POS} from './layout';
 import {WHITEBOARD, writeDuration} from './schedule';
 import {BOARD_BG, FONT, HIGHLIGHTER, MARKER, MarkerColor} from './theme';
+import {EXAM} from '../core/exam';
 
 // ---------- timing helpers ----------
 
@@ -317,7 +318,7 @@ export const Board: React.FC<{t: number}> = ({t}) => {
           <Written
             t={t}
             end={cueOf(titleScene.scene.id, 'subtitle')}
-            text="高考词汇 白板"
+            text={`${EXAM.vocab} 白板`}
             x={TITLE_POS.x + 10}
             y={TITLE_POS.y + 220}
             anchor="left"
@@ -325,7 +326,7 @@ export const Board: React.FC<{t: number}> = ({t}) => {
             size={62}
             font={FONT.zh}
           >
-            高考词汇 · 白板 No.{whiteboard.boardNo}
+            {EXAM.vocab} · 白板 No.{whiteboard.boardNo}
           </Written>
         </>
       ) : null}

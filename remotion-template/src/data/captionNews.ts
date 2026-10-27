@@ -2,7 +2,8 @@
 // Self-contained: types live here. Visible Chinese must use GB2312 characters (`npm run check`).
 // Every number on screen needs a source in `sources` and a `source` tag on its chunk (FACTS.md).
 
-export type WordLevel = '课标' | '拓展';
+// 课标 = Gaokao curriculum list; 四级 / 六级 = CET-4 / CET-6 syllabus; 拓展 = outside the exam's list (at most one).
+export type WordLevel = '课标' | '四级' | '六级' | '拓展';
 export type LineMeta = {keywords?: string[]; pauseBefore?: number; holdAfter?: number};
 
 export type NewsGraphic =

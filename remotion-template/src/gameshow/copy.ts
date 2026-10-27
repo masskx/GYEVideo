@@ -2,12 +2,13 @@ import {BRAND} from '../brand/brand';
 import {ensureSentence, ReleaseCopy} from '../core/copy';
 import {episodeConfig} from '../data/episodeConfig';
 import {gameShow} from '../data/gameShow';
+import {allCoreLabel, EXAM, tagsFor} from '../core/exam';
 
-const TAGS = `#高考英语 #高考词汇 #词根词缀 #英语学习 #${BRAND.creatorName}`;
+const TAGS = tagsFor(['#词根词缀', '#英语学习'], BRAND.creatorName);
 
 export const gameShowCopy = (): ReleaseCopy => {
   const words = gameShow.words.map((word) => `${word.word} ${word.meaning.split('；')[0]}`).join('、');
-  const extension = gameShow.words.filter((word) => word.level === '拓展').map((word) => word.word);
+  const extension = gameShow.words.filter((word) => word.level === EXAM.extension).map((word) => word.word);
   return {
     caption: [
       ensureSentence(episodeConfig.cover?.headline || gameShow.showTitle),
@@ -24,7 +25,7 @@ export const gameShowCopy = (): ReleaseCopy => {
     tags: TAGS,
     pinnedComment: `加分题：${gameShow.bonus.stem}\n答案：${gameShow.bonus.options[gameShow.bonus.answerIndex]}（下一期发布后再置顶）`,
     checks: [
-      `拓展词：${extension.length ? extension.join(' / ') : '无（全部为课标词汇）'}`,
+      `拓展词：${extension.length ? extension.join(' / ') : `无（${allCoreLabel()}）`}`,
       `加分题标注为“${gameShow.bonus.sourceNote}”`,
       '每一关的判定词都在画面里停留至少 0.5 秒',
     ],

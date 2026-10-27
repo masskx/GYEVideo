@@ -1,5 +1,6 @@
 export const episodeConfig: EpisodeConfig = {
   type: 'vocab-game-show',
+  exam: 'gaokao',
   episodeId: '061_port_gameshow',
   exportBaseName: '061_port_gameshow',
   durationTargetSeconds: 60,

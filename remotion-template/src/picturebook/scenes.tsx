@@ -7,6 +7,7 @@ import {cueTime, LineTiming, wordTimes} from '../core/timeline';
 import {GROUND, Picture} from './crayon';
 import {PICTURE_BOOK, PictureBookTiming, targetsIn} from './schedule';
 import {CRAYON, FONT, PAGE, TEXT_TOP} from './theme';
+import {EXAM} from '../core/exam';
 
 export type SceneProps = {timing: PictureBookTiming; t: number};
 
@@ -158,7 +159,7 @@ export const WordsScene: React.FC<SceneProps> = ({timing, t}) => (
   <>
     <div style={{position: 'absolute', left: 70, top: 190}}>
       <div style={{fontFamily: FONT.title, fontSize: 96, color: CRAYON.line}}>Words from the story</div>
-      <div style={{fontFamily: FONT.zhHand, fontSize: 48, color: CRAYON.coral}}>故事词卡 · 全部是高考词</div>
+      <div style={{fontFamily: FONT.zhHand, fontSize: 48, color: CRAYON.coral}}>故事词卡 · 全部是{EXAM.word}</div>
     </div>
     <div style={{position: 'absolute', left: 60, right: 60, top: 420, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 26}}>
       {pictureBook.targets.map((target, i) => {

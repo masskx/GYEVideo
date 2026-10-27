@@ -53,12 +53,14 @@ A template may change the background around the pig (crayon page, whiteboard, st
 - Fonts come only from `src/core/fonts.ts` (`stack(...)`, `useFonts`). They are subset to GB2312 + Latin + IPA; every visible Chinese character must be in `public/fonts/charset-gb2312.txt` ✔ (use 着 not 著, 里 not 裡 — simplified, common characters).
 - The root / keyword highlight is yellow in every template (each template has its own exact hue). Red means wrong, a stamp or an alarm — nothing else.
 
-## 5. Gaokao content
+## 5. Exam content (高考, 四级, 六级)
 
-- **Words** carry `level: '课标'` (in the Gaokao curriculum list) or `'拓展'` ✔. At most one 拓展 per episode ✔. A vocabulary episode has 4–6 words ✔. No word a Gaokao student will not meet in reading, cloze or writing.
+Each episode is made for one exam: `exam: 'gaokao' | 'cet4' | 'cet6'` in `data/episodeConfig.ts` (missing = gaokao). The audience, word levels, difficulty and labels per exam are in **`EXAMS.md`**; the labels on screen come from `src/core/exam.ts` automatically.
+
+- **Words** carry a level the exam allows ✔: 高考 `课标`; 四级 `四级`; 六级 `四级` / `六级` (at least half `六级` ✔); every exam also allows `拓展`, at most once per episode ✔. A vocabulary episode has 4–6 words ✔. No word the exam's students will not meet in reading, cloze, translation or writing.
 - Every vocabulary word gets an exam collocation or example, the phrase that shows up in papers.
-- **Questions** have exactly one correct option, an `answerIndex` inside the options ✔ and a `sourceNote` ✔. Original items say `高考风格原创练习题`. Quote a real past paper (真题) only with its year and source ✔.
-- **Reading texts** are original, written at Gaokao level (CEFR B1–B2, sentences under ~20 words, 3–6 target words, at most one of them 拓展). Don't copy news articles or exam passages; adapt the facts and write your own sentences.
+- **Questions** have exactly one correct option, an `answerIndex` inside the options ✔ and a `sourceNote` ✔. Original items say the exam's label (`高考风格原创练习题`, `四级风格原创练习题`, `六级风格原创练习题`; `…原创阅读题` for reading) ✔. Quote a real past paper (真题) only with its year and source ✔.
+- **Reading texts** are original, written at the exam's level (高考 and 四级 CEFR B1–B2, 六级 B2–C1; sentence lengths in `EXAMS.md`; 3–6 target words, at most one of them 拓展). Don't copy news articles or exam passages; adapt the facts and write your own sentences.
 - **Facts** (any number, study or claim in a news line) need a source: a `sources` entry, a `sourceId` on the line ✔ and the URL with quoted wording in the episode's `FACTS.md` ✔. Prefer primary sources (CDC, WHO, a journal, a government page). Health topics give no advice beyond what the source says.
 - The comment question (homework / reading question) has its answer in `_publish_notes.md` for the pinned comment.
 

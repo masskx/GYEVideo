@@ -30,8 +30,10 @@
 ```powershell
 cd remotion-template
 npm.cmd run plan
-npm.cmd run new -- <template> <episodeId>
+npm.cmd run new -- <template> <episodeId> --exam <gaokao|cet4|cet6>
 ```
+
+考试决定词汇等级、难度、观众和画面上的考试标签，规则见 `remotion-template/skills/_shared/EXAMS.md`。给 agent 的完整提示词用 `npm.cmd run prompt -- <template> --exam <考试> --topic "<主题>"` 生成（见 `docs/agent_prompts.md`）。
 
 `plan` 列出每条线最近的几期，推荐最久没用的模板；同一条线不要连续两期用同一个模板。`new` 复制参考 episode 的数据，改好 id，生成 `brief.md`、`TREATMENT.md`、`notes.md`。
 

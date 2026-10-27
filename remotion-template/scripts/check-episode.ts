@@ -10,6 +10,7 @@ import {generatedVoiceTimeline} from '../src/data/generatedVoiceTimeline';
 import {pictureBook} from '../src/data/pictureBook';
 import {voiceScript} from '../src/data/voiceScript';
 import {whiteboard} from '../src/data/whiteboard';
+import {EXAM, EXAMS, isExam} from '../src/core/exam';
 import {isTemplate, TEMPLATES} from '../src/templates/registry';
 import {RUNTIMES} from '../src/templates/timelines';
 
@@ -98,7 +99,10 @@ const missing = new Set<string>();
 for (const text of visible) for (const char of Array.from(text)) if (/[　-鿿＀-￯]/.test(char) && !charset.has(char)) missing.add(char);
 if (missing.size) error(`Characters outside the font subset (they would render in a fallback font): ${[...missing].join(' ')}`);
 
-// ---------- 6. Gaokao content rules ----------
+// ---------- 6. exam content rules (skills/_shared/EXAMS.md) ----------
+const examField = (episodeConfig as {exam?: string}).exam;
+if (template && examField !== undefined && !isExam(examField)) error(`episodeConfig.exam "${examField}" is not one of: ${Object.keys(EXAMS).join(', ')}.`);
+const levels = [...EXAM.coreLevels, EXAM.extension];
 const levelled = (value: unknown): {level?: string; word?: string; lemma?: string}[] =>
   Array.isArray(value)
     ? value.flatMap(levelled)
@@ -109,9 +113,16 @@ const levelled = (value: unknown): {level?: string; word?: string; lemma?: strin
       : [];
 const words = levelled(data);
 if (template && template.line === 'vocab' && words.length < 4) error(`Only ${words.length} words: a vocabulary episode needs 4–6.`);
-for (const word of words) if (word.level !== '课标' && word.level !== '拓展') error(`Word "${word.word ?? word.lemma}" has no 课标 / 拓展 level.`);
-const extension = words.filter((word) => word.level === '拓展');
-if (extension.length > 1) error(`${extension.length} 拓展 words (${extension.map((w) => w.word ?? w.lemma).join(', ')}): at most one per episode.`);
+for (const word of words) {
+  if (!levels.includes(word.level ?? '')) error(`Word "${word.word ?? word.lemma}" is tagged "${word.level ?? ''}": a ${EXAM.name} episode uses ${levels.join(' / ')}.`);
+}
+const extension = words.filter((word) => word.level === EXAM.extension);
+if (extension.length > 1) error(`${extension.length} ${EXAM.extension} words (${extension.map((w) => w.word ?? w.lemma).join(', ')}): at most one per episode.`);
+// 六级: the episode must teach 六级 words, not only 四级 ones it builds on.
+if (template && EXAM.coreLevels.length > 1) {
+  const main = words.filter((word) => word.level === EXAM.mainLevel).length;
+  if (words.length && main * 2 < words.length) error(`Only ${main} of ${words.length} words are ${EXAM.mainLevel}: at least half of a ${EXAM.name} episode's words must be ${EXAM.mainLevel}.`);
+}
 
 type Question = {stem: string; options: string[]; answerIndex: number; sourceNote: string};
 const questions = (value: unknown): Question[] =>
@@ -126,7 +137,23 @@ for (const q of questions(data)) {
   if (q.answerIndex < 0 || q.answerIndex >= q.options.length) error(`Question "${q.stem}" has answerIndex ${q.answerIndex} outside its options.`);
   if (!q.sourceNote) error(`Question "${q.stem}" has no sourceNote (原创练习题, or a real paper with year and source).`);
   if (/真题/.test(q.sourceNote) && !/\d{4}/.test(q.sourceNote)) error(`Question "${q.stem}" says 真题 without a year and source.`);
+  if (/风格原创/.test(q.sourceNote) && !q.sourceNote.includes(`${EXAM.name}风格`)) {
+    error(`Question "${q.stem}" is labelled "${q.sourceNote}" in a ${EXAM.name} episode: use "${template?.line === 'reading' ? EXAM.readingNote : EXAM.practiceNote}".`);
+  }
   if (template?.line === 'vocab' && !q.stem.includes('____')) warn(`Question "${q.stem}" has no ____ blank.`);
+}
+
+// Wording left over from another exam (usually copied from the reference episode).
+if (template) {
+  const others = Object.values(EXAMS).filter((exam) => exam.id !== EXAM.id).map((exam) => exam.name);
+  const texts = [...visible, ...voiceScript.map((line) => line.text)];
+  for (const name of others) {
+    const hit = texts.find((text) => text.includes(name));
+    if (hit) warn(`"${name}" appears in a ${EXAM.name} episode: "${hit.slice(0, 40)}". Rewrite it unless it is meant.`);
+  }
+  const instructions = voiceScript.map((line) => `${(line as {instruction?: string}).instruction ?? ''}`).join(' ');
+  const audiences = [...new Set(Object.values(EXAMS).map((exam) => exam.audience))].filter((audience) => audience !== EXAM.audience);
+  for (const audience of audiences) if (instructions.includes(audience)) warn(`The voice instruction talks to ${audience}; a ${EXAM.name} episode talks to ${EXAM.audience}.`);
 }
 
 // ---------- 7. facts: every number in a news line has a source ----------

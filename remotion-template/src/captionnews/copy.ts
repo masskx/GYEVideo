@@ -2,8 +2,9 @@ import {BRAND} from '../brand/brand';
 import {ensureSentence, ReleaseCopy} from '../core/copy';
 import {captionNews} from '../data/captionNews';
 import {episodeConfig} from '../data/episodeConfig';
+import {EXAM, tagsFor} from '../core/exam';
 
-const TAGS = `#高考英语 #英语阅读 #双语阅读 #高考词汇 #${BRAND.creatorName}`;
+const TAGS = tagsFor(['#英语阅读', '#双语阅读'], BRAND.creatorName);
 
 export const captionNewsCopy = (): ReleaseCopy => {
   const words = captionNews.vocab.map((word) => `${word.word} ${word.meaning.split('；')[0]}`).join('、');
@@ -12,7 +13,7 @@ export const captionNewsCopy = (): ReleaseCopy => {
     caption: [
       ensureSentence(episodeConfig.cover?.headline || captionNews.headline.zh),
       ensureSentence(`一篇 1 分钟的英文短新闻，中英对照：${captionNews.headline.en}`),
-      ensureSentence(`顺手记住 ${captionNews.vocab.length} 个高考词：${words}`),
+      ensureSentence(`顺手记住 ${captionNews.vocab.length} 个${EXAM.word}：${words}`),
       ensureSentence(`最后一道阅读题：${captionNews.question.stem}`),
       TAGS,
     ].join(''),

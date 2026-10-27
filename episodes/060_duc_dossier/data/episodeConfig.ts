@@ -1,5 +1,6 @@
 export const episodeConfig: EpisodeConfig = {
   type: 'vocab-dossier',
+  exam: 'gaokao',
   episodeId: '060_duc_dossier',
   exportBaseName: '060_duc_dossier',
   durationTargetSeconds: 60,

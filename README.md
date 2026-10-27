@@ -1,8 +1,8 @@
-# 小猪盖被 · 抖音高考英语短视频工厂
+# 小猪盖被 · 抖音英语备考短视频工厂（高考 / 四级 / 六级）
 
-这是一个批量生产抖音竖屏高考英语短视频（1080×1920，约 60 秒）的 Remotion 工作区，面向准备高考英语的高中生。
+这是一个批量生产抖音竖屏英语备考短视频（1080×1920，约 60 秒）的 Remotion 工作区，服务三个考试：**高考英语**（高中生）、**大学英语四级**、**大学英语六级**（大学生）。
 
-- **两条内容线**：单词、双语阅读。每条线有多个模板轮换，账号不会看起来重复。
+- **两条内容线 × 三个考试**：单词、双语阅读；每个模板都能做高考、四级、六级。每条线有多个模板轮换，账号不会看起来重复。
 - **一套规则**：所有模板共用同一个小猪 IP、同一个配音、同一套质检，任何人或任何 agent 按流程做出来的质量一致。
 - **只做数据，不改代码**：每期视频就是一个 episode 文件夹里的几份数据和文档；画面、配乐、音效、质检都由模板自动完成。
 
@@ -13,18 +13,19 @@
 ## 目录
 
 1. [五个模板](#五个模板)
-2. [小猪 IP 与配音（不可修改）](#小猪-ip-与配音不可修改)
-3. [第一次使用：环境安装](#第一次使用环境安装)
-4. [每期怎么做（完整流程）](#每期怎么做完整流程)
-5. [让外部 Agent 做视频](#让外部-agent-做视频)
-6. [怎么检查 Agent 交回来的视频](#怎么检查-agent-交回来的视频)
-7. [发布](#发布)
-8. [命令速查](#命令速查)
-9. [目录结构](#目录结构)
-10. [常见问题](#常见问题)
-11. [内容规则](#内容规则)
-12. [安全与版权](#安全与版权)
-13. [旧内容线](#旧内容线)
+2. [三个考试：高考、四级、六级](#三个考试高考四级六级)
+3. [小猪 IP 与配音（不可修改）](#小猪-ip-与配音不可修改)
+4. [第一次使用：环境安装](#第一次使用环境安装)
+5. [每期怎么做（完整流程）](#每期怎么做完整流程)
+6. [让外部 Agent 做视频](#让外部-agent-做视频)
+7. [怎么检查 Agent 交回来的视频](#怎么检查-agent-交回来的视频)
+8. [发布](#发布)
+9. [命令速查](#命令速查)
+10. [目录结构](#目录结构)
+11. [常见问题](#常见问题)
+12. [内容规则](#内容规则)
+13. [安全与版权](#安全与版权)
+14. [旧内容线](#旧内容线)
 
 ---
 
@@ -32,13 +33,13 @@
 
 | 内容线 | 模板 id | 系列名 | 时长 | 参考 episode |
 |---|---|---|---|---|
-| 单词 | `vocab-dossier` | 高考词汇案卷 | 55–68 秒 | `episodes/060_duc_dossier` |
+| 单词 | `vocab-dossier` | 词汇案卷（高考 / 四级 / 六级） | 55–68 秒 | `episodes/060_duc_dossier` |
 | 单词 | `vocab-game-show` | 词根闯关 | 50–66 秒 | `episodes/061_port_gameshow` |
 | 单词 | `vocab-whiteboard` | 白板词根图 | 50–66 秒 | `episodes/062_vis_whiteboard` |
 | 双语阅读 | `reading-picture-book` | 英文绘本精读 | 50–72 秒 | `reading-episodes/001_screen_promise` |
 | 双语阅读 | `reading-caption-news` | 双语新闻阅读 | 50–72 秒 | `reading-episodes/002_teen_sleep_news` |
 
-### 高考词汇案卷 `vocab-dossier`
+### 词汇案卷 `vocab-dossier`（高考词汇案卷 / 四级词汇案卷 / 六级词汇案卷）
 
 网点印刷风格的“案卷”。开场是一道完形题（案子），词根是“指纹”，每个单词是一件编号证物，最后回到开场题目破案、盖章结案，再留一道作业题给评论区。适合：一个词根能直接解出一道选词题的情况，悬疑、有反转的语气。
 
@@ -61,6 +62,28 @@
 ### 模板轮换
 
 同一条内容线上，相邻两期不要用同一个模板。`npm run plan` 会列出最近几期，并推荐最久没用的模板。必须连续用同一个模板时，`TREATMENT.md` 第 9 节要和上一期在结构、开场画面、招牌镜头、镜头路线、配乐形状、结尾 6 项中至少 3 项不同。
+
+---
+
+## 三个考试：高考、四级、六级
+
+每个模板都能做三个考试。每期在 `data/episodeConfig.ts` 里写一次 `exam`，新建时用 `--exam` 参数自动写好：
+
+```powershell
+npm.cmd run new -- vocab-game-show 063_cet4_spect_gameshow --exam cet4
+```
+
+| | 高考 `gaokao` | 四级 `cet4` | 六级 `cet6` |
+|---|---|---|---|
+| 观众 | 高中生 | 大学生 | 大学生 |
+| 单词等级 | 课标（拓展最多 1 个） | 四级（拓展最多 1 个） | 四级 / 六级，至少一半是六级（拓展最多 1 个） |
+| 英文难度 | CEFR B1–B2 | B1–B2 | B2–C1 |
+| 题型风格 | 完形 / 语法填空、阅读理解 | 选词填空、仔细阅读 | 选词填空、仔细阅读（更多推理） |
+| 原创题标注 | 高考风格原创练习题 | 四级风格原创练习题 | 六级风格原创练习题 |
+| 画面标签 | 高考搭配、高考词汇… | 四级搭配、四级选词填空… | 六级搭配、六级选词填空… |
+| 话题标签 | #高考英语 #高考词汇 | #英语四级 #四级词汇 | #英语六级 #六级词汇 |
+
+画面上的考试标签和话题标签由 `remotion-template/src/core/exam.ts` 自动生成，不需要改模板。内容规则（选词、难度、题型、配音语气、四六级适合的选题）见 `remotion-template/skills/_shared/EXAMS.md`。`npm run check` 会拦截：等级和考试不符、六级里六级词不到一半、题目标注写错考试，并提醒画面或口播里残留别的考试名称、配音说明还写着“高中生”。
 
 ---
 
@@ -131,7 +154,7 @@ npm.cmd run produce
 | 步骤 | 做什么 | 命令 / 文件 |
 |---|---|---|
 | 1. 选模板 | 看最近几期，得到推荐模板和下一个编号 | `npm.cmd run plan` |
-| 2. 建文件夹 | 复制参考 episode 的数据，生成 brief、TREATMENT、notes | `npm.cmd run new -- <模板 id> <episodeId>` |
+| 2. 建文件夹 | 复制参考 episode 的数据，生成 brief、TREATMENT、notes，写好考试 | `npm.cmd run new -- <模板 id> <episodeId> --exam <gaokao/cet4/cet6>` |
 | 3. 写 brief | 词根和单词（标课标 / 拓展），或故事 / 新闻话题、题目和答案 | `brief.md` |
 | 4. 写 treatment | 三个结构候选、开场钩子、招牌镜头、与上一期的 6 项对比 | `TREATMENT.md` |
 | 5. 新闻先查证 | 只用一手来源，每个数字写 URL 和原文 | `FACTS.md`（仅新闻模板） |
@@ -141,7 +164,7 @@ npm.cmd run produce
 | 9. 人工看片 | 看 contact sheet 和每场静帧，按模板的 qa_checklist.md 逐项检查 | `exports/<id>_contact_sheet.jpg`、`out/qa/<id>/` |
 | 10. 记录并提交 | 写 notes.md，提交 episode 文件夹（exports、audio 不提交） | `notes.md`、`git commit` |
 
-episodeId 的格式：`三位编号_主题_模板简称`，例如 `063_spect_dossier`、`064_struct_gameshow`、`003_umbrella_book`、`004_exercise_news`。单词线放在 `episodes/`，阅读线放在 `reading-episodes/`。
+episodeId 的格式：`三位编号_主题_模板简称`，四六级在编号后加考试：例如 `063_spect_dossier`（高考）、`064_cet4_struct_gameshow`、`003_cet6_campus_book`、`004_exercise_news`。单词线放在 `episodes/`，阅读线放在 `reading-episodes/`。
 
 `produce` 只会为新增或文字有改动的句子重新配音，所以修改后重跑很快。加 `-- --voice` 会强制全部重新配音。
 
@@ -175,7 +198,27 @@ episodeId 的格式：`三位编号_主题_模板简称`，例如 `063_spect_dos
 
 ### 怎么给 Agent 下指令
 
-把 [docs/agent_prompts.md](docs/agent_prompts.md) 里对应的一段复制给 agent，换掉尖括号里的内容即可。例如做一期单词视频：
+提示词总目录：[docs/agent_prompts.md](docs/agent_prompts.md)。
+
+**最推荐：一条命令生成本期的完整提示词**，整段复制给 agent：
+
+```powershell
+cd remotion-template
+npm.cmd run plan                                                     # 先看推荐哪个模板
+npm.cmd run prompt -- vocab-game-show --exam cet4 --topic "spect = look / 看"
+```
+
+生成的提示词包含：
+- 必读文件；
+- 本期参数：考试、观众、词汇等级、题目标注、命名、时长；
+- 模板要点、考试要点；
+- 10 步执行流程、禁止事项、需要先问你的情况，以及汇报格式。
+
+**现成的提示词文件**：`docs/prompts/<模板 id>.md`，每个模板有高考 / 四级 / 六级三个版本，换掉 `<…>` 即可使用。
+
+**多个 agent 分工**：`docs/prompts/roles.md`，选题策划 → 编剧 → 制作 → 审片，每个角色有开始条件和交接条件。
+
+旧的简短写法也可以用，例如做一期单词视频：
 
 ```text
 请阅读 AGENTS.md 和 docs/agent_playbook.md，严格按 playbook 的步骤做一期新的单词视频。
@@ -241,7 +284,8 @@ Episode <id> (<模板>) is ready.
 |---|---|
 | `npm run doctor` | 检查电脑环境（每台电脑一次） |
 | `npm run plan` | 推荐下一期的模板和编号 |
-| `npm run new -- <模板> <id>` | 新建 episode |
+| `npm run new -- <模板> <id> --exam <考试>` | 新建 episode（考试：gaokao / cet4 / cet6） |
+| `npm run prompt -- <模板> --exam <考试> --topic "…"` | 生成给 agent 的完整提示词 |
 | `npm run episode:use -- ../episodes/<id>` | 切换当前 episode |
 | `npm run check` | 检查内容规则 |
 | `npm run produce` | 一键生产（推荐） |
@@ -263,7 +307,8 @@ AGENTS.md / CLAUDE.md       Agent 入口
 README.md                   本文件
 docs/
   agent_playbook.md         Agent 操作手册（逐步流程、排错表）
-  agent_prompts.md          给 Agent 的提示词库
+  agent_prompts.md          给 Agent 的提示词总目录
+  prompts/                  每个模板的完整提示词（高考 / 四级 / 六级）+ 分工协作提示词 roles.md
   production_workflow.md    生产流程速查
   publish_checklist.md      发布检查清单
   naming_rules.md           命名规则
@@ -277,7 +322,7 @@ remotion-template/
   src/core/                 共用时间轴、动效、字体、音频
   src/dossier/ gameshow/ whiteboard/ picturebook/ captionnews/   五个模板
   scripts/                  所有命令的实现
-  skills/_shared/           共用规则（HOUSE_RULES.md、DIRECTING.md）
+  skills/_shared/           共用规则（HOUSE_RULES.md、EXAMS.md、DIRECTING.md）
   skills/<模板 id>/          每个模板的制作规范、风格、质检清单
 shared-assets/              旧内容线用的图标和音乐（没有小猪素材）
 content/                    素材
@@ -319,12 +364,12 @@ content/                    素材
 
 ## 内容规则
 
-- 单词标注 `课标`（高考课标词汇）或 `拓展`，每期最多 1 个拓展词；单词视频 4–6 个词，每个词配一个考试搭配。
-- 原创题标注“高考风格原创练习题”；只有引用真题时才写“真题”，并注明年份和出处。
-- 阅读文本原创，高考难度（CEFR B1–B2），不照抄新闻或试卷。
+- 单词按考试标注等级：高考 `课标`、四级 `四级`、六级 `四级` / `六级`（至少一半六级）；每期最多 1 个 `拓展`；单词视频 4–6 个词，每个词配一个考试搭配。
+- 原创题标注本期考试，例如“高考风格原创练习题”“四级风格原创练习题”；只有引用真题时才写“真题”，并注明年份和出处。
+- 阅读文本原创，难度按考试（高考、四级 B1–B2，六级 B2–C1），不照抄新闻或试卷。
 - 新闻里的每个数字都有一手来源（CDC、WHO 等），写在 `FACTS.md`；健康话题不给来源以外的建议。
 - 屏幕上的中文用常用简体字（字体按 GB2312 字符集裁剪）。
-- 详细规则：`remotion-template/skills/_shared/HOUSE_RULES.md`。
+- 详细规则：`remotion-template/skills/_shared/HOUSE_RULES.md` 和 `EXAMS.md`。
 
 ---
 

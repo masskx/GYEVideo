@@ -2,7 +2,8 @@
 // Self-contained: types live here. Visible text must use GB2312 characters (`npm run check`).
 // Board positions are automatic (up to 6 words); the data only orders the words.
 
-export type WordLevel = '课标' | '拓展';
+// 课标 = Gaokao curriculum list; 四级 / 六级 = CET-4 / CET-6 syllabus; 拓展 = outside the exam's list (at most one).
+export type WordLevel = '课标' | '四级' | '六级' | '拓展';
 export type LineMeta = {keywords?: string[]; pauseBefore?: number; holdAfter?: number};
 
 export type WhiteboardPart = {text: string; role: 'prefix' | 'root' | 'suffix'; gloss?: string};

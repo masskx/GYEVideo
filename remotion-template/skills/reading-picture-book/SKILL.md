@@ -1,6 +1,6 @@
 ---
 name: reading-picture-book
-description: Build ~60–70-second vertical Douyin bilingual reading shorts for Gaokao (高考) students in the 英文绘本精读 Picture-book Story template — a short original English story starring the locked 小猪 brand pig ("Little Pig"), drawn as crayon picture-book pages, each sentence read aloud in English with karaoke underline and a Chinese line, target words glossed on a word card as they are read, a word recap and a Gaokao-style comprehension question with 原文定位. Use when `npm run plan` names reading-picture-book or the owner asks for a story / 绘本 reading episode.
+description: Build ~60–70-second vertical Douyin bilingual reading shorts for 高考 / 四级 (CET-4) / 六级 (CET-6) students in the 英文绘本精读 Picture-book Story template — a short original English story starring the locked 小猪 brand pig ("Little Pig"), drawn as crayon picture-book pages, each sentence read aloud in English with karaoke underline and a Chinese line, target words glossed on a word card as they are read, a word recap and a Gaokao-style comprehension question with 原文定位. Use when `npm run plan` names reading-picture-book or the owner asks for a story / 绘本 reading episode.
 ---
 
 # 英文绘本精读 · Picture-book Story (reading)
@@ -9,11 +9,13 @@ Five illustrated pages tell one small story a teenager recognises (staying up la
 
 **Read `../_shared/HOUSE_RULES.md` and `../_shared/DIRECTING.md` first.** Look rules: `references/style.md`. Reference episode: `reading-episodes/001_screen_promise` (70 s).
 
+**Exams.** The template serves 高考, 四级 and 六级. Set `exam` with `npm run new -- reading-picture-book <id> --exam gaokao|cet4|cet6`, then follow `../_shared/EXAMS.md`. The audience, word levels, difficulty and question label change with the exam; the exam labels on screen change by themselves. The reference episode is a 高考 episode.
+
 ## Workflow (from `remotion-template/`)
 
 ```powershell
 npm.cmd run plan
-npm.cmd run new -- reading-picture-book 003_<topic>_book
+npm.cmd run new -- reading-picture-book 003_<topic>_book --exam gaokao   # or cet4 / cet6
 # brief.md, TREATMENT.md, then data/pictureBook.ts and data/voiceScript.ts
 npm.cmd run episode:use -- ../reading-episodes/003_<topic>_book
 npm.cmd run check           # fix every ERROR (blank brief/TREATMENT and copied reference data fail too)

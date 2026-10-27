@@ -5,6 +5,7 @@ import {backOut, clamp01, easeOut, pop, progress} from '../core/motion';
 import {cueTime, LineTiming} from '../core/timeline';
 import {CAPTION_NEWS, NewsTiming, phraseTimes} from './schedule';
 import {CAPTION_TOP, FONT, GRAPHIC, NEWS} from './theme';
+import {EXAM} from '../core/exam';
 
 export type SceneProps = {timing: NewsTiming; t: number};
 
@@ -190,7 +191,7 @@ export const HeadlineScene: React.FC<SceneProps> = ({timing, t}) => {
       </div>
       <div style={{position: 'absolute', left: 70, top: 1090, fontFamily: FONT.zhBold, fontSize: 64, color: NEWS.yellow, opacity: clamp01((t - cueTime(timing, 'zh')) / 0.2)}}>{captionNews.headline.zh}</div>
       <div style={{position: 'absolute', left: 70, top: 1200, fontFamily: FONT.mono, fontSize: 28, color: NEWS.zh, opacity: clamp01((t - cueTime(timing, 'zh')) / 0.2)}}>
-        READING · 高考风格双语阅读 · No.{captionNews.newsNo}
+        READING · {EXAM.readingSeries} · No.{captionNews.newsNo}
       </div>
       <BrandPig id="pig-headline" t={t} x={800} y={1230} size={190} face="happy" pose="point" flip />
     </>
@@ -278,7 +279,7 @@ export const RecapScene: React.FC<SceneProps> = ({timing, t}) => {
     <>
       <div style={{position: 'absolute', left: 70, top: 220, display: 'flex', gap: 12}}>
         <div style={{background: NEWS.yellow, color: NEWS.ink, fontFamily: FONT.caption, fontSize: 36, padding: '4px 16px'}}>KEY WORDS</div>
-        <div style={{background: NEWS.white, color: NEWS.ink, fontFamily: FONT.zhBold, fontSize: 34, padding: '4px 16px'}}>本篇高考词</div>
+        <div style={{background: NEWS.white, color: NEWS.ink, fontFamily: FONT.zhBold, fontSize: 34, padding: '4px 16px'}}>本篇{EXAM.word}</div>
       </div>
       <div style={{position: 'absolute', left: 70, right: 70, top: 340, display: 'flex', flexDirection: 'column', gap: 10}}>
         {captionNews.vocab.map((word, i) => {

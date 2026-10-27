@@ -1,6 +1,6 @@
 ---
 name: reading-caption-news
-description: Build ~55–70-second vertical Douyin bilingual reading shorts for Gaokao (高考) students in the 双语新闻阅读 Caption News template — a captions-first social-news explainer of one real, sourced topic (sleep, screens, exercise, climate) written as a short Gaokao-style passage, big white English caption chunks landing phrase by phrase with one keyword on the yellow block and Chinese under each, simple animated data graphics, SOURCE tags on every number, a reading question with 原文定位 and a key-word recap, with the locked 小猪 brand pig. Use when `npm run plan` names reading-caption-news or the owner asks for a news / science reading episode.
+description: Build ~55–70-second vertical Douyin bilingual reading shorts for 高考 / 四级 (CET-4) / 六级 (CET-6) students in the 双语新闻阅读 Caption News template — a captions-first social-news explainer of one real, sourced topic (sleep, screens, exercise, climate) written as a short Gaokao-style passage, big white English caption chunks landing phrase by phrase with one keyword on the yellow block and Chinese under each, simple animated data graphics, SOURCE tags on every number, a reading question with 原文定位 and a key-word recap, with the locked 小猪 brand pig. Use when `npm run plan` names reading-caption-news or the owner asks for a news / science reading episode.
 ---
 
 # 双语新闻阅读 · Caption News (reading)
@@ -9,11 +9,13 @@ A 60-second social-news video that is secretly a Gaokao reading passage. One top
 
 **Read `../_shared/HOUSE_RULES.md` and `../_shared/DIRECTING.md` first.** Look rules: `references/style.md`. Reference episode: `reading-episodes/002_teen_sleep_news` (58 s, CDC/AASM sources in `FACTS.md`).
 
+**Exams.** The template serves 高考, 四级 and 六级. Set `exam` with `npm run new -- reading-caption-news <id> --exam gaokao|cet4|cet6`, then follow `../_shared/EXAMS.md`. The audience, word levels, difficulty and question label change with the exam; the exam labels on screen change by themselves. The reference episode is a 高考 episode.
+
 ## Workflow (from `remotion-template/`)
 
 ```powershell
 npm.cmd run plan
-npm.cmd run new -- reading-caption-news 003_<topic>_news
+npm.cmd run new -- reading-caption-news 003_<topic>_news --exam gaokao   # or cet4 / cet6
 # FACTS.md first (sources), then brief.md, TREATMENT.md, data/captionNews.ts, data/voiceScript.ts
 npm.cmd run episode:use -- ../reading-episodes/003_<topic>_news
 npm.cmd run check           # fix every ERROR (blank brief/TREATMENT and copied reference data fail too)
