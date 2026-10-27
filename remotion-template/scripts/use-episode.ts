@@ -94,6 +94,8 @@ export type LottieConfig = {
 
 export type EpisodeConfig = {
   type: 'root-word' | 'sentence-pattern' | 'vocab-dossier' | 'vocab-game-show' | 'vocab-whiteboard' | 'reading-picture-book' | 'reading-caption-news';
+  // The exam this episode is for (src/core/exam.ts, skills/_shared/EXAMS.md). Missing = gaokao.
+  exam?: 'gaokao' | 'cet4' | 'cet6';
   episodeId: string;
   exportBaseName: string;
   durationTargetSeconds?: number;

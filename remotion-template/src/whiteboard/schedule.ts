@@ -1,6 +1,7 @@
 import {whiteboard, WhiteboardScene, WhiteboardWord} from '../data/whiteboard';
 import {episodeConfig} from '../data/episodeConfig';
 import {buildTimeline, Cue, LineTiming, SceneTiming} from '../core/timeline';
+import {EXAM} from '../core/exam';
 
 // Whiteboard cues. A "write" cue is the moment a term must be finished, because writing finishes on
 // the word; the board computes each write's start from its length. Tokens come from the data.
@@ -37,7 +38,7 @@ export const WHITEBOARD = buildTimeline<WhiteboardScene>({
     const partsText = word ? word.parts.map((part) => part.text).join(' + ') : '';
     switch (scene.kind) {
       case 'title':
-        return [...marker('title', at(spokenAt, first, undefined, 0.85), whiteboard.title), ...marker('subtitle', first.end + 0.5, '高考词汇 白板')];
+        return [...marker('title', at(spokenAt, first, undefined, 0.85), whiteboard.title), ...marker('subtitle', first.end + 0.5, `${EXAM.vocab} 白板`)];
       case 'root':
         return [
           {name: 'circle', t: start + 0.9, sfx: 'marker', gain: 0.8},

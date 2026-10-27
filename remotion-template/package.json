@@ -22,7 +22,8 @@
     "qa": "tsx scripts/qa-export.ts",
     "timeline": "tsx scripts/timeline.ts",
     "doctor": "tsx scripts/doctor.ts",
-    "produce": "tsx scripts/produce.ts"
+    "produce": "tsx scripts/produce.ts",
+    "prompt": "tsx scripts/prompt.ts"
   },
   "dependencies": {
     "@jridgewell/trace-mapping": "^0.3.31",

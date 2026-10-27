@@ -6,6 +6,7 @@ import {cueTime} from '../core/timeline';
 import {Banner, Burst, Confetti, Lamps, Telop, Tile} from './kit';
 import {GAME_SHOW, GameShowTiming, wordById} from './schedule';
 import {CREAM, FLOOR_Y, FONT, HUES, INK, PAPER, ROOT_YELLOW} from './theme';
+import {EXAM} from '../core/exam';
 
 export type SceneProps = {timing: GameShowTiming; t: number};
 
@@ -57,7 +58,7 @@ export const TitleScene: React.FC<SceneProps> = ({timing, t}) => {
       {centered(
         760,
         <Tile fill={CREAM} radius={18} shadow={10} style={{padding: '8px 26px', opacity: t > title + 0.6 ? 1 : 0}}>
-          <div style={{fontFamily: FONT.zh, fontSize: 40, color: INK}}>第 {gameShow.episodeNo} 期 · 高考词汇 · 五关</div>
+          <div style={{fontFamily: FONT.zh, fontSize: 40, color: INK}}>第 {gameShow.episodeNo} 期 · {EXAM.vocab} · {'零一二三四五六七八九十'[gameShow.words.length] ?? gameShow.words.length}关</div>
         </Tile>,
       )}
       <div style={{position: 'absolute', left: 0, right: 0, top: 900, display: 'flex', justifyContent: 'center'}}>
@@ -166,7 +167,7 @@ export const RoundScene: React.FC<SceneProps> = ({timing, t}) => {
       {pop(t, cueTime(timing, 'collocation')).visible ? (
         <div style={{position: 'absolute', left: 70, top: 1270}}>
           <Tile fill={CREAM} radius={16} shadow={8} style={{padding: '8px 22px', display: 'flex', gap: 16, alignItems: 'baseline'}}>
-            <span style={{fontFamily: FONT.mono, fontSize: 24, color: hue.floor}}>高考搭配</span>
+            <span style={{fontFamily: FONT.mono, fontSize: 24, color: hue.floor}}>{EXAM.collocation}</span>
             <span style={{fontFamily: FONT.telop, fontSize: 40, color: INK}}>{word.collocation.en}</span>
             <span style={{fontFamily: FONT.zh, fontSize: 32, color: INK}}>{word.collocation.zh}</span>
           </Tile>

@@ -1,6 +1,6 @@
 # Agent playbook: making a video in this repository
 
-This is the complete procedure for an agent (Codex, Claude Code, Cursor, or any other) that makes a 小猪盖被 video from this repository. Follow the steps in order. If you follow them exactly, your video will match the others on the account: the same pig, the same voice, the same quality bar, and a different look from the previous episode.
+This is the complete procedure for an agent (Codex, Claude Code, Cursor, or any other) that makes a 小猪盖被 video from this repository, for any of the three exams: 高考, 四级 (CET-4) or 六级 (CET-6). The owner usually starts you with a prompt from `docs/prompts/` (made by `npm run prompt`); this playbook is what that prompt tells you to follow. Follow the steps in order. If you follow them exactly, your video will match the others on the account: the same pig, the same voice, the same quality bar, and a different look from the previous episode.
 
 `AGENTS.md` is the one-page summary. This file holds the details. When the two disagree, `remotion-template/skills/_shared/HOUSE_RULES.md` wins.
 
@@ -13,7 +13,8 @@ This is the complete procedure for an agent (Codex, Claude Code, Cursor, or any 
 3. **One pig.** Only `src/brand/BrandPig.tsx` draws 小猪, and its hash is locked. You choose its position, size, mirroring, and one of its built-in faces and poses. Nothing else about it can change.
 4. **One voice.** DashScope `cosyvoice-v3-flash` / `longanhuan`. The script refuses anything else.
 5. **Rotate the look.** `npm run plan` picks the template. Two episodes in a row from one template make the account look repetitive.
-6. **A video is done only when the definition of done holds** (§9). Rendering is not done.
+6. **One exam per episode.** `exam` in `episodeConfig.ts` (`gaokao`, `cet4`, `cet6`) decides the word levels, the difficulty, the audience and every exam label on screen. Follow `remotion-template/skills/_shared/EXAMS.md` for it.
+7. **A video is done only when the definition of done holds** (§9). Rendering is not done.
 
 ---
 
@@ -89,6 +90,17 @@ The output lists each line's latest episodes and ends with a suggestion, for exa
 | `reading-picture-book` 英文绘本精读 | reading | a small life story starring Little Pig |
 | `reading-caption-news` 双语新闻阅读 | reading | a real, sourced science or health fact |
 
+### Choose the exam
+
+The owner's prompt names it. If it doesn't, ask. Read `remotion-template/skills/_shared/EXAMS.md` for that exam. In short:
+
+| | 高考 `gaokao` | 四级 `cet4` | 六级 `cet6` |
+|---|---|---|---|
+| Audience | 高中生 | 大学生 | 大学生 |
+| Word levels | 课标 (+1 拓展) | 四级 (+1 拓展) | 四级 / 六级, at least half 六级 (+1 拓展) |
+| English level | B1–B2 | B1–B2 | B2–C1 |
+| Question label | 高考风格原创练习题 | 四级风格原创练习题 | 六级风格原创练习题 |
+
 Then read the template's skill **completely** before writing anything: `remotion-template/skills/<template>/SKILL.md`, plus its `references/style.md` and `references/qa_checklist.md`.
 
 ---
@@ -96,9 +108,10 @@ Then read the template's skill **completely** before writing anything: `remotion
 ## 3. Step 2 — create the episode folder
 
 ```powershell
-npm.cmd run new -- <template> <episodeId>
+npm.cmd run new -- <template> <episodeId> --exam <gaokao|cet4|cet6>
 ```
 
+- `--exam` sets `exam` in `episodeConfig.ts` (default `gaokao`). For 四级 / 六级 put the exam after the number: `063_cet4_spect_dossier`.
 - `episodeId` = next number + topic + template suffix, lower case with `_`: `063_spect_dossier`, `064_struct_gameshow`, `003_umbrella_book`, `004_exercise_news`. `plan` prints the next number.
 - `new` copies the reference episode's data and renames the ids. It also creates `brief.md`, `TREATMENT.md` and `notes.md`.
 - Vocab episodes go to `episodes/`; reading episodes go to `reading-episodes/`.
@@ -113,17 +126,17 @@ The copied data is the **reference episode's content**. Every field must be rewr
 
 ### Vocabulary
 
-1. Choose a root (or affix) that unlocks **4–6 words from the Gaokao curriculum list (课标词汇)**. Tag every word `课标` or `拓展`; at most one may be `拓展`. Use your own curriculum word list; if you are unsure whether a word is 课标, choose another word.
+1. Choose a root (or affix) that unlocks **4–6 words from the exam's word list**: 高考 课标词汇, 四级 or 六级 syllabus (`EXAMS.md`). Tag every word with the exam's levels; at most one may be `拓展`, and a 六级 episode needs at least half `六级`. If you are unsure a word is on the list, choose another word.
 2. The root must split cleanly: prefix + root + suffix, with a literal meaning a 16-year-old believes in one breath (re = 回, pro = 向前).
 3. Every word gets one exam collocation (*reduce pollution*, *provide food and water*).
-4. Write one original question (cloze / 选词填空) that one of today's words answers, with four options and one correct answer. Label it `高考风格原创练习题`. Use `真题` only for a real past paper, with its year and source.
+4. Write one original question (高考: 完形 / 语法填空 style; 四级 / 六级: 选词填空 style) that one of today's words answers, with four options and one correct answer. Label it with the exam's label (`高考风格原创练习题`, `四级风格原创练习题`, `六级风格原创练习题`). Use `真题` only for a real past paper, with its year and source.
 5. Don't repeat a root used in the last 10 episodes of the same line (look at the folder names in `episodes/`).
 
 ### Reading — picture book
 
-1. A small, true-to-life story (staying up late, a lost umbrella, a first speech). Little Pig is the hero, called "Little Pig" in English and 小猪 in Chinese.
-2. 8–10 sentences over 4–6 pages, 8–16 words each, past tense, Gaokao level (CEFR B1–B2).
-3. 4–6 target words, all 课标 (at most one 拓展), each used once in a sentence whose context explains it.
+1. A small, true-to-life story from the audience's world: school for 高考; campus, dorm, library, part-time jobs and internships for 四级 / 六级. Little Pig is the hero, called "Little Pig" in English and 小猪 in Chinese.
+2. 8–10 sentences over 4–6 pages, past tense, at the exam's level (`EXAMS.md`: 高考 and 四级 B1–B2 and up to about 20–22 words; 六级 B2–C1 and up to about 28 words).
+3. 4–6 target words with the exam's levels (at most one 拓展), each used once in a sentence whose context explains it. Set `pictureBook.level` to the audience (高一 · 高二 / 大学英语四级 / 大学英语六级).
 4. One comprehension question (主旨 / 细节 / 推理 / 词义猜测) whose answer one sentence proves.
 
 ### Reading — caption news
@@ -160,7 +173,7 @@ Fill every section of the template file before touching `data/`:
 - **Visible Chinese** must use common simplified characters (GB2312). `check` lists any character the fonts can't draw; rephrase with a common word.
 - **`voiceScript.ts`**: one entry per spoken line.
   - `text` is what the voice reads. `subtitle` is what the screen shows. They may differ, and often should (§6.3).
-  - `instruction` sets the tone for the whole template. Copy it from the reference; don't invent a new persona.
+  - `instruction` sets the tone for the whole template. Copy it from the reference, but change the audience for 四级 / 六级 (高中生 → 大学生); don't invent a new persona.
   - `emotionInstruction` sets the tone of one line.
   - `speedHint`: copy the reference episode's choice for the same kind of line: `fast-clear` for most vocab lines, `medium-clear` for the root line, `very-fast` only for the game-show lightning round, and `medium` for story and news lines.
 - Every line id used by a scene must exist in `voiceScript.ts`, and every voice line must be used by a scene.
@@ -307,7 +320,11 @@ Never: edit or replace the pig, change the voice, add music or images from the i
 | `Another pig asset exists: …` | a pig image was added | delete that file; only `BrandPig` draws the pig |
 | `A scene uses voice line "x", which is not in data/voiceScript.ts` | id typo or a missing line | make `scenes[].lines` and `voiceScript` ids match |
 | `Characters outside the font subset …` | rare or traditional characters | rephrase with common simplified characters |
-| `Only N words: a vocabulary episode needs 4–6` / `N 拓展 words` | content rule | add 课标 words / swap extension words |
+| `Only N words: a vocabulary episode needs 4–6` / `N 拓展 words` | content rule | add words of the exam's levels / swap extension words |
+| `Word "x" is tagged "课标": a 四级 episode uses 四级 / 拓展` | levels copied from a 高考 reference | re-tag every word for the exam (`EXAMS.md`) |
+| `Only N of M words are 六级` | a 六级 episode teaching mostly 四级 words | swap in 六级 words of the same family |
+| `… is labelled "高考风格原创练习题" in a 四级 episode` | label copied from the reference | use the exam's label |
+| `"高考" appears in a 四级 episode` (warn) / `The voice instruction talks to 高中生` (warn) | reference wording left in data or voice | rewrite for the exam and its audience |
 | `Question "…" has answerIndex … outside its options` | index is 0-based | A = 0, B = 1, C = 2, D = 3 |
 | `says 真题 without a year and source` | 真题 label on an original question | use `高考风格原创练习题` |
 | `News line "c2" states a number but has no sourceId` | unsourced number | add the source to `sources` and `FACTS.md`, set `sourceId` |

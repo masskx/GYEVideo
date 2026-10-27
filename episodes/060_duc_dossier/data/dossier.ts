@@ -2,7 +2,8 @@
 // Types live here so the file is self-contained. Every visible string must use characters covered by
 // the GB2312 font subset (public/fonts/charset-gb2312.txt); `npm run check` verifies it.
 
-export type WordLevel = '课标' | '拓展';
+// 课标 = Gaokao curriculum list; 四级 / 六级 = CET-4 / CET-6 syllabus; 拓展 = outside the exam's list (at most one).
+export type WordLevel = '课标' | '四级' | '六级' | '拓展';
 
 // Same shape as LineMeta in src/core/timeline.ts.
 export type LineMeta = {keywords?: string[]; pauseBefore?: number; holdAfter?: number};

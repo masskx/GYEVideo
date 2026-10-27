@@ -6,6 +6,7 @@ import {captionNews} from '../data/captionNews';
 import {episodeConfig} from '../data/episodeConfig';
 import {useFonts} from '../core/fonts';
 import {CAPTION_NEWS_FONTS, FONT, NEWS} from './theme';
+import {EXAM} from '../core/exam';
 
 export const ReadingCaptionNewsCover: React.FC = () => {
   useFonts(CAPTION_NEWS_FONTS);
@@ -32,7 +33,7 @@ export const ReadingCaptionNewsCover: React.FC = () => {
         ))}
       </div>
       <div style={{position: 'absolute', left: 70, top: 1460, fontFamily: FONT.zhBold, fontSize: 56, color: NEWS.yellow}}>{cover.retentionPrompt}</div>
-      <div style={{position: 'absolute', left: 70, top: 1700, fontFamily: FONT.zh, fontSize: 40, color: NEWS.zh}}>{BRAND.creatorName} · 高考风格双语阅读</div>
+      <div style={{position: 'absolute', left: 70, top: 1700, fontFamily: FONT.zh, fontSize: 40, color: NEWS.zh}}>{BRAND.creatorName} · {EXAM.readingSeries}</div>
       <BrandPig id="pig-cover" t={0.4} x={760} y={1330} size={250} face="happy" pose="point" flip />
     </AbsoluteFill>
   );

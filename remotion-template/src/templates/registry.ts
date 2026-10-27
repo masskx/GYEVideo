@@ -27,7 +27,7 @@ export const TEMPLATES: Record<TemplateId, TemplateInfo> = {
   'vocab-dossier': {
     id: 'vocab-dossier',
     line: 'vocab',
-    title: '高考词汇案卷',
+    title: '词汇案卷', // shown as 高考词汇案卷 / 四级词汇案卷 / 六级词汇案卷 by exam
     look: 'Halftone print case file: a cloze question is the case, the root the fingerprint, each word an exhibit, a stamped verdict.',
     video: 'VocabDossierVideo',
     cover: 'VocabDossierCover',

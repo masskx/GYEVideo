@@ -1,5 +1,6 @@
 export const episodeConfig: EpisodeConfig = {
   type: 'reading-caption-news',
+  exam: 'gaokao',
   episodeId: '002_teen_sleep_news',
   exportBaseName: '002_teen_sleep_news',
   durationTargetSeconds: 60,

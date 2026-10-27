@@ -25,6 +25,7 @@ import {DOSSIER, DossierTiming, wordById} from './schedule';
 type SceneTiming = DossierTiming;
 const SCORE_BEAT = DOSSIER.beat;
 import {FONT, INK} from './theme';
+import {EXAM} from '../core/exam';
 
 export type SceneProps = {timing: SceneTiming; t: number};
 
@@ -177,7 +178,7 @@ export const ClozeCaseScene: React.FC<SceneProps> = ({timing, t}) => {
     <Camera t={t} scale={pushIn(t, timing, 1.04)}>
       <Halftone cacheKey="case-corner" w={1080} h={700} color={INK.highlight} step={24} angle={15} density={radialField(1020, 120, 620, 0.95, 0)} />
       <Absolute x={70} y={210}>
-        <Kicker>CASE FILE · 高考完形</Kicker>
+        <Kicker>CASE FILE · {EXAM.clozeKicker}</Kicker>
         <PopText text={dossier.title} t={t} at={cueTime(timing, 'title')} size={128} style={{marginTop: 14}} />
       </Absolute>
       <Absolute x={60} y={520} w={960}>
@@ -390,7 +391,7 @@ export const ExhibitScene: React.FC<SceneProps> = ({timing, t}) => {
       <Absolute x={70} y={215}>
         <div style={{display: 'flex', gap: 14}}>
           <Chip size={30}>EXHIBIT {numberText}</Chip>
-          <Chip size={30} ink={word.level === '课标' ? INK.overprint : INK.stamp}>
+          <Chip size={30} ink={word.level === EXAM.extension ? INK.stamp : INK.overprint}>
             {word.level}词汇
           </Chip>
         </div>
@@ -468,7 +469,7 @@ export const ExhibitScene: React.FC<SceneProps> = ({timing, t}) => {
       </Absolute>
       <Pop t={t} at={cueTime(timing, 'collocation')} style={{position: 'absolute', left: 70, top: 1290}}>
         <PrintCard shadow={INK.ink} style={{padding: '16px 28px', display: 'flex', gap: 18, alignItems: 'baseline', borderRadius: 16}}>
-          <span style={{fontFamily: FONT.mono, fontSize: 26, color: INK.stamp}}>高考搭配</span>
+          <span style={{fontFamily: FONT.mono, fontSize: 26, color: INK.stamp}}>{EXAM.collocation}</span>
           <span style={{fontFamily: FONT.headline, fontSize: 46, color: INK.ink}}>{word.collocation.en}</span>
           <span style={{fontFamily: FONT.sans, fontSize: 34, color: INK.overprint}}>{word.collocation.zh}</span>
         </PrintCard>

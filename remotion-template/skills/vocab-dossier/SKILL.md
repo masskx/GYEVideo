@@ -1,6 +1,6 @@
 ---
 name: vocab-dossier
-description: Build ~60-second vertical Douyin vocabulary shorts for Gaokao (高考) English students in the Halftone Dossier house style (高考词汇案卷) — cream printed paper, halftone dots, stamps, numbered exhibits, the 小猪 detective — with a Gaokao-style cloze question as the case, word roots as fingerprints, a per-episode synthesized score and SFX, DashScope CosyVoice narration, and Remotion. Use for word roots, affixes and word families aimed at Gaokao vocabulary.
+description: Build ~60-second vertical Douyin vocabulary shorts for 高考 / 四级 (CET-4) / 六级 (CET-6) English students in the Halftone Dossier house style (高考词汇案卷 / 四级词汇案卷 / 六级词汇案卷) — cream printed paper, halftone dots, stamps, numbered exhibits, the 小猪 detective — with a Gaokao-style cloze question as the case, word roots as fingerprints, a per-episode synthesized score and SFX, DashScope CosyVoice narration, and Remotion. Use for word roots, affixes and word families aimed at Gaokao vocabulary.
 ---
 
 # Gaokao Dossier Vocabulary Video
@@ -10,6 +10,8 @@ Every episode is a case file (案卷). A Gaokao-style question is the crime scen
 This skill adapts the **Halftone Dossier** style and the directing method of [lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar) (`DIRECTOR.md`, `styles/halftone-dossier/STYLE.md`) to this repository's Remotion pipeline, vertical 1080×1920 and Gaokao content.
 
 It is one of three vocabulary templates (with `vocab-game-show` and `vocab-whiteboard`). **Read `../_shared/HOUSE_RULES.md` and `../_shared/DIRECTING.md` first**: the pig, the voice, the Gaokao rules, the pipeline and the definition of done are there. Use this template when `npm run plan` names it.
+
+**Exams.** The template serves 高考, 四级 and 六级. Set `exam` with `npm run new -- vocab-dossier <id> --exam gaokao|cet4|cet6`, then follow `../_shared/EXAMS.md`. The audience, word levels, difficulty and question label change with the exam; the exam labels on screen change by themselves. The reference episode is a 高考 episode.
 
 ## Why this line exists
 
@@ -34,7 +36,7 @@ The old root-word line had two problems that this skill is built to fix:
 
 From `remotion-template/`:
 
-1. `npm run new -- vocab-dossier <id>` (e.g. `063_spect_dossier`): copies `episodes/060_duc_dossier/data`, renames ids, adds `brief.md`, `TREATMENT.md`, `notes.md`.
+1. `npm run new -- vocab-dossier <id> --exam <gaokao|cet4|cet6>` (e.g. `063_spect_dossier`, `064_cet4_spect_dossier`): copies `episodes/060_duc_dossier/data`, renames ids, adds `brief.md`, `TREATMENT.md`, `notes.md`.
 2. **Brief** (`brief.md`): root, meaning, words with their 课标/拓展 tag, collocations.
 3. **Treatment first** (`TREATMENT.md`), before any data: three candidate structures and the one chosen, the hook, the signature shot, the ending, the cue map, the sound table, §9 versus the previous dossier. Read `references/content_rules.md`.
 4. **Data**: rewrite every field of `dossier.ts` (scenes, words, cloze, `cueAt`, `solveHint`, lineMeta) and `voiceScript.ts` for the new root. Nothing of 060 may survive.

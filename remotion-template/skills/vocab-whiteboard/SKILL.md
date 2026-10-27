@@ -1,6 +1,6 @@
 ---
 name: vocab-whiteboard
-description: Build ~60-second vertical Douyin vocabulary shorts for Gaokao (高考) students in the 白板词根图 Whiteboard Explainer template — one whiteboard written live in marker, the root circled in the middle, words branching out with their parts and literal meaning in blue and the exam meaning in red, one twist word whose wrong first guess is erased, the camera travelling over the board instead of cutting, and the locked 小猪 brand pig beside the board. Use when `npm run plan` names vocab-whiteboard or the owner asks for a whiteboard / mind-map vocabulary episode.
+description: Build ~60-second vertical Douyin vocabulary shorts for 高考 / 四级 (CET-4) / 六级 (CET-6) students in the 白板词根图 Whiteboard Explainer template — one whiteboard written live in marker, the root circled in the middle, words branching out with their parts and literal meaning in blue and the exam meaning in red, one twist word whose wrong first guess is erased, the camera travelling over the board instead of cutting, and the locked 小猪 brand pig beside the board. Use when `npm run plan` names vocab-whiteboard or the owner asks for a whiteboard / mind-map vocabulary episode.
 ---
 
 # 白板词根图 · Whiteboard Explainer (vocab)
@@ -9,11 +9,13 @@ A calm, teacher-at-the-board episode. The board is bigger than the frame; the ca
 
 **Read `../_shared/HOUSE_RULES.md` and `../_shared/DIRECTING.md` first.** Look rules: `references/style.md`. Reference episode: `episodes/062_vis_whiteboard` (root *vis / vid*, 52 s).
 
+**Exams.** The template serves 高考, 四级 and 六级. Set `exam` with `npm run new -- vocab-whiteboard <id> --exam gaokao|cet4|cet6`, then follow `../_shared/EXAMS.md`. The audience, word levels, difficulty and question label change with the exam; the exam labels on screen change by themselves. The reference episode is a 高考 episode.
+
 ## Workflow (from `remotion-template/`)
 
 ```powershell
 npm.cmd run plan
-npm.cmd run new -- vocab-whiteboard 063_<root>_whiteboard
+npm.cmd run new -- vocab-whiteboard 063_<root>_whiteboard --exam gaokao   # or cet4 / cet6
 # brief.md, TREATMENT.md, then data/whiteboard.ts and data/voiceScript.ts
 npm.cmd run episode:use -- ../episodes/063_<root>_whiteboard
 npm.cmd run check           # fix every ERROR (blank brief/TREATMENT and copied reference data fail too)

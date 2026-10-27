@@ -1,7 +1,8 @@
 // vocab-game-show episode data (skill: remotion-template/skills/vocab-game-show).
 // Self-contained: types live here. Visible text must use GB2312 characters (`npm run check`).
 
-export type WordLevel = '课标' | '拓展';
+// 课标 = Gaokao curriculum list; 四级 / 六级 = CET-4 / CET-6 syllabus; 拓展 = outside the exam's list (at most one).
+export type WordLevel = '课标' | '四级' | '六级' | '拓展';
 export type LineMeta = {keywords?: string[]; pauseBefore?: number; holdAfter?: number};
 
 export type GameShowWord = {
@@ -33,7 +34,7 @@ export type GameShowQuestion = {
   stemZh: string;
   options: string[];
   answerIndex: number;
-  sourceNote: string; // '高考风格原创练习题' unless it is a real paper with year and source
+  sourceNote: string; // the exam's original-question label (高考风格原创练习题 / 四级风格原创练习题 / 六级风格原创练习题) unless it is a real paper with year and source
 };
 
 export type GameShow = {

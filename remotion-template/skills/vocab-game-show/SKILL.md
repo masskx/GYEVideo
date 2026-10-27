@@ -1,6 +1,6 @@
 ---
 name: vocab-game-show
-description: Build ~60-second vertical Douyin vocabulary shorts for Gaokao (高考) students in the 词根闯关 Game Show Flat template — flat candy-coloured studio sets, one round per word with a prefix + root call-and-response on the beat, judgement words (PERFECT!), a lightning round, a report-card grade and a bonus cloze for the comments, hosted by the locked 小猪 brand pig. Use when `npm run plan` names vocab-game-show or the owner asks for a game-show / 闯关 vocabulary episode.
+description: Build ~60-second vertical Douyin vocabulary shorts for 高考 / 四级 (CET-4) / 六级 (CET-6) students in the 词根闯关 Game Show Flat template — flat candy-coloured studio sets, one round per word with a prefix + root call-and-response on the beat, judgement words (PERFECT!), a lightning round, a report-card grade and a bonus cloze for the comments, hosted by the locked 小猪 brand pig. Use when `npm run plan` names vocab-game-show or the owner asks for a game-show / 闯关 vocabulary episode.
 ---
 
 # 词根闯关 · Game Show Flat (vocab)
@@ -9,11 +9,13 @@ A root is today's pass code (通关密码). Each word is one round: the prefix t
 
 **Read `../_shared/HOUSE_RULES.md` and `../_shared/DIRECTING.md` first** (pig, voice, Gaokao rules, pipeline, definition of done). Look and motion rules: `references/style.md`. Reference episode: `episodes/061_port_gameshow` (root *port*, 64 s).
 
+**Exams.** The template serves 高考, 四级 and 六级. Set `exam` with `npm run new -- vocab-game-show <id> --exam gaokao|cet4|cet6`, then follow `../_shared/EXAMS.md`. The audience, word levels, difficulty and question label change with the exam; the exam labels on screen change by themselves. The reference episode is a 高考 episode.
+
 ## Workflow (from `remotion-template/`)
 
 ```powershell
 npm.cmd run plan                                   # confirm this template is next
-npm.cmd run new -- vocab-game-show 063_<root>_gameshow
+npm.cmd run new -- vocab-game-show 063_<root>_gameshow --exam gaokao   # or cet4 / cet6
 # write brief.md and TREATMENT.md, then rewrite data/gameShow.ts and data/voiceScript.ts
 npm.cmd run episode:use -- ../episodes/063_<root>_gameshow
 npm.cmd run check           # fix every ERROR (blank brief/TREATMENT and copied reference data fail too)

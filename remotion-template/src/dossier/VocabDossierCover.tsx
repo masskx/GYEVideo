@@ -6,6 +6,7 @@ import {dossier} from '../data/dossier';
 import {episodeConfig} from '../data/episodeConfig';
 import {Chip, Halftone, HalftoneGlyph, PaperGround, PaperOverlay, PopText, PrintCard, radialField, Stamp, useDossierFonts} from './print';
 import {FONT, INK} from './theme';
+import {EXAM} from '../core/exam';
 
 // Every element is drawn at its settled state (t far past every entrance).
 const SETTLED = 100;
@@ -23,7 +24,7 @@ export const VocabDossierCover: React.FC = () => {
       <div style={{position: 'absolute', top: 110, left: 70, display: 'flex', gap: 14}}>
         <Chip size={32}>案卷 No.{dossier.caseNo}</Chip>
         <Chip size={32} ink={INK.highlight} text={INK.ink}>
-          {cover.badgeText ?? '高考词汇案卷'}
+          {cover.badgeText ?? `${EXAM.vocab}案卷`}
         </Chip>
       </div>
       <div style={{position: 'absolute', top: 250, left: 70, width: 960}}>
@@ -50,11 +51,11 @@ export const VocabDossierCover: React.FC = () => {
           </Chip>
         ))}
       </div>
-      <Stamp id="cover-stamp" text="高考高频" t={SETTLED} at={0} size={86} rotate={9} style={{left: 600, top: 400}} />
+      <Stamp id="cover-stamp" text={EXAM.frequent} t={SETTLED} at={0} size={86} rotate={9} style={{left: 600, top: 400}} />
       <BrandPig id="pig-cover" t={0.4} face="squint" pose="inspect" size={300} x={730} y={1500} />
       <div style={{position: 'absolute', left: 70, top: 1600, fontFamily: FONT.hand, fontSize: 58, color: INK.stamp}}>{cover.retentionPrompt}</div>
       <div style={{position: 'absolute', left: 70, top: 1700, fontFamily: FONT.sans, fontSize: 44, color: INK.ink}}>
-        {BRAND.creatorName} · 高考词汇案卷
+        {BRAND.creatorName} · {EXAM.vocab}案卷
       </div>
       <PaperOverlay t={0} />
     </AbsoluteFill>
