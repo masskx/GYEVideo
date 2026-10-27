@@ -81,7 +81,9 @@ An episode is done when all of these hold and are recorded in its `notes.md`:
 
 1. `brief.md` and `TREATMENT.md` written before the data, with §9 (versus the previous episode) filled in.
 2. `npm run check` passes (no errors; warnings explained in notes).
-3. `npm run voice:check` passes every line.
-4. `npm run render` prints `QA PASS` (frame size, length, loudness, peak, no black frames, voice ends before the video).
+3. `npm run produce` ends with `PRODUCE DONE`: it ran voice, `voice:check` (every line passes), check again, audio and the render with `QA PASS` (frame size, length, loudness, peak, no black frames, voice ends before the video), and wrote `exports/<id>_handoff.md`.
+4. A person has listened to every line that uses `asrAccept` (listed in the handoff), or the report says it still needs a listen.
 5. You looked at `exports/<id>_contact_sheet.jpg` and the per-scene stills in `out/qa/<id>/` against the template's QA checklist: no text overlaps, nothing clipped, the pig on its ground line, every Chinese line readable.
-6. `exports/` contains `<id>.mp4`, `_cover.png`, `_caption.txt`, `_publish_notes.md`, `_qa.md`.
+6. `exports/` contains `<id>.mp4`, `_cover.png`, `_caption.txt`, `_publish_notes.md`, `_qa.md`, `_contact_sheet.jpg`, `_handoff.md`.
+
+The step-by-step procedure, troubleshooting and the report format are in `docs/agent_playbook.md`.

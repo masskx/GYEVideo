@@ -41,7 +41,7 @@ writeFileSync(configPath, readFileSync(configPath, 'utf8').split(exampleId).join
 // An empty voice timeline, so the studio estimates timing until `npm run voice`.
 writeFileSync(
   join(target, 'data', 'generatedVoiceTimeline.ts'),
-  `export type GeneratedVoiceTimelineItem = {\n  id: string;\n  start: number;\n  end: number;\n  text: string;\n  audio: string;\n};\n\nexport const generatedVoiceTimeline: GeneratedVoiceTimelineItem[] = [];\n`,
+  `export type GeneratedVoiceTimelineItem = {\n  id: string;\n  start: number;\n  end: number;\n  text: string;\n  spoken?: string;\n  audio: string;\n};\n\nexport const generatedVoiceTimeline: GeneratedVoiceTimelineItem[] = [];\n`,
   'utf8',
 );
 
@@ -55,11 +55,39 @@ for (const [from, to] of [
     writeFileSync(join(target, to), readFileSync(source, 'utf8').replace(/<episodeId>/g, episodeId), 'utf8');
   }
 }
-writeFileSync(join(target, 'notes.md'), `# Notes: ${episodeId}\n\nTemplate: ${templateId} (${template.title}). Copied from ${template.example}.\n\n## QA\n\n## Voice check\n`, 'utf8');
+writeFileSync(
+  join(target, 'notes.md'),
+  [
+    `# Notes: ${episodeId}`,
+    '',
+    `Template: ${templateId} (${template.title}). Copied from ${template.example}. Skill: remotion-template/${template.skill}/SKILL.md`,
+    '',
+    '## QA (from exports/<id>_qa.md)',
+    '- Result / length / loudness / peak / black frames:',
+    '',
+    '## Visual review (contact sheet + out/qa/<id>/, against references/qa_checklist.md)',
+    '- ',
+    '',
+    '## Voice check (npm run voice:check)',
+    '- Lines passing:',
+    '- Lines rewritten and why:',
+    '- asrAccept entries (listened to by a person? yes / no):',
+    '',
+    '## Fixes made during review',
+    '- ',
+    '',
+    '## Warnings from npm run check (and why they are acceptable)',
+    '- ',
+    '',
+  ].join('\n'),
+  'utf8',
+);
 
 console.log(`Created ${target} from ${template.example}.`);
 console.log('');
 console.log('Next (see ' + template.skill + '/SKILL.md):');
 console.log('  1. Fill brief.md and TREATMENT.md; rewrite every field of data/*.ts for the new topic.');
 console.log(`  2. npm run episode:use -- ../${template.episodesDir}/${episodeId}`);
-console.log('  3. npm run check   4. npm run voice   5. npm run voice:check   6. npm run audio   7. npm run render');
+console.log('  3. npm run check            (fix errors in the data first)');
+console.log('  4. npm run produce          (voice → voice:check → check → audio → render, stops at the first failure)');
+console.log('  5. Visual review + notes.md (see exports/<id>_handoff.md)');

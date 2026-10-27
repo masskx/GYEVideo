@@ -1,6 +1,6 @@
 # AGENTS.md (remotion-template)
 
-The single Remotion project for every video line. Read `../AGENTS.md` first, then `skills/_shared/HOUSE_RULES.md` and the skill of the template you are making.
+The single Remotion project for every video line. Read `../AGENTS.md` and `../docs/agent_playbook.md` first, then `skills/_shared/HOUSE_RULES.md` and the skill of the template you are making.
 
 Do not duplicate this folder for new episodes. Episode content lives in `../episodes/`, `../reading-episodes/` or `../sentence-episodes/`; `npm run episode:use` copies an episode's `data/` into `src/data/` and its `audio/` into `public/`.
 
@@ -14,7 +14,7 @@ Do not duplicate this folder for new episodes. Episode content lives in `../epis
 | `src/brand/` | `BrandPig.tsx` (locked by `pig.lock`), `BrandAvatar.tsx`, `brand.ts` (names, voice) |
 | `src/dossier/`, `src/gameshow/`, `src/whiteboard/`, `src/picturebook/`, `src/captionnews/` | one folder per template: theme, schedule, scenes, video, cover, copy |
 | `src/data/` | the active episode's data (overwritten by `episode:use`; defaults are the reference episodes) |
-| `scripts/` | `use-episode`, `check-episode`, `generate-voice`, `voice-check.py`, `timeline`, `episode-audio` + `audio/`, `render-runner`, `qa-report`, `new-episode`, `plan` |
+| `scripts/` | `doctor`, `plan`, `new-episode`, `use-episode`, `check-episode`, `produce` (+ `voice-state`), `generate-voice`, `voice-check.py` (+ `requirements-voice-check.txt`), `timeline`, `episode-audio` + `audio/`, `render-runner`, `qa-report` |
 | `skills/` | `_shared/` house rules and directing method, one skill per template, legacy skills |
 
 Legacy compositions (`RootWordTemplate`, `SentencePatternVideo`, `DouyinCover`, `SentenceCover`) still render through the same scripts.
@@ -33,10 +33,10 @@ Legacy compositions (`RootWordTemplate`, `SentencePatternVideo`, `DouyinCover`, 
 ## Checks before delivery
 
 ```powershell
-npm.cmd run typecheck
+npm.cmd run doctor       # once per machine
 npm.cmd run check
-npm.cmd run voice:check
-npm.cmd run render
+npm.cmd run produce      # voice → voice:check → check → timeline → audio → render + QA
+npm.cmd run typecheck    # only when template code was changed (owner-approved)
 ```
 
 Sentence episodes (legacy line) also keep their own rules: skeleton within 3 seconds, scene first and explanation second, a clear slot swap, at least one drill-repeat section, nothing that feels like a slide deck.

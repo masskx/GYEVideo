@@ -16,12 +16,8 @@ npm.cmd run plan                                   # confirm this template is ne
 npm.cmd run new -- vocab-game-show 063_<root>_gameshow
 # write brief.md and TREATMENT.md, then rewrite data/gameShow.ts and data/voiceScript.ts
 npm.cmd run episode:use -- ../episodes/063_<root>_gameshow
-npm.cmd run check
-npm.cmd run voice
-npm.cmd run voice:check
-npm.cmd run timeline                               # 50–66 s
-npm.cmd run audio
-npm.cmd run render                                 # QA PASS, then look at the contact sheet
+npm.cmd run check           # fix every ERROR (blank brief/TREATMENT and copied reference data fail too)
+npm.cmd run produce         # voice → voice:check → check → timeline → audio → render + QA; stops at the first failure
 ```
 
 Then work through `references/qa_checklist.md` and write `notes.md`.

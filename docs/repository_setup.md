@@ -4,22 +4,22 @@
 
 ## 首次使用（PowerShell）
 
-需要 Node.js / npm，以及 PATH 中可用的 ffmpeg 和 ffprobe。`npm run voice:check` 另需 Python 3 和 `pip install faster-whisper pypinyin`（首次运行会下载 medium 语音识别模型）。
+需要 Node.js 18+（推荐 22）/ npm、PATH 中可用的 ffmpeg 和 ffprobe、Python 3.10+（命令名为 `python`）。详细步骤见 [Agent 操作手册](agent_playbook.md) 第 1 节。
 
 ```powershell
 Copy-Item .env.example .env
 # 编辑 .env，填写自己的 DASHSCOPE_API_KEY。
 Set-Location remotion-template
 npm.cmd ci
+python -m pip install -r scripts/requirements-voice-check.txt
+npm.cmd run doctor                                   # 必须显示 Ready
 npm.cmd run episode:use -- ../episodes/061_port_gameshow
-npm.cmd run check
-npm.cmd run voice
-npm.cmd run voice:check
-npm.cmd run audio
-npm.cmd run render
+npm.cmd run produce                                  # 校准渲染：应显示 PRODUCE DONE、QA PASS
 ```
 
-单词、双语阅读和句型内容分别从 `episodes/`、`reading-episodes/` 和 `sentence-episodes/` 选择（模板列表见 `AGENTS.md`）。切换后先运行 `voice`，重新生成配音和真实时长；不依赖仓库中的已生成配音文件。运行时的 `.active-episode.json` 由 `episode:use` 生成。
+首次渲染会自动下载无头 Chromium，首次 `voice:check` 会下载语音识别模型（约 1.5 GB），需要联网。
+
+单词、双语阅读和句型内容分别从 `episodes/`、`reading-episodes/` 和 `sentence-episodes/` 选择（模板列表见 `AGENTS.md`）。配音音频不入库：新克隆的仓库里没有音频，`npm run produce` 会自动重新生成缺失或文字已改动的配音。运行时的 `.active-episode.json` 由 `episode:use` 生成。
 
 ## 音色与口播标准
 
@@ -28,6 +28,7 @@ npm.cmd run render
 - 语速按每句 `speedHint` 选择；情绪和重音由 `instruction`、`emotionInstruction` 描述。
 - 每句合成后用 ffprobe 测时，拼接配音并生成真实时间轴，画面按实际口播同步。
 - `.env.example` 只包含空密钥和默认参数；实际密钥只放本地 `.env`。
+- 模型和音色锁定在 `remotion-template/src/brand/brand.ts`：`.env` 里如果写了别的 `DASHSCOPE_TTS_MODEL` / `DASHSCOPE_TTS_VOICE`，`npm run voice` 会直接报错。
 
 详细规则：
 

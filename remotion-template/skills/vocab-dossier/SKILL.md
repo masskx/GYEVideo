@@ -41,19 +41,14 @@ From `remotion-template/`:
 5. Pipeline:
    ```powershell
    npm.cmd run episode:use -- ../episodes/<id>
-   npm.cmd run check
-   npm.cmd run voice
-   npm.cmd run voice:check
-   npm.cmd run timeline     # scene table; 55–68 s
-   npm.cmd run audio        # score + SFX, after voice: the score follows the real timing
-   npm.cmd run preview      # optional, Remotion studio
-   npm.cmd run render       # stills in out/qa/<id>/, render, −14 LUFS, QA report, cover, caption, notes
+   npm.cmd run check           # fix every ERROR (blank brief/TREATMENT and copied reference data fail too)
+   npm.cmd run produce         # voice → voice:check → check → timeline → audio → render + QA; stops at the first failure
    ```
 6. **One fix round** against `references/qa_checklist.md`; record the results in `notes.md`.
 
 ### Data fields that time the film
 
-- `scene.cueAt`: the spoken word that fires a beat inside a scene (e.g. `{options: 'pro', fingerprint: 'duc'}`); fallback is a fixed fraction of the line.
+- `scene.cueAt`: the spoken word that fires a beat inside a scene; without it the beat falls at a fixed fraction of the line. Keys: `loss` (cloze-case: the "which one?" moment), `loupe` (fingerprint), `arrow` and `verdict` (solve: the root's logic, the stamp), `redact` and `end` (homework). 060 uses `{loss: '选哪个'}`, `{loupe: '指纹'}`, `{arrow: '往回带', verdict: '结'}`, `{redact: '空里', end: '下一个'}`. Every token must appear in the spoken `text` of that scene's lines.
 - `dossier.solveHint`: the root's logic said in the solve (往回带).
 - The fingerprint rows and the evidence-board card are derived from the options and the root, so they change with the data.
 

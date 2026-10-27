@@ -16,12 +16,8 @@ npm.cmd run plan
 npm.cmd run new -- vocab-whiteboard 063_<root>_whiteboard
 # brief.md, TREATMENT.md, then data/whiteboard.ts and data/voiceScript.ts
 npm.cmd run episode:use -- ../episodes/063_<root>_whiteboard
-npm.cmd run check
-npm.cmd run voice
-npm.cmd run voice:check
-npm.cmd run timeline        # 50–66 s
-npm.cmd run audio
-npm.cmd run render
+npm.cmd run check           # fix every ERROR (blank brief/TREATMENT and copied reference data fail too)
+npm.cmd run produce         # voice → voice:check → check → timeline → audio → render + QA; stops at the first failure
 ```
 
 ## Structure

@@ -157,7 +157,9 @@ for (const file of readdirSync(dataDir).filter((name) => name.endsWith('.ts'))) 
 // A previous episode's score must not leak into this one.
 rmSync(join(targetAudioDir, 'score.mp3'), {force: true});
 
-if (existsSync(audioDir)) {
+// The previous episode's voice must not leak either: clear public/audio even when this episode has no
+// audio yet (a new episode, or a fresh clone; audio is not committed). npm run produce then re-voices it.
+{
   if (existsSync(targetAudioDir)) {
     for (const entry of readdirSync(targetAudioDir)) {
       try {
@@ -172,7 +174,9 @@ if (existsSync(audioDir)) {
       }
     }
   }
+}
 
+if (existsSync(audioDir)) {
   cpSync(audioDir, targetAudioDir, {recursive: true});
 
   for (const file of ['main-voice.mp3', 'segments.txt']) {

@@ -61,10 +61,21 @@ if (runtime) {
   const used = new Set(runtime.timeline.scenes.flatMap((scene) => scene.scene.lines));
   for (const id of used) if (!voiceIds.has(id)) error(`A scene uses voice line "${id}", which is not in data/voiceScript.ts.`);
   for (const id of voiceIds) if (!used.has(id)) warn(`Voice line "${id}" is never used by a scene.`);
+  // cueAt tokens time a beat to a spoken word; a token the voice never says falls back to a guess.
+  for (const {scene} of runtime.timeline.scenes) {
+    const cueAt = (scene as {cueAt?: Record<string, string>}).cueAt ?? {};
+    const spoken = scene.lines.map((id) => voiceScript.find((line) => line.id === id)?.text ?? '').join(' ');
+    for (const [key, token] of Object.entries(cueAt)) {
+      if (!spoken.includes(token)) warn(`Scene "${scene.id}": cueAt.${key} "${token}" is not in its spoken text, so that beat falls at a fixed time.`);
+    }
+  }
 }
 const timed = new Set(generatedVoiceTimeline.map((item) => item.id));
 const unvoiced = voiceScript.filter((line) => !timed.has(line.id)).map((line) => line.id);
 if (unvoiced.length) warn(`No generated voice yet for: ${unvoiced.join(', ')} (run npm run voice).`);
+const made = new Map(generatedVoiceTimeline.map((item) => [item.id, item as {text: string; spoken?: string}]));
+const stale = voiceScript.filter((line) => made.has(line.id) && (made.get(line.id)!.text !== line.subtitle || (made.get(line.id)!.spoken ?? line.text) !== line.text)).map((line) => line.id);
+if (stale.length) warn(`Voice is older than the script for: ${stale.join(', ')} (run npm run voice, or npm run produce).`);
 
 // ---------- 4. the data of this template ----------
 const DATA: Record<string, unknown> = {
@@ -148,7 +159,34 @@ if (template) {
   if (previous && typeOf(previous) === type) {
     warn(`The previous ${template.line} episode (${previous}) uses the same template. Rotate (npm run plan), or make sure 3 of 6 points differ in TREATMENT.md.`);
   }
-  for (const file of ['brief.md', 'TREATMENT.md']) if (!existsSync(join(active.episodeDir, file))) warn(`Missing ${file} in the episode folder.`);
+  // The data must be this episode's own: npm run new copies the reference episode, which must be rewritten.
+  const exampleDir = join(repoDir, template.example);
+  if (active.episodeDir !== exampleDir) {
+    for (const file of [template.dataFile, 'voiceScript.ts']) {
+      const mine = join(active.episodeDir, 'data', file);
+      const reference = join(exampleDir, 'data', file);
+      if (existsSync(mine) && existsSync(reference) && readFileSync(mine, 'utf8') === readFileSync(reference, 'utf8')) {
+        error(`data/${file} is still the reference episode's (${template.example}): rewrite it for this episode.`);
+      }
+    }
+  }
+  // Treatment first: brief.md and TREATMENT.md must be written, not left as the blank templates from npm run new.
+  const blanks: Record<string, string> = {'brief.md': 'episode_brief_template.md', 'TREATMENT.md': 'TREATMENT_template.md'};
+  for (const [file, blank] of Object.entries(blanks)) {
+    const path = join(active.episodeDir, file);
+    if (!existsSync(path)) {
+      error(`Missing ${file} in the episode folder (write it before the data; npm run new creates it).`);
+      continue;
+    }
+    const text = readFileSync(path, 'utf8');
+    const templates = [join(templateDir, template.skill, 'templates', blank), join(templateDir, 'skills', '_shared', 'templates', blank)].filter((p) => existsSync(p));
+    if (templates.some((p) => readFileSync(p, 'utf8').replace(/<episodeId>/g, active.episodeSlug).trim() === text.trim())) {
+      error(`${file} is still the blank template: fill it in before writing the data.`);
+    }
+    if (file === 'TREATMENT.md' && /^\|\s*Structure\s*\|\s*\|/m.test(text)) {
+      error('TREATMENT.md §9 (versus the previous episode) is empty: compare the six points.');
+    }
+  }
 }
 
 for (const message of warnings) console.log(`warn  ${message}`);

@@ -20,7 +20,9 @@
     "new": "tsx scripts/new-episode.ts",
     "plan": "tsx scripts/plan.ts",
     "qa": "tsx scripts/qa-export.ts",
-    "timeline": "tsx scripts/timeline.ts"
+    "timeline": "tsx scripts/timeline.ts",
+    "doctor": "tsx scripts/doctor.ts",
+    "produce": "tsx scripts/produce.ts"
   },
   "dependencies": {
     "@jridgewell/trace-mapping": "^0.3.31",

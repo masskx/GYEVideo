@@ -100,7 +100,7 @@ export const runRender = (renderMode: RenderMode) => {
       ]);
     }
     console.log(`QA stills (one per scene) exported to: ${qaDir}`);
-    console.log(`Review them against ${template!.skill}/references/qa_checklist.md and skills/_shared/qa.md.`);
+    console.log(`Review them against ${template!.skill}/references/qa_checklist.md and skills/_shared/HOUSE_RULES.md.`);
   };
 
   // Two-pass loudnorm to -14 LUFS, resample, then a -1.5 dB limiter (headroom for AAC overshoot); the picture is copied untouched.
@@ -139,7 +139,10 @@ export const runRender = (renderMode: RenderMode) => {
     console.log(`Video exported to: ${finalVideoPath}`);
 
     if (template) {
-      writeQaReport({video: finalVideoPath, exportsDir, baseName: exportBaseName, template, timeline: runtime!.timeline});
+      // A failed measurement still exports cover and copy, but the command exits 1 (npm run produce stops).
+      if (!writeQaReport({video: finalVideoPath, exportsDir, baseName: exportBaseName, template, timeline: runtime!.timeline})) {
+        process.exitCode = 1;
+      }
     }
   }
 

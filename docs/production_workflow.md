@@ -55,28 +55,32 @@ npm.cmd run new -- <template> <episodeId>
 
 字段说明见各模板的 `SKILL.md`。数据文件自带类型定义，不要 import 其它文件。
 
-## 5. 同步、检查、配音
+## 5. 同步、检查
 
 ```powershell
 npm.cmd run episode:use -- ../episodes/<episodeId>
 npm.cmd run check
-npm.cmd run voice
-npm.cmd run voice:check
-npm.cmd run timeline
 ```
 
-- `check`：小猪锁、词汇等级（课标 / 拓展，拓展最多 1 个）、题目答案和来源、GB2312 字符、新闻数字出处、时长、模板轮换。
-- `voice`：DashScope CosyVoice（`cosyvoice-v3-flash` / `longanhuan`），API key 只从环境变量 `DASHSCOPE_API_KEY` 读取。配音和时间轴会回存到 episode。
-- `voice:check`：逐句语音转写核对；读错的句子改写 `text`（例如数字写成英文单词、词根逐个字母拼读）后重新生成。
+`check` 检查：小猪锁；brief.md / TREATMENT.md 已填写（不是空白模板，第 9 节已对比）；data 不是参考 episode 的原样拷贝；词汇等级（课标 / 拓展，拓展最多 1 个）；题目答案和来源；GB2312 字符；新闻数字出处和关键词；cueAt 是否在口播里；时长；模板轮换。所有 ERROR 修好再继续。
 
-## 6. 配乐和导出
+## 6. 一键生产
 
 ```powershell
-npm.cmd run audio
-npm.cmd run render
+npm.cmd run produce
 ```
 
-`audio` 按真实时间轴合成配乐和音效（必须在 `voice` 之后）。`render` 先导出每场静帧到 `out/qa/<id>/`，再渲染成片、统一响度到 -14 LUFS、写 QA 报告和 contact sheet，最后导出封面、caption 和发布文案到 `exports/`。
+按固定顺序执行，任一步失败就停：
+
+1. `check`
+2. `voice`：只为新增或文字改动的句子重新配音；DashScope CosyVoice `cosyvoice-v3-flash` / `longanhuan`，API key 只从 `.env` 或环境变量 `DASHSCOPE_API_KEY` 读取。
+3. `voice:check`：逐句语音转写核对；读错的句子改写 `text` 后重跑。
+4. `check`（这时有真实时长）
+5. `timeline`：每场时长
+6. `audio`：按真实时间轴合成配乐和音效
+7. `render`：分场静帧到 `out/qa/<id>/`、成片、-14 LUFS、QA 报告、contact sheet、封面、caption、发布文案
+
+最后写出 `exports/<id>_handoff.md`。单步命令也可以单独运行，但推荐始终用 `produce`。
 
 ## 7. 人工检查
 

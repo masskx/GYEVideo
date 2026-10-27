@@ -16,12 +16,8 @@ npm.cmd run plan
 npm.cmd run new -- reading-caption-news 003_<topic>_news
 # FACTS.md first (sources), then brief.md, TREATMENT.md, data/captionNews.ts, data/voiceScript.ts
 npm.cmd run episode:use -- ../reading-episodes/003_<topic>_news
-npm.cmd run check           # fails without FACTS.md or with an unsourced number
-npm.cmd run voice
-npm.cmd run voice:check
-npm.cmd run timeline        # 50–72 s
-npm.cmd run audio
-npm.cmd run render
+npm.cmd run check           # fix every ERROR (blank brief/TREATMENT and copied reference data fail too)
+npm.cmd run produce         # voice → voice:check → check → timeline → audio → render + QA; stops at the first failure
 ```
 
 ## Facts first
