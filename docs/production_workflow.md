@@ -1,248 +1,99 @@
 # 生产流程
 
-## 1. 新建 episode
+完整规则：`AGENTS.md` 和 `remotion-template/skills/_shared/HOUSE_RULES.md`。本文是流程速查。
 
-词根/单词视频放在：
+## 1. episode 放在哪里
 
-```text
-episodes/
-```
+| 内容 | 文件夹 |
+|---|---|
+| 单词视频（vocab-dossier / vocab-game-show / vocab-whiteboard） | `episodes/` |
+| 双语阅读视频（reading-picture-book / reading-caption-news） | `reading-episodes/` |
+| 句型视频 | `sentence-episodes/` |
 
-句型视频放在：
-
-```text
-sentence-episodes/
-```
-
-英文素材跟读/情景记词视频放在：
-
-```text
-read-aloud-episodes/
-```
-
-统一结构：
+模板 episode 的结构：
 
 ```text
 <episode>/
-├── brief.md
-├── source/
-├── data/
-├── audio/
-├── exports/
-└── notes.md
+├── brief.md          # 选题、单词、题目（先写）
+├── TREATMENT.md      # 三个结构候选、钩子、招牌镜头、与上一期的对比（先写）
+├── FACTS.md          # 仅新闻模板：每个数字的来源 URL 和原文
+├── data/             # 本期数据（唯一放内容的地方）
+├── audio/            # 生成的配音、配乐（不入库）
+├── exports/          # 成片和发布物（不入库）
+└── notes.md          # QA 和语音检查记录
 ```
 
 不要复制 `remotion-template/`。
 
-## 2. 准备内容
-
-把原始材料放入 `source/`。
-
-词根/单词视频常见材料：
-
-- 词根/词缀笔记
-- 单词列表
-- 发音或词义对比资料
-- 参考截图
-- 草稿文案
-
-句型视频常见材料：
-
-- 中文表达冲动
-- 英文句型骨架
-- 真实误会场景
-- 对话样例
-- 想做成记忆公式的表达
-
-情景记词跟读视频常见材料：
-
-- 英文段落、短文、字幕或 transcript
-- 想重点记的目标词
-- 参考视频或阅读页风格要求
-- 情景主题或目标观众
-
-### `brief.md` 最低要求
-
-词根/单词视频：
-
-- 主题
-- 目标观众
-- 第一秒钩子
-- 核心记忆点
-- 需要讲的 3-8 个关键词
-
-句型视频：
-
-- Chinese Pain Point
-- First 0.3s Interrupt Text
-- Pain Flash Lines
-- Conflict Line
-- Pattern Slam Line
-- Memory Formula
-- Scene Metaphor
-- Required Scene Elements
-- Slot Swap Design
-- Drill Lines
-- Cover Main Title
-- Cover Subtitle
-- Cover Pattern Line
-- Anti-PPT Check
-
-情景记词跟读视频：
-
-- Source Passage
-- Scene Hook
-- Target Words
-- Memory Chain
-- Visual Reference
-- QA Notes
-
-## 3. 写数据
-
-把本期内容写到：
-
-```text
-episode/data/
-```
-
-常用文件：
-
-- `voiceScript.ts`
-- `episodeConfig.ts`
-- `generatedVoiceTimeline.ts`
-
-词根/单词视频常见附加文件：
-
-- `words.ts`
-- `subtitles.ts`
-
-句型视频常见附加文件：
-
-- `sentencePattern.ts`
-- `subtitles.ts`
-
-情景记词跟读视频常见附加文件：
-
-- `readingPassage.ts`
-
-## 4. 同步到模板
+## 2. 选模板、建 episode
 
 ```powershell
-cd F:\抖音英语卡片视频\remotion-template
+cd remotion-template
+npm.cmd run plan
+npm.cmd run new -- <template> <episodeId>
 ```
 
-词根/单词视频：
+`plan` 列出每条线最近的几期，推荐最久没用的模板；同一条线不要连续两期用同一个模板。`new` 复制参考 episode 的数据，改好 id，生成 `brief.md`、`TREATMENT.md`、`notes.md`。
+
+## 3. 写 brief 和 treatment
+
+先写 `brief.md` 和 `TREATMENT.md`，再改数据。`TREATMENT.md` 第 9 节要和同模板上一期对比 6 项（结构、开场画面、招牌镜头、镜头路线、配乐形状、结尾），至少 3 项不同。
+
+句型视频 `brief.md` 最低要求（不变）：Chinese Pain Point、First 0.3s Interrupt Text、Pain Flash Lines、Conflict Line、Pattern Slam Line、Memory Formula、Scene Metaphor、Required Scene Elements、Slot Swap Design、Drill Lines、Cover Main Title、Cover Subtitle、Cover Pattern Line、Anti-PPT Check。
+
+## 4. 写数据
+
+| 模板 | 数据文件 |
+|---|---|
+| vocab-dossier | `data/dossier.ts` |
+| vocab-game-show | `data/gameShow.ts` |
+| vocab-whiteboard | `data/whiteboard.ts` |
+| reading-picture-book | `data/pictureBook.ts` |
+| reading-caption-news | `data/captionNews.ts` |
+| 所有模板 | `data/voiceScript.ts`、`data/episodeConfig.ts`、`data/generatedVoiceTimeline.ts` |
+| 句型视频 | `data/sentencePattern.ts`、`data/subtitles.ts` 等 |
+
+字段说明见各模板的 `SKILL.md`。数据文件自带类型定义，不要 import 其它文件。
+
+## 5. 同步、检查
 
 ```powershell
-npm.cmd run episode:use -- ../episodes/001_ject_words_douyin_v1
+npm.cmd run episode:use -- ../episodes/<episodeId>
+npm.cmd run check
 ```
 
-句型视频：
+`check` 检查：小猪锁；brief.md / TREATMENT.md 已填写（不是空白模板，第 9 节已对比）；data 不是参考 episode 的原样拷贝；词汇等级（课标 / 拓展，拓展最多 1 个）；题目答案和来源；GB2312 字符；新闻数字出处和关键词；cueAt 是否在口播里；时长；模板轮换。所有 ERROR 修好再继续。
+
+## 6. 一键生产
 
 ```powershell
-npm.cmd run episode:use -- ../sentence-episodes/001_not_that_sentence
+npm.cmd run produce
 ```
 
-情景记词跟读视频：
+按固定顺序执行，任一步失败就停：
 
-```powershell
-npm.cmd run episode:use -- ../read-aloud-episodes/001_prevalent_habits
-```
+1. `check`
+2. `voice`：只为新增或文字改动的句子重新配音；DashScope CosyVoice `cosyvoice-v3-flash` / `longanhuan`，API key 只从 `.env` 或环境变量 `DASHSCOPE_API_KEY` 读取。
+3. `voice:check`：逐句语音转写核对；读错的句子改写 `text` 后重跑。
+4. `check`（这时有真实时长）
+5. `timeline`：每场时长
+6. `audio`：按真实时间轴合成配乐和音效
+7. `render`：分场静帧到 `out/qa/<id>/`、成片、-14 LUFS、QA 报告、contact sheet、封面、caption、发布文案
 
-这一步会同步数据、音频，并记录当前 active episode。
+最后写出 `exports/<id>_handoff.md`。单步命令也可以单独运行，但推荐始终用 `produce`。
 
-## 5. 生成配音
+## 7. 人工检查
 
-不要把 API key 写进文件。
-从环境变量读取 `DASHSCOPE_API_KEY`。
+`render` 输出 `QA PASS` 后，还要看 contact sheet 和分场静帧，按模板的 `references/qa_checklist.md` 检查：文字不重叠、不出界，小猪站在地面线上、不挡内容，中文清晰可读。结果写进 `notes.md`。
 
-```powershell
-npm.cmd run voice
-```
+## 8. 句型视频硬门槛（不变）
 
-然后把生成物回存到 episode：
-
-- `public/audio/` -> `episode/audio/`
-- `src/data/generatedVoiceTimeline.ts` -> `episode/data/generatedVoiceTimeline.ts`
-
-## 6. 预览和质检
-
-```powershell
-npm.cmd run preview -- --port=3000
-npx.cmd tsc --noEmit
-```
-
-通用检查：
-
-- 配音和字幕是否同步
-- 关键字是否跟随当前片段高亮
-- 是否存在文字重叠
-- 是否有长时间静止画面
-
-词根/单词视频重点检查：
-
-- 前 3 秒是否抓人
-- root reveal 是否足够清晰
-- 封面是否一眼看懂记忆角度
-
-句型视频重点检查：
-
-- 前 0.5 秒是否有打断
-- 句型骨架是否在 3 秒内出现
-- 是否在 3 秒内给出记忆公式
-- 是否先有场景再有讲解
-- A/B slot 是否像替换积木而不是静态标签
-- 是否有 drill 复诵
-- 是否像短视频而不是 PPT
-
-情景记词跟读视频重点检查：
-
-- 黄黑单词视频风格是否清晰
-- 顶部进度条是否可见
-- 当前目标词是否随真实时间轴高亮
-- 当前词解释是否包含音标、中文释义、情景含义
-- 底部音频条是否不遮挡关键文字
-- 最后复盘是否形成记忆链
-
-## 7. 导出
-
-```powershell
-npm.cmd run render
-```
-
-导出物应进入：
-
-```text
-episode/exports/
-```
-
-至少包含：
-
-- 最终视频
-- 封面图
-- caption
-- publish notes
-
-## 8. 句型视频硬门槛
-
-句型视频一票否决项：
-
-- 像 PPT
-- 像课程封面
-- 全程只是黑底字卡
-- 句型骨架 3 秒后才出现
-- 没有 slot swap
-- 没有场景感
-- 例句像教材
-- 口播像语法老师
-- 只有完整解释，没有 drill 复诵
+一票否决：像 PPT、像课程封面、全程只是黑底字卡、句型骨架 3 秒后才出现、没有 slot swap、没有场景感、例句像教材、口播像语法老师、只有完整解释没有 drill 复诵。
 
 ## 9. 项目内 skill 入口
 
-项目内约定：
-
-- 词根/单词视频规则：`remotion-template/skills/douyin-remotion-video/`
-- 句型视频规则：`remotion-template/skills/douyin-remotion-sentence-video/`
-- 情景记词跟读视频规则：`douyin-remotion-read-aloud-vocab/`
-
-后续优先改项目里的 skill 和文档，不依赖 C 盘全局 skill。
+- 共用规则：`remotion-template/skills/_shared/`
+- 单词模板：`remotion-template/skills/vocab-dossier/`、`vocab-game-show/`、`vocab-whiteboard/`
+- 阅读模板：`remotion-template/skills/reading-picture-book/`、`reading-caption-news/`
+- 句型视频：`remotion-template/skills/douyin-remotion-sentence-video/`
+- 旧版黑黄词根视频（冻结）：`remotion-template/skills/douyin-remotion-video/`

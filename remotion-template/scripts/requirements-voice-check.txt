@@ -1,0 +1,5 @@
+# Python packages for npm run voice:check (speech-to-text check of every voice line).
+# Install: python -m pip install -r scripts/requirements-voice-check.txt
+faster-whisper>=1.0
+pypinyin>=0.50
+numpy>=1.24

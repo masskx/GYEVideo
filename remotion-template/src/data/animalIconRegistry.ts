@@ -210,15 +210,6 @@ export const animalIconRegistry = {
     description: 'Local bird avatar for English vocabulary video emotion beats',
     recommendedScenes: ['summary', 'outro', 'memory-line'],
   },
-  cute_pig: {
-    id: 'cute_pig',
-    path: 'assets/icons/animals/cute_pig.svg',
-    type: 'animal',
-    role: 'reaction',
-    emotion: 'neutral',
-    description: 'Local pig avatar for English vocabulary video emotion beats',
-    recommendedScenes: ['hook', 'root-reveal', 'summary'],
-  },
   cute_duck: {
     id: 'cute_duck',
     path: 'assets/icons/animals/cute_duck.svg',
@@ -308,15 +299,6 @@ export const animalIconRegistry = {
     emotion: 'shocked',
     description: 'Local cat avatar for English vocabulary video emotion beats',
     recommendedScenes: ['hook', 'misconception', 'root-reveal'],
-  },
-  cute_pig_002: {
-    id: 'cute_pig_002',
-    path: 'assets/icons/animals/cute_pig_002.svg',
-    type: 'animal',
-    role: 'reaction',
-    emotion: 'neutral',
-    description: 'Local pig avatar for English vocabulary video emotion beats',
-    recommendedScenes: ['hook', 'root-reveal', 'summary'],
   },
   cute_dog_007: {
     id: 'cute_dog_007',

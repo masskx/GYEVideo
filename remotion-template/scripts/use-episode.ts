@@ -46,17 +46,8 @@ const deriveExportBaseName = (episodeSlug: string) => {
   return episodeSlug;
 };
 
-const inferEpisodeType = (sourceContent: string) => {
-  if (sourceContent.includes("type: 'sentence-pattern'")) {
-    return 'sentence-pattern';
-  }
-
-  if (sourceContent.includes("type: 'read-aloud-vocab'")) {
-    return 'read-aloud-vocab';
-  }
-
-  return 'root-word';
-};
+// The episode type is the `type: '...'` field of data/episodeConfig.ts; legacy files without it are root-word.
+const inferEpisodeType = (sourceContent: string) => sourceContent.match(/type:\s*'([a-z-]+)'/)?.[1] ?? 'root-word';
 
 const CANONICAL_EPISODE_CONFIG_TYPES = `export type HookType =
   | 'misconception'
@@ -102,7 +93,7 @@ export type LottieConfig = {
 };
 
 export type EpisodeConfig = {
-  type: 'root-word' | 'sentence-pattern' | 'read-aloud-vocab';
+  type: 'root-word' | 'sentence-pattern' | 'vocab-dossier' | 'vocab-game-show' | 'vocab-whiteboard' | 'reading-picture-book' | 'reading-caption-news';
   episodeId: string;
   exportBaseName: string;
   durationTargetSeconds?: number;
@@ -131,7 +122,7 @@ const patchEpisodeConfigContent = (sourceContent: string) => {
 
   const objectPart = sourceContent.slice(markerIndex).trimStart();
   const activeEpisodeSlug = basename(episodeDir);
-  const inferredType = inferEpisodeType(sourceContent);
+  const inferredType = inferEpisodeType(objectPart);
   const exportBaseName = deriveExportBaseName(activeEpisodeSlug);
   const metadataLines = [
     objectPart.includes('type:') ? null : `  type: '${inferredType}',`,
@@ -153,27 +144,22 @@ const patchEpisodeConfigContent = (sourceContent: string) => {
 mkdirSync(targetDataDir, {recursive: true});
 mkdirSync(targetAudioDir, {recursive: true});
 
-for (const file of [
-  'voiceScript.ts',
-  'words.ts',
-  'sentencePattern.ts',
-  'subtitles.ts',
-  'readingPassage.ts',
-  'generatedVoiceTimeline.ts',
-  'episodeConfig.ts',
-]) {
+// Copy every data file of the episode. Files of other templates stay in src/data as their defaults.
+for (const file of readdirSync(dataDir).filter((name) => name.endsWith('.ts'))) {
   const source = join(dataDir, file);
-  if (existsSync(source)) {
-    if (file === 'episodeConfig.ts') {
-      writeFileSync(join(targetDataDir, file), patchEpisodeConfigContent(readFileSync(source, 'utf8')), 'utf8');
-      continue;
-    }
-
-    cpSync(source, join(targetDataDir, file));
+  if (file === 'episodeConfig.ts') {
+    writeFileSync(join(targetDataDir, file), patchEpisodeConfigContent(readFileSync(source, 'utf8')), 'utf8');
+    continue;
   }
+  cpSync(source, join(targetDataDir, file));
 }
 
-if (existsSync(audioDir)) {
+// A previous episode's score must not leak into this one.
+rmSync(join(targetAudioDir, 'score.mp3'), {force: true});
+
+// The previous episode's voice must not leak either: clear public/audio even when this episode has no
+// audio yet (a new episode, or a fresh clone; audio is not committed). npm run produce then re-voices it.
+{
   if (existsSync(targetAudioDir)) {
     for (const entry of readdirSync(targetAudioDir)) {
       try {
@@ -188,7 +174,9 @@ if (existsSync(audioDir)) {
       }
     }
   }
+}
 
+if (existsSync(audioDir)) {
   cpSync(audioDir, targetAudioDir, {recursive: true});
 
   for (const file of ['main-voice.mp3', 'segments.txt']) {

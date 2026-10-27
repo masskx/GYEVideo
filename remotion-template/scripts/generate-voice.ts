@@ -4,6 +4,7 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {fileURLToPath, pathToFileURL} from 'node:url';
 import ts from 'typescript';
+import {BRAND} from '../src/brand/brand';
 import {loadProjectEnv} from './load-env';
 
 type VoiceScriptLine = {
@@ -39,8 +40,9 @@ const activeEpisodePath = join(rootDir, '.active-episode.json');
 const endpoint =
   process.env.DASHSCOPE_TTS_ENDPOINT ??
   'https://dashscope.aliyuncs.com/api/v1/services/audio/tts/SpeechSynthesizer';
-const model = process.env.DASHSCOPE_TTS_MODEL ?? 'cosyvoice-v3-flash';
-const voice = process.env.DASHSCOPE_TTS_VOICE ?? 'longanhuan';
+// One narrator for the whole account (src/brand/brand.ts); .env may not change it.
+const model = BRAND.voice.model;
+const voice = BRAND.voice.voice;
 const format = process.env.DASHSCOPE_TTS_FORMAT ?? 'mp3';
 const sampleRate = Number(process.env.DASHSCOPE_TTS_SAMPLE_RATE ?? 48000);
 const useInstruction = process.env.DASHSCOPE_TTS_USE_INSTRUCTION !== 'false';
@@ -251,6 +253,7 @@ const writeTimeline = (
       start,
       end,
       text: line.subtitle,
+      spoken: line.text,
       audio: `/audio/segments/${segmentPaths[index].split(/[\\/]/).pop()}`,
     };
   });
@@ -260,6 +263,7 @@ const writeTimeline = (
   start: number;
   end: number;
   text: string;
+  spoken?: string; // the TTS text this audio was made from (npm run produce re-voices when it changes)
   audio: string;
 };
 
@@ -271,6 +275,7 @@ ${items
     start: ${item.start},
     end: ${item.end},
     text: \`${escapeText(item.text)}\`,
+    spoken: \`${escapeText(item.spoken)}\`,
     audio: \`${escapeText(item.audio)}\`,
   },`,
   )
@@ -307,6 +312,11 @@ const persistToActiveEpisode = () => {
 
 const main = async () => {
   loadProjectEnv();
+  for (const [key, brand] of [['DASHSCOPE_TTS_MODEL', model], ['DASHSCOPE_TTS_VOICE', voice]] as const) {
+    if (process.env[key] && process.env[key] !== brand) {
+      throw new Error(`${key}=${process.env[key]} overrides the brand voice (${brand}). Remove it from .env: every video uses ${model} / ${voice}.`);
+    }
+  }
   ensureTool('ffmpeg');
   ensureTool('ffprobe');
 

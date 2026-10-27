@@ -42,7 +42,7 @@ export type LottieConfig = {
 };
 
 export type EpisodeConfig = {
-  type: 'root-word' | 'sentence-pattern' | 'read-aloud-vocab';
+  type: 'root-word' | 'sentence-pattern' | 'vocab-dossier' | 'vocab-game-show' | 'vocab-whiteboard' | 'reading-picture-book' | 'reading-caption-news';
   episodeId: string;
   exportBaseName: string;
   durationTargetSeconds?: number;
@@ -61,41 +61,27 @@ export type EpisodeConfig = {
 };
 
 export const episodeConfig: EpisodeConfig = {
-  type: 'root-word',
-  episodeId: '059_alt_words',
-  exportBaseName: '059_alt_words',
-  durationTargetSeconds: 30,
-  width: 960,
-  height: 720,
+  type: 'vocab-whiteboard',
+  episodeId: '062_vis_whiteboard',
+  exportBaseName: '062_vis_whiteboard',
+  durationTargetSeconds: 60,
+  width: 1080,
+  height: 1920,
   fps: 30,
-  bgmId: 'suspense_003',
-  bgmVolume: 0.33,
-  bgmSafetyCap: 0.33,
-  bgmDuckingFactor: 0.78,
+  // The score is synthesized per episode (npm run audio); bgmId is only the fallback.
+  bgmId: 'tech_002',
+  bgmVolume: 0.5,
+  bgmDuckingFactor: 0.6,
   voiceVolume: 1.0,
-  sfxVolume: 0.25,
-  hook: {
-    type: 'misconception',
-    mainText: 'exalt 你可能一直只把它背成赞美',
-    subText: '抓住 alt = high，这排词会突然串起来',
-    shockText: '这些词，其实都在讲同一个方向：高',
-    flashWords: ['exalt', 'altitude', 'altimeter', 'alto', 'altiplano'],
-    rootText: '-alt',
-    tone: 'urgent',
-  },
+  sfxVolume: 0.5,
   cover: {
     creatorName: '小猪盖被',
-    badgeText: '词根爆闪',
-    headline: 'exalt 你可能不只是在说赞美',
-    subHeadline: '抓住 alt = high，这排词会一下串上',
-    memoryLine: 'alt = high / 高',
-    retentionPrompt: '评论区答：exalt 为什么先是抬高？',
-    highlightWords: ['altitude', 'altimeter', 'exalt'],
-    accentAnimalId: 'cute_pig',
-    creatorAnimalId: 'cute_pig',
-  },
-  lottie: {
-    visible: false,
+    badgeText: '白板词根图',
+    headline: 'provide 居然和“看”有关？',
+    subHeadline: 'vis / vid = see，一张图记 5 个高考词',
+    memoryLine: 'vis / vid = 看',
+    retentionPrompt: '评论区写答案',
+    highlightWords: ['visit', 'vision', 'visible', 'evidence', 'provide'],
   },
 };
 

@@ -36,7 +36,7 @@ export const BackgroundMusic: React.FC = () => {
 
   const configuredVolume = episodeConfig.bgmVolume ?? bgm.recommendedVolume;
   const defaultSafetyCap =
-    episodeConfig.type === 'sentence-pattern' ? 0.34 : episodeConfig.type === 'read-aloud-vocab' ? 0.22 : 0.32;
+    episodeConfig.type === 'sentence-pattern' ? 0.34 : 0.32;
   const safetyCap = episodeConfig.bgmSafetyCap ?? defaultSafetyCap;
   const baseVolume = Math.min(configuredVolume, safetyCap);
   const volume = getBgmVolume({frame, fps, baseVolume});

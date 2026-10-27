@@ -2,10 +2,12 @@ import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {episodeConfig} from '../src/data/episodeConfig';
-import {readingPassage} from '../src/data/readingPassage';
 import {rootInfo, words} from '../src/data/words';
 import {sentenceExamples, sentenceInfo} from '../src/data/sentencePattern';
 import {sentenceVideoMeta} from '../src/sentenceVideoMeta';
+import {publishNotes} from '../src/core/copy';
+import {isTemplate} from '../src/templates/registry';
+import {RUNTIMES} from '../src/templates/timelines';
 
 type ActiveEpisodeMeta = {
   episodeDir: string;
@@ -97,54 +99,6 @@ const buildSentencePublishNotes = (baseName: string) => {
 `;
 };
 
-const buildReadAloudCaptionText = () => {
-  const wordsLine = readingPassage.targetWords
-    .slice(0, 12)
-    .map((word) => cleanInline(word.word))
-    .join(' / ');
-
-  return [
-    ensureSentence(episodeConfig.cover?.headline || readingPassage.title),
-    ensureSentence(readingPassage.sceneHook),
-    ensureSentence(`这一期用中文故事串起：${wordsLine}`),
-    ensureSentence(readingPassage.memoryLine),
-    '#英语学习 #情景背单词 #英语词汇 #大学生英语 #小猪盖被',
-  ]
-    .filter(Boolean)
-    .join('\n');
-};
-
-const buildReadAloudPublishNotes = (activeEpisode: ActiveEpisodeMeta) => {
-  const titleCandidates = [
-    episodeConfig.cover?.headline || readingPassage.title,
-    `${readingPassage.topicLabel} | ${readingPassage.targetWords.slice(0, 3).map((word) => word.word).join(' / ')}`,
-    readingPassage.memoryLine,
-  ];
-
-  return `# Publish Notes
-
-## 标题备选
-- ${titleCandidates[0]}
-- ${titleCandidates[1]}
-- ${titleCandidates[2]}
-
-## 标签
-
-#英语学习 #情景背单词 #英语词汇 #大学生英语 #小猪盖被
-
-## 发布前检查
-- 确认最终视频文件：\`${activeEpisode.exportBaseName}.mp4\`
-- 确认封面文件：\`${activeEpisode.exportBaseName}_cover.png\`
-- 确认文案文件：\`${activeEpisode.exportBaseName}_caption.txt\`
-- 确认画面是中文情景短文嵌英文词，而不是英文阅读页
-- 确认底部逐词卡、正文小释义、顶部进度块、底部播放器条都可见
-- 确认目标词解释不是词典释义堆叠，而是贴着中文故事情景
-- 确认视频时长控制在 25-35 秒
-- 确认重要文字避开底部播放条
-- 确认音频正常播放
-`;
-};
-
 const buildCaptionText = () => {
   const opening = hookMain || `${primaryWord?.word ?? rootToken} 不只会让你想到“${primaryWordMeaningShort}”`;
   const cluster = highlightWords.join('、');
@@ -200,8 +154,6 @@ export const generateReleaseCopy = () => {
   const exportsDir =
     episodeConfig.type === 'sentence-pattern'
       ? join(workspaceDir, 'sentence-episodes', exportBaseName, 'exports')
-      : episodeConfig.type === 'read-aloud-vocab'
-        ? join(workspaceDir, 'read-aloud-episodes', exportBaseName, 'exports')
       : join(activeEpisode!.episodeDir, 'exports');
 
   const captionPath = join(exportsDir, `${exportBaseName}_caption.txt`);
@@ -212,17 +164,18 @@ export const generateReleaseCopy = () => {
   mkdirSync(exportsDir, {recursive: true});
   mkdirSync(outDir, {recursive: true});
 
-  const captionText =
-    episodeConfig.type === 'sentence-pattern'
+  const type = episodeConfig.type;
+  const runtime = isTemplate(type) ? RUNTIMES[type] : undefined;
+  const templateCopy = runtime?.copy();
+  const captionText = templateCopy
+    ? templateCopy.caption
+    : type === 'sentence-pattern'
       ? buildSentenceCaptionText()
-      : episodeConfig.type === 'read-aloud-vocab'
-        ? buildReadAloudCaptionText()
-        : buildCaptionText();
-  const publishNotesText =
-    episodeConfig.type === 'sentence-pattern'
+      : buildCaptionText();
+  const publishNotesText = templateCopy
+    ? publishNotes(templateCopy, exportBaseName)
+    : type === 'sentence-pattern'
       ? buildSentencePublishNotes(exportBaseName)
-      : episodeConfig.type === 'read-aloud-vocab'
-        ? buildReadAloudPublishNotes(activeEpisode!)
       : buildPublishNotes(activeEpisode!);
 
   writeFileSync(captionPath, `${captionText}\n`, 'utf8');

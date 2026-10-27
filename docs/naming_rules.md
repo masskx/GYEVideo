@@ -2,55 +2,41 @@
 
 ## Episode 文件夹
 
-使用：
+模板 episode 使用：
 
 ```text
-编号_主题_平台_版本
+编号_主题_模板简称
 ```
 
 示例：
 
 ```text
-001_ject_words_douyin_v1
-002_port_words_douyin_v1
-003_spect_words_douyin_v1
-004_mit_miss_words_douyin_v1
+episodes/060_duc_dossier
+episodes/061_port_gameshow
+episodes/062_vis_whiteboard
+reading-episodes/001_screen_promise
+reading-episodes/002_teen_sleep_news
 ```
 
 规则：
 
-- 编号三位数。
-- 英文小写。
-- 单词之间用下划线。
-- 平台写清楚，如 `douyin`。
-- 版本写 `v1`, `v2`。
+- 编号三位数，单词线和阅读线各自连续编号（`npm run plan` 会给出下一个编号）。
+- 英文小写，单词之间用下划线（`npm run new` 会校验）。
+- 结尾写模板简称：dossier / gameshow / whiteboard / book / news（`npm run plan` 会给出完整建议）。单词线写词根，阅读线写话题。最早的两期阅读参考 episode 没有简称。
+
+旧版黑黄词根视频沿用 `编号_主题_words`（如 `046_man_words`）。
 
 ## 导出文件
 
-使用：
+由 `npm run render` 自动生成，文件名以 episode id 开头：
 
 ```text
-编号_主题_类型_分辨率.扩展名
-```
-
-示例：
-
-```text
-001_ject_words_final_960x720.mp4
-001_ject_words_cover.png
-001_ject_words_caption.md
-001_ject_words_publish_notes.md
-```
-
-说明：
-
-- `cover.png` 默认是抖音封面尺寸 `1080 x 1920`
-- `final_960x720.mp4` 维持当前视频导出命名
-
-如果后续改成竖屏：
-
-```text
-001_ject_words_final_1080x1440.mp4
+061_port_gameshow.mp4                  # 1080×1920，30 fps，-14 LUFS
+061_port_gameshow_cover.png            # 1080×1920 封面
+061_port_gameshow_caption.txt
+061_port_gameshow_publish_notes.md
+061_port_gameshow_qa.md
+061_port_gameshow_contact_sheet.jpg
 ```
 
 ## 禁止命名

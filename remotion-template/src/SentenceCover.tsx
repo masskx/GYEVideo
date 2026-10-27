@@ -1,5 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, Img, staticFile} from 'remotion';
+import {BrandAvatar, isBrandPigId} from './brand/BrandAvatar';
 import {episodeConfig} from './data/episodeConfig';
 import {sentenceExamples, sentenceInfo} from './data/sentencePattern';
 import {getAnimalIconById, getFallbackAnimalIcon} from './data/animalIconRegistry';
@@ -87,9 +88,7 @@ export const SentenceCover: React.FC = () => {
           background: 'rgba(9,9,9,0.78)',
         }}
       >
-        {creatorAnimal ? (
-          <Img src={staticFile(creatorAnimal.path)} style={{width: 68, height: 68, objectFit: 'contain'}} />
-        ) : null}
+        <BrandAvatar id="sentence-cover-creator" size={68} />
         <div>
           <div style={{color: 'rgba(255,255,255,0.58)', fontSize: 22, fontWeight: 900}}>ENGLISH CREATOR</div>
           <div style={{marginTop: 4, color: THEME.white, fontSize: 32, fontWeight: 1000}}>
@@ -201,7 +200,7 @@ export const SentenceCover: React.FC = () => {
           </div>
         );
       })}
-      {accentAnimal ? (
+      {accentAnimal || isBrandPigId(episodeConfig.cover?.accentAnimalId) ? (
         <div
           style={{
             position: 'absolute',
@@ -216,7 +215,11 @@ export const SentenceCover: React.FC = () => {
             background: 'radial-gradient(circle, rgba(255,212,59,0.18), transparent 68%)',
           }}
         >
-          <Img src={staticFile(accentAnimal.path)} style={{width: 246, height: 246, objectFit: 'contain'}} />
+          {isBrandPigId(episodeConfig.cover?.accentAnimalId) ? (
+            <BrandAvatar id="sentence-cover-accent" size={246} />
+          ) : (
+            <Img src={staticFile(accentAnimal!.path)} style={{width: 246, height: 246, objectFit: 'contain'}} />
+          )}
         </div>
       ) : null}
       <div

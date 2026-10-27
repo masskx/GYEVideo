@@ -1,0 +1,24 @@
+export const episodeConfig: EpisodeConfig = {
+  type: 'vocab-game-show',
+  episodeId: '061_port_gameshow',
+  exportBaseName: '061_port_gameshow',
+  durationTargetSeconds: 60,
+  width: 1080,
+  height: 1920,
+  fps: 30,
+  // The score is synthesized per episode (npm run audio); bgmId is only the fallback.
+  bgmId: 'tech_001',
+  bgmVolume: 0.5,
+  bgmDuckingFactor: 0.6,
+  voiceVolume: 1.0,
+  sfxVolume: 0.55,
+  cover: {
+    creatorName: '小猪盖被',
+    badgeText: '词根闯关',
+    headline: '一个 port，闯过 5 关',
+    subHeadline: 'port = carry / 拿，运',
+    memoryLine: 'port = 拿，运',
+    retentionPrompt: '评论区抢答加分题',
+    highlightWords: ['import', 'export', 'transport', 'support', 'report'],
+  },
+};

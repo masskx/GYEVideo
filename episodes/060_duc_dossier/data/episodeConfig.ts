@@ -1,0 +1,24 @@
+export const episodeConfig: EpisodeConfig = {
+  type: 'vocab-dossier',
+  episodeId: '060_duc_dossier',
+  exportBaseName: '060_duc_dossier',
+  durationTargetSeconds: 60,
+  width: 1080,
+  height: 1920,
+  fps: 30,
+  // The score is synthesized per episode (npm run audio); bgmId is only the fallback.
+  bgmId: 'suspense_003',
+  bgmVolume: 0.5,
+  bgmDuckingFactor: 0.6,
+  voiceVolume: 1.0,
+  sfxVolume: 0.55,
+  cover: {
+    creatorName: '小猪盖被',
+    badgeText: '高考词汇案卷',
+    headline: '四个选项长得像四胞胎？',
+    subHeadline: '一个指纹 duc，破掉 5 个高考词',
+    memoryLine: 'duc = lead / 带领',
+    retentionPrompt: '评论区交答案',
+    highlightWords: ['produce', 'reduce', 'introduce', 'conduct', 'education'],
+  },
+};
